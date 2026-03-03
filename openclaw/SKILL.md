@@ -1,6 +1,6 @@
 ---
 name: section-11
-description: Evidence-based endurance cycling coaching protocol (v11.5). Use when analyzing training data, reviewing sessions, generating pre/post-workout reports, planning workouts, answering training questions, or giving cycling coaching advice. Always fetch athlete JSON data before responding to any training question.
+description: Evidence-based endurance cycling coaching protocol (v11.10). Use when analyzing training data, reviewing sessions, generating pre/post-workout reports, planning workouts, answering training questions, or giving cycling coaching advice. Always fetch athlete JSON data before responding to any training question.
 ---
 
 # Section 11 — AI Coaching Protocol
@@ -57,6 +57,16 @@ All external files referenced by this skill (`sync.py`, `SECTION_11.md`, templat
 - No virtual math on pre-computed metrics — use fetched values for CTL, ATL, TSB, ACWR, RI, zones, etc. Custom analysis from raw data is fine when pre-computed values don't cover the question.
 - Follow Section 11 C validation checklist before generating recommendations
 - Cite frameworks per protocol (checklist item #10)
+
+## Write Capabilities
+
+If `push.py` is available in the data repo, the skill can write planned workouts to the athlete's Intervals.icu calendar:
+- GitHub Actions dispatch (uses existing `ATHLETE_ID` and `INTERVALS_KEY` secrets)
+- Local execution (direct API call)
+- Template ID mappings for all 14 Workout Reference sessions
+- See `examples/agentic/README.md` for workout syntax and usage
+
+Only available on platforms that can execute code or trigger GitHub Actions (OpenClaw, Claude Code, Cowork, etc.). Web chat users cannot use this.
 
 ## Report Templates
 
