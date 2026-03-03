@@ -1,24 +1,41 @@
 #!/usr/bin/env python3
 """
-push.py — Write planned workouts to Intervals.icu calendar.
+push.py - Manage planned workouts on Intervals.icu calendar.
 
 Part of Section 11 (https://github.com/CrankAddict/section-11).
-Designed for agentic AI platforms (OpenClaw, Claude Code, Claude Cowork, etc.)
-that can execute code. Chat-only users cannot use this.
+For agentic AI platforms with code execution or GitHub Actions.
+
+Subcommands:
+  push    Add workouts to calendar (default if no subcommand given)
+  list    Show planned workouts for a date range
+  move    Move a workout to a different date
+  delete  Remove a workout from the calendar
+
+Write operations (push/move/delete) default to PREVIEW mode.
+Add --confirm to execute. Agents: always preview first, show the
+athlete, then --confirm only after approval.
 
 Usage:
-  # Single workout via CLI
-  python push.py --name "Sweet Spot 3x15" --date 2026-03-05 --type Ride \
-    --description "- 15m 55%\n\n3x\n- 15m 88-92%\n- 5m 55%\n\n- 10m 50%" \
-    --duration 85 --tss 75
+  # Preview a push (safe - nothing written)
+  python push.py push --json week.json
 
-  # Agent imports directly
-  from push import IntervalsPush
-  pusher = IntervalsPush(athlete_id, api_key)
-  result = pusher.push_workout({...})
+  # Execute after athlete approves
+  python push.py push --json week.json --confirm
 
-  # Multiple workouts (training week)
-  result = pusher.push_workouts([{...}, {...}, {...}])
+  # List this week's planned workouts (read-only, no --confirm needed)
+  python push.py list
+
+  # List next two weeks
+  python push.py list --newest +13
+
+  # Move workout to Thursday
+  python push.py move --event-id 33375903 --date 2026-03-06 --confirm
+
+  # Delete a workout
+  python push.py delete --event-id 33375903 --confirm
+
+  # Backward compatible (no subcommand = push)
+  python push.py --json week.json --confirm
 
 Credentials (checked in order):
   1. CLI args: --athlete-id, --api-key
@@ -26,8 +43,6 @@ Credentials (checked in order):
   3. Environment: ATHLETE_ID, INTERVALS_KEY
 
 Output: JSON to stdout for agent parsing.
-  Success: {"success": true, "events": [{"id": ..., "name": ..., "date": ...}]}
-  Failure: {"success": false, "error": "..."}
 """
 
 import argparse
@@ -42,12 +57,11 @@ from typing import Dict, List, Optional, Tuple
 
 
 class IntervalsPush:
-    """Push planned workouts to Intervals.icu calendar."""
+    """Manage planned workouts on Intervals.icu calendar."""
 
     BASE_URL = "https://intervals.icu/api/v1"
-    VERSION = "1.0.0"
+    VERSION = "0.2"
 
-    # Valid activity types (from Intervals.icu)
     VALID_TYPES = {
         "Ride", "VirtualRide", "MountainBikeRide", "GravelRide", "EBikeRide",
         "Run", "VirtualRun", "TrailRun",
@@ -59,11 +73,7 @@ class IntervalsPush:
         "Workout", "Other",
     }
 
-    # Valid event categories
     VALID_CATEGORIES = {"WORKOUT", "RACE_A", "RACE_B", "RACE_C", "NOTE"}
-
-    # Valid target modes
-    VALID_TARGETS = {"POWER", "HR", "PACE", None}
 
     def __init__(self, athlete_id: str, api_key: str):
         if not athlete_id or not api_key:
@@ -71,27 +81,59 @@ class IntervalsPush:
         self.athlete_id = athlete_id
         self.auth = base64.b64encode(f"API_KEY:{api_key}".encode()).decode()
 
-    def _post(self, endpoint: str, payload: list) -> dict:
-        """POST to Intervals.icu API. Returns response JSON."""
-        import requests
-
-        url = f"{self.BASE_URL}/athlete/{self.athlete_id}/{endpoint}"
-        headers = {
+    def _headers(self) -> dict:
+        return {
             "Authorization": f"Basic {self.auth}",
             "Content-Type": "application/json",
             "Accept": "application/json",
         }
-        response = requests.post(url, headers=headers, json=payload)
+
+    def _url(self, endpoint: str) -> str:
+        return f"{self.BASE_URL}/athlete/{self.athlete_id}/{endpoint}"
+
+    def _handle_error(self, e: Exception) -> str:
+        """Extract readable error from requests exception."""
+        error_msg = str(e)
+        if hasattr(e, "response") and e.response is not None:
+            try:
+                detail = e.response.json()
+                error_msg = f"{e.response.status_code}: {detail}"
+            except Exception:
+                error_msg = f"{e.response.status_code}: {e.response.text[:200]}"
+        return error_msg
+
+    def _get(self, endpoint: str, params: dict = None) -> any:
+        """GET from Intervals.icu API."""
+        import requests
+        response = requests.get(self._url(endpoint), headers=self._headers(), params=params)
         response.raise_for_status()
         return response.json()
 
-    def validate_workout(self, workout: dict) -> Tuple[bool, Optional[str]]:
-        """
-        Validate a workout dict before pushing.
+    def _post(self, endpoint: str, payload) -> any:
+        """POST to Intervals.icu API."""
+        import requests
+        response = requests.post(self._url(endpoint), headers=self._headers(), json=payload)
+        response.raise_for_status()
+        return response.json()
 
-        Returns (True, None) if valid, (False, error_message) if not.
-        """
-        # Required fields
+    def _put(self, endpoint: str, payload: dict) -> any:
+        """PUT to Intervals.icu API."""
+        import requests
+        response = requests.put(self._url(endpoint), headers=self._headers(), json=payload)
+        response.raise_for_status()
+        return response.json()
+
+    def _delete(self, endpoint: str) -> bool:
+        """DELETE on Intervals.icu API. Returns True on success."""
+        import requests
+        response = requests.delete(self._url(endpoint), headers=self._headers())
+        response.raise_for_status()
+        return True
+
+    # ── Validation ──────────────────────────────────────────────────
+
+    def validate_workout(self, workout: dict) -> Tuple[bool, Optional[str]]:
+        """Validate a workout dict. Returns (True, None) or (False, error)."""
         name = workout.get("name")
         if not name or not name.strip():
             return False, "name is required"
@@ -100,49 +142,41 @@ class IntervalsPush:
         if not date:
             return False, "date is required (YYYY-MM-DD)"
 
-        # Date format
         try:
             workout_date = datetime.strptime(date, "%Y-%m-%d").date()
         except ValueError:
             return False, f"invalid date format: {date} (expected YYYY-MM-DD)"
 
-        # No past dates for planned workouts
         today = datetime.now().date()
         if workout_date < today:
-            return False, f"date {date} is in the past — planned workouts must be today or future"
+            return False, f"date {date} is in the past - planned workouts must be today or future"
 
-        # Type validation
         wtype = workout.get("type", "Ride")
         if wtype not in self.VALID_TYPES:
-            return False, f"invalid type: {wtype} — valid: {sorted(self.VALID_TYPES)}"
+            return False, f"invalid type: {wtype} - valid: {sorted(self.VALID_TYPES)}"
 
-        # Category validation
         category = workout.get("category", "WORKOUT")
         if category not in self.VALID_CATEGORIES:
-            return False, f"invalid category: {category} — valid: {sorted(self.VALID_CATEGORIES)}"
+            return False, f"invalid category: {category} - valid: {sorted(self.VALID_CATEGORIES)}"
 
-        # Target validation
         target = workout.get("target")
         if target is not None and target not in {"POWER", "HR", "PACE"}:
-            return False, f"invalid target: {target} — valid: POWER, HR, PACE"
+            return False, f"invalid target: {target} - valid: POWER, HR, PACE"
 
-        # Duration sanity (if provided)
         duration = workout.get("duration_minutes")
         if duration is not None:
             if not isinstance(duration, (int, float)) or duration <= 0:
                 return False, f"duration_minutes must be positive, got: {duration}"
             if duration > 720:
-                return False, f"duration_minutes {duration} exceeds 12h — likely an error"
+                return False, f"duration_minutes {duration} exceeds 12h - likely an error"
 
-        # TSS sanity (if provided)
         tss = workout.get("tss")
         if tss is not None:
             if not isinstance(tss, (int, float)) or tss < 0:
                 return False, f"tss must be non-negative, got: {tss}"
             if tss > 500:
-                return False, f"tss {tss} exceeds 500 — likely an error"
+                return False, f"tss {tss} exceeds 500 - likely an error"
 
-        # Description validation (basic syntax check)
         desc = workout.get("description", "")
         if desc:
             valid, desc_error = self._validate_description(desc)
@@ -152,38 +186,23 @@ class IntervalsPush:
         return True, None
 
     def _validate_description(self, description: str) -> Tuple[bool, Optional[str]]:
-        """
-        Basic validation of Intervals.icu workout description syntax.
-
-        Checks for obvious format errors. Does NOT fully parse — Intervals.icu
-        handles that. We just catch the most common agent mistakes.
-        """
+        """Basic validation of Intervals.icu workout description syntax."""
         lines = description.strip().split("\n")
-
         has_step = False
         for line in lines:
             stripped = line.strip()
             if not stripped:
                 continue
-
-            # Step lines start with -
             if stripped.startswith("-"):
                 has_step = True
-                step_text = stripped[1:].strip()
-                if not step_text:
+                if not stripped[1:].strip():
                     return False, "empty step line (dash with no content)"
-
-            # Repeat lines: Nx or "Label Nx"
             elif re.match(r'^(\d+x|.+\s+\d+x)\s*$', stripped, re.IGNORECASE):
                 continue
-
-            # Section headers (text without dash, not a repeat)
             else:
                 continue
-
         if not has_step:
             return False, "no step lines found (steps must start with -)"
-
         return True, None
 
     def _build_event(self, workout: dict) -> dict:
@@ -198,7 +217,7 @@ class IntervalsPush:
         description = workout.get("description", "")
         if description:
             event["description"] = description
-            event["workout_doc"] = {}  # Triggers Intervals.icu to parse description
+            event["workout_doc"] = {}
 
         target = workout.get("target")
         if target:
@@ -226,69 +245,205 @@ class IntervalsPush:
 
         return event
 
-    def push_workout(self, workout: dict) -> dict:
-        """
-        Validate and push a single workout. Returns result dict.
+    @staticmethod
+    def _summarize_event(evt: dict) -> dict:
+        """Extract compact summary from an Intervals.icu event."""
+        moving_time = evt.get("moving_time")
+        duration = round(moving_time / 60) if moving_time else None
+        return {
+            "id": evt.get("id"),
+            "name": evt.get("name"),
+            "date": (evt.get("start_date_local") or "")[:10],
+            "type": evt.get("type"),
+            "category": evt.get("category"),
+            "duration_minutes": duration,
+            "tss": evt.get("icu_training_load"),
+        }
 
-        Workout dict fields:
-          Required: name, date (YYYY-MM-DD)
-          Recommended: description (Intervals.icu syntax), type, duration_minutes, tss
-          Optional: target (POWER/HR/PACE), category, color, indoor, external_id
-        """
+    # ── Push (create) ──────────────────────────────────────────────
+
+    def push_workout(self, workout: dict) -> dict:
+        """Validate and push a single workout."""
         return self.push_workouts([workout])
 
     def push_workouts(self, workouts: list) -> dict:
-        """
-        Validate and push multiple workouts. Returns result dict.
-
-        Uses the bulk endpoint with upsert=true.
-        """
-        # Validate all before pushing any
+        """Validate and push multiple workouts. Uses bulk endpoint with upsert=true."""
         errors = []
         for i, w in enumerate(workouts):
             valid, error = self.validate_workout(w)
             if not valid:
                 label = w.get("name", f"workout[{i}]")
                 errors.append(f"{label}: {error}")
-
         if errors:
             return {"success": False, "error": "; ".join(errors)}
 
-        # Build payloads
         events = [self._build_event(w) for w in workouts]
 
-        # Push
         try:
             response = self._post("events/bulk?upsert=true", events)
-
             results = []
             if isinstance(response, list):
-                for evt in response:
-                    results.append({
-                        "id": evt.get("id"),
-                        "name": evt.get("name"),
-                        "date": (evt.get("start_date_local") or "")[:10],
-                        "type": evt.get("type"),
-                        "category": evt.get("category"),
-                    })
+                results = [self._summarize_event(evt) for evt in response]
+            return {"success": True, "count": len(results), "events": results}
+        except Exception as e:
+            return {"success": False, "error": self._handle_error(e)}
 
+    def preview_push(self, workouts: list) -> dict:
+        """Validate workouts and return preview without writing."""
+        errors = []
+        for i, w in enumerate(workouts):
+            valid, error = self.validate_workout(w)
+            if not valid:
+                label = w.get("name", f"workout[{i}]")
+                errors.append(f"{label}: {error}")
+        if errors:
+            return {"success": False, "mode": "preview", "error": "; ".join(errors)}
+
+        events = [self._build_event(w) for w in workouts]
+        summary = []
+        for w in workouts:
+            summary.append({
+                "name": w.get("name"),
+                "date": w.get("date"),
+                "type": w.get("type", "Ride"),
+                "duration_minutes": w.get("duration_minutes"),
+                "tss": w.get("tss"),
+            })
+
+        return {
+            "success": True,
+            "mode": "preview",
+            "count": len(summary),
+            "summary": summary,
+            "message": "Preview only - add --confirm to write to calendar",
+        }
+
+    # ── List (read) ────────────────────────────────────────────────
+
+    def list_events(self, oldest: str = None, newest: str = None, category: str = None) -> dict:
+        """
+        List planned events in a date range.
+
+        Defaults: oldest=today, newest=today+6 (rolling 7 days).
+        """
+        today = datetime.now().date()
+        if oldest is None:
+            oldest = today.isoformat()
+        if newest is None:
+            newest = (today + timedelta(days=6)).isoformat()
+
+        params = {"oldest": oldest, "newest": newest}
+        if category:
+            params["category"] = category
+
+        try:
+            response = self._get("events", params=params)
+            events = []
+            if isinstance(response, list):
+                events = [self._summarize_event(evt) for evt in response]
             return {
                 "success": True,
-                "count": len(results),
-                "events": results,
+                "oldest": oldest,
+                "newest": newest,
+                "count": len(events),
+                "events": events,
             }
-
         except Exception as e:
-            error_msg = str(e)
-            # Extract HTTP error detail if available
-            if hasattr(e, "response") and e.response is not None:
-                try:
-                    detail = e.response.json()
-                    error_msg = f"{e.response.status_code}: {detail}"
-                except Exception:
-                    error_msg = f"{e.response.status_code}: {e.response.text[:200]}"
-            return {"success": False, "error": error_msg}
+            return {"success": False, "error": self._handle_error(e)}
 
+    # ── Move (update date) ─────────────────────────────────────────
+
+    def get_event(self, event_id: int) -> dict:
+        """Fetch a single event by ID. Returns the raw event dict or error."""
+        try:
+            response = self._get(f"events/{event_id}")
+            return {"success": True, "event": response}
+        except Exception as e:
+            return {"success": False, "error": self._handle_error(e)}
+
+    def update_event(self, event_id: int, updates: dict) -> dict:
+        """Partial update of an event. Returns updated event summary."""
+        try:
+            response = self._put(f"events/{event_id}", updates)
+            return {"success": True, "event": self._summarize_event(response)}
+        except Exception as e:
+            return {"success": False, "error": self._handle_error(e)}
+
+    def preview_move(self, event_id: int, new_date: str) -> dict:
+        """Preview moving a workout to a new date."""
+        # Validate new date
+        try:
+            target_date = datetime.strptime(new_date, "%Y-%m-%d").date()
+        except ValueError:
+            return {"success": False, "mode": "preview", "error": f"invalid date: {new_date}"}
+
+        today = datetime.now().date()
+        if target_date < today:
+            return {"success": False, "mode": "preview", "error": f"date {new_date} is in the past"}
+
+        # Fetch current event to show what's moving
+        current = self.get_event(event_id)
+        if not current["success"]:
+            return {"success": False, "mode": "preview", "error": current["error"]}
+
+        evt = current["event"]
+        old_date = (evt.get("start_date_local") or "")[:10]
+
+        return {
+            "success": True,
+            "mode": "preview",
+            "event_id": event_id,
+            "name": evt.get("name"),
+            "from_date": old_date,
+            "to_date": new_date,
+            "message": "Preview only - add --confirm to move this workout",
+        }
+
+    def move_event(self, event_id: int, new_date: str) -> dict:
+        """Move a workout to a new date."""
+        # Validate
+        try:
+            target_date = datetime.strptime(new_date, "%Y-%m-%d").date()
+        except ValueError:
+            return {"success": False, "error": f"invalid date: {new_date}"}
+
+        today = datetime.now().date()
+        if target_date < today:
+            return {"success": False, "error": f"date {new_date} is in the past"}
+
+        return self.update_event(event_id, {
+            "start_date_local": f"{new_date}T00:00:00",
+        })
+
+    # ── Delete ─────────────────────────────────────────────────────
+
+    def preview_delete(self, event_id: int) -> dict:
+        """Preview deleting a workout."""
+        current = self.get_event(event_id)
+        if not current["success"]:
+            return {"success": False, "mode": "preview", "error": current["error"]}
+
+        evt = current["event"]
+        return {
+            "success": True,
+            "mode": "preview",
+            "event_id": event_id,
+            "name": evt.get("name"),
+            "date": (evt.get("start_date_local") or "")[:10],
+            "type": evt.get("type"),
+            "message": "Preview only - add --confirm to delete this workout",
+        }
+
+    def delete_event(self, event_id: int) -> dict:
+        """Delete a single event."""
+        try:
+            self._delete(f"events/{event_id}")
+            return {"success": True, "deleted": event_id}
+        except Exception as e:
+            return {"success": False, "error": self._handle_error(e)}
+
+
+# ── CLI ────────────────────────────────────────────────────────────
 
 def _load_credentials(args) -> Tuple[Optional[str], Optional[str]]:
     """Load credentials from CLI args, config file, or environment."""
@@ -310,80 +465,178 @@ def _load_credentials(args) -> Tuple[Optional[str], Optional[str]]:
     return athlete_id, api_key
 
 
-def main():
-    parser = argparse.ArgumentParser(
-        description="Push planned workouts to Intervals.icu calendar"
-    )
-    parser.add_argument("--athlete-id", help="Intervals.icu athlete ID")
-    parser.add_argument("--api-key", help="Intervals.icu API key")
-    parser.add_argument("--name", help="Workout name (required unless --json)")
-    parser.add_argument("--date", help="Date YYYY-MM-DD (required unless --json)")
-    parser.add_argument("--type", default="Ride", help="Activity type (default: Ride)")
-    parser.add_argument("--description", default="", help="Workout description (Intervals.icu syntax)")
-    parser.add_argument("--duration", type=float, help="Planned duration in minutes")
-    parser.add_argument("--tss", type=float, help="Planned TSS")
-    parser.add_argument("--target", choices=["POWER", "HR", "PACE"], help="Target mode")
-    parser.add_argument("--category", default="WORKOUT", help="Event category (default: WORKOUT)")
-    parser.add_argument("--indoor", action="store_true", help="Mark as indoor")
-    parser.add_argument("--json", type=str, help="Path to JSON file with workout(s) — overrides other fields")
+def _resolve_date(value: str) -> str:
+    """Resolve a date string. Supports YYYY-MM-DD and +N (days from today)."""
+    if value.startswith("+"):
+        days = int(value[1:])
+        return (datetime.now().date() + timedelta(days=days)).isoformat()
+    return value
 
-    args = parser.parse_args()
 
-    athlete_id, api_key = _load_credentials(args)
-    if not athlete_id or not api_key:
-        result = {
-            "success": False,
-            "error": "Missing credentials. Provide via --athlete-id/--api-key, .sync_config.json, or env vars ATHLETE_ID/INTERVALS_KEY",
-        }
-        print(json.dumps(result, indent=2))
-        sys.exit(1)
+def _output(result: dict):
+    """Print result JSON and exit with appropriate code."""
+    print(json.dumps(result, indent=2))
+    sys.exit(0 if result.get("success") else 1)
 
-    pusher = IntervalsPush(athlete_id, api_key)
 
-    # JSON file mode: push one or more workouts from file
+def _build_workouts_from_args(args) -> list:
+    """Build workout list from CLI args or --json file."""
     if args.json:
         try:
             with open(args.json) as f:
                 data = json.load(f)
-            workouts = data if isinstance(data, list) else [data]
+            return data if isinstance(data, list) else [data]
         except Exception as e:
-            result = {"success": False, "error": f"Failed to read {args.json}: {e}"}
-            print(json.dumps(result, indent=2))
-            sys.exit(1)
+            _output({"success": False, "error": f"Failed to read {args.json}: {e}"})
+
+    if not args.name or not args.date:
+        _output({
+            "success": False,
+            "error": "--name and --date are required (or use --json for file input)",
+        })
+
+    description = args.description.replace("\\n", "\n") if args.description else ""
+
+    workout = {
+        "name": args.name,
+        "date": args.date,
+        "type": args.type,
+        "description": description,
+        "category": args.category,
+    }
+    if args.duration:
+        workout["duration_minutes"] = args.duration
+    if args.tss is not None:
+        workout["tss"] = args.tss
+    if args.target:
+        workout["target"] = args.target
+    if args.indoor:
+        workout["indoor"] = True
+
+    return [workout]
+
+
+def _cmd_push(args, pusher: IntervalsPush):
+    """Handle push subcommand."""
+    workouts = _build_workouts_from_args(args)
+
+    if not args.confirm:
+        _output(pusher.preview_push(workouts))
     else:
-        # CLI mode: name and date required
-        if not args.name or not args.date:
-            result = {
-                "success": False,
-                "error": "--name and --date are required (or use --json for file input)",
-            }
-            print(json.dumps(result, indent=2))
-            sys.exit(1)
+        _output(pusher.push_workouts(workouts))
 
-        # Handle escaped newlines from CLI (agent may pass "- 5m 55%\n\n3x\n- 15m 88%")
-        description = args.description.replace("\\n", "\n") if args.description else ""
 
-        workout = {
-            "name": args.name,
-            "date": args.date,
-            "type": args.type,
-            "description": description,
-            "category": args.category,
-        }
-        if args.duration:
-            workout["duration_minutes"] = args.duration
-        if args.tss is not None:
-            workout["tss"] = args.tss
-        if args.target:
-            workout["target"] = args.target
-        if args.indoor:
-            workout["indoor"] = True
+def _cmd_list(args, pusher: IntervalsPush):
+    """Handle list subcommand."""
+    oldest = _resolve_date(args.oldest) if args.oldest else None
+    newest = _resolve_date(args.newest) if args.newest else None
+    _output(pusher.list_events(oldest=oldest, newest=newest, category=args.category))
 
-        workouts = [workout]
 
-    result = pusher.push_workouts(workouts)
-    print(json.dumps(result, indent=2))
-    sys.exit(0 if result["success"] else 1)
+def _cmd_move(args, pusher: IntervalsPush):
+    """Handle move subcommand."""
+    if not args.confirm:
+        _output(pusher.preview_move(args.event_id, args.date))
+    else:
+        _output(pusher.move_event(args.event_id, args.date))
+
+
+def _cmd_delete(args, pusher: IntervalsPush):
+    """Handle delete subcommand."""
+    if not args.confirm:
+        _output(pusher.preview_delete(args.event_id))
+    else:
+        _output(pusher.delete_event(args.event_id))
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Manage planned workouts on Intervals.icu calendar"
+    )
+    parser.add_argument("--athlete-id", help="Intervals.icu athlete ID")
+    parser.add_argument("--api-key", help="Intervals.icu API key")
+
+    subparsers = parser.add_subparsers(dest="command")
+
+    # ── push ──
+    push_parser = subparsers.add_parser("push", help="Add workouts to calendar")
+    push_parser.add_argument("--name", help="Workout name (required unless --json)")
+    push_parser.add_argument("--date", help="Date YYYY-MM-DD (required unless --json)")
+    push_parser.add_argument("--type", default="Ride", help="Activity type (default: Ride)")
+    push_parser.add_argument("--description", default="", help="Workout description")
+    push_parser.add_argument("--duration", type=float, help="Planned duration in minutes")
+    push_parser.add_argument("--tss", type=float, help="Planned TSS")
+    push_parser.add_argument("--target", choices=["POWER", "HR", "PACE"], help="Target mode")
+    push_parser.add_argument("--category", default="WORKOUT", help="Event category")
+    push_parser.add_argument("--indoor", action="store_true", help="Mark as indoor")
+    push_parser.add_argument("--json", type=str, help="JSON file with workout(s)")
+    push_parser.add_argument("--confirm", action="store_true", help="Execute write (default is preview)")
+
+    # ── list ──
+    list_parser = subparsers.add_parser("list", help="Show planned workouts")
+    list_parser.add_argument("--oldest", help="Start date YYYY-MM-DD or +N days (default: today)")
+    list_parser.add_argument("--newest", help="End date YYYY-MM-DD or +N days (default: +6)")
+    list_parser.add_argument("--category", help="Filter by category (e.g. WORKOUT, RACE_A)")
+
+    # ── move ──
+    move_parser = subparsers.add_parser("move", help="Move a workout to a different date")
+    move_parser.add_argument("--event-id", type=int, required=True, help="Event ID to move")
+    move_parser.add_argument("--date", required=True, help="New date YYYY-MM-DD")
+    move_parser.add_argument("--confirm", action="store_true", help="Execute write (default is preview)")
+
+    # ── delete ──
+    delete_parser = subparsers.add_parser("delete", help="Remove a workout")
+    delete_parser.add_argument("--event-id", type=int, required=True, help="Event ID to delete")
+    delete_parser.add_argument("--confirm", action="store_true", help="Execute write (default is preview)")
+
+    # Backward compatibility: if no subcommand in argv, default to push.
+    # Must insert 'push' at the right position (after top-level flags like
+    # --athlete-id/--api-key, before subcommand-specific flags like --json).
+    known_commands = {"push", "list", "move", "delete"}
+    # Top-level flags that consume a value
+    top_level_value_flags = {"--athlete-id", "--api-key"}
+
+    argv = sys.argv[1:]
+    has_subcommand = False
+    i = 0
+    while i < len(argv):
+        arg = argv[i]
+        if arg in top_level_value_flags:
+            i += 2  # skip flag + value
+        elif arg in known_commands:
+            has_subcommand = True
+            break
+        elif arg in ("-h", "--help"):
+            break  # let argparse handle help naturally
+        else:
+            break
+
+    if not has_subcommand and not any(a in ("-h", "--help") for a in argv):
+        sys.argv.insert(1 + i, "push")
+
+    args = parser.parse_args()
+
+    # Load credentials
+    athlete_id, api_key = _load_credentials(args)
+    if not athlete_id or not api_key:
+        _output({
+            "success": False,
+            "error": "Missing credentials. Provide via --athlete-id/--api-key, .sync_config.json, or env vars ATHLETE_ID/INTERVALS_KEY",
+        })
+
+    pusher = IntervalsPush(athlete_id, api_key)
+
+    if args.command == "push":
+        _cmd_push(args, pusher)
+    elif args.command == "list":
+        _cmd_list(args, pusher)
+    elif args.command == "move":
+        _cmd_move(args, pusher)
+    elif args.command == "delete":
+        _cmd_delete(args, pusher)
+    else:
+        parser.print_help()
+        sys.exit(1)
 
 
 if __name__ == "__main__":
