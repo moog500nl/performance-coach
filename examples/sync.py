@@ -4,6 +4,13 @@ Intervals.icu → GitHub/Local JSON Export
 Exports training data for LLM access.
 Supports both automated GitHub sync and manual local export.
 
+Version 3.71 - HRRc (heart rate recovery) integration
+  - Added icu_hrr (HRRc) field to formatted activity output as "hrrc"
+  - Added _calculate_hrrc_trend(): 7d/28d aggregate HRRc in capability namespace
+  - Qualifying: icu_hrr not null, min 1 session/7d, min 3 sessions/28d
+  - Trend: >10% difference = improving/declining (conservative for field noise)
+  - Display only — not wired into readiness or AAS
+
 Version 3.7 - Phase detection v2: dual-stream architecture (retrospective + prospective)
   - Parse NOTE: lines from activity descriptions into "coach_notes" array
   - Parse NOTE: lines from planned workout descriptions into "coach_notes" array
@@ -59,7 +66,7 @@ class IntervalsSync:
     HISTORY_FILE = "history.json"
     UPSTREAM_REPO = "CrankAddict/section-11"
     CHANGELOG_FILE = "changelog.json"
-    VERSION = "3.7"
+    VERSION = "3.71"
 
     # Sport family mapping for per-sport monotony calculation
     # Multi-sport athletes get inflated total monotony when cross-training
@@ -517,7 +524,7 @@ class IntervalsSync:
                 "display_formatting": "For durations and sleep, always display the '_formatted' fields (e.g., sleep_formatted, duration_formatted, total_training_formatted) instead of converting decimal '_hours' values. The formatted fields are pre-calculated from raw seconds and avoid rounding errors.",
                 "data_period": f"Last {days_back} days (including today)",
                 "extended_data_note": f"ACWR and baselines calculated from {days_for_acwr} days of data",
-                "capability_metrics_note": "The 'capability' block in derived_metrics contains durability trend (aggregate decoupling 7d/28d), efficiency factor trend (aggregate EF 7d/28d), and TID comparison (7d vs 28d distribution drift). These measure HOW the athlete expresses fitness, not just load. Use these for coaching context alongside traditional load metrics. Durability and EF trend direction matters more than absolute values.",
+                "capability_metrics_note": "The 'capability' block in derived_metrics contains durability trend (aggregate decoupling 7d/28d), efficiency factor trend (aggregate EF 7d/28d), HRRc trend (heart rate recovery 7d/28d), and TID comparison (7d vs 28d distribution drift). These measure HOW the athlete expresses fitness, not just load. Use these for coaching context alongside traditional load metrics. Durability and EF trend direction matters more than absolute values. HRRc is display only — higher = better parasympathetic recovery.",
                 "quick_stats": {
                     "total_training_hours": round(sum(act.get("moving_time", 0) for act in activities_display) / 3600, 2),
                     "total_training_formatted": self._format_duration(int(sum(act.get("moving_time", 0) for act in activities_display)) // 60 * 60),
@@ -812,6 +819,7 @@ class IntervalsSync:
         # === DURABILITY TREND (aggregate decoupling) ===
         durability = self._calculate_durability(activities_7d, activities_28d)
         efficiency_factor = self._calculate_efficiency_factor(activities_7d, activities_28d)
+        hrrc_trend = self._calculate_hrrc_trend(activities_7d, activities_28d)
 
         # === CONSISTENCY INDEX ===
         consistency_index, consistency_details = self._calculate_consistency_index(
@@ -925,6 +933,7 @@ class IntervalsSync:
             "capability": {
                 "durability": durability,
                 "efficiency_factor": efficiency_factor,
+                "hrrc": hrrc_trend,
                 "tid_comparison": tid_comparison,
             },
             
@@ -1639,6 +1648,84 @@ class IntervalsSync:
                      "efficiency. Compare like-for-like sessions only — "
                      "EF varies with intensity. Trend compares 7d vs 28d mean "
                      "(+/-0.03 = stable).")
+        }
+
+    def _calculate_hrrc_trend(self, activities_7d: List[Dict],
+                               activities_28d: List[Dict]) -> Dict:
+        """
+        Calculate aggregate HRRc (heart rate recovery) as a recovery quality trend.
+
+        HRRc = largest 60-second HR drop (bpm) after exceeding configured
+        threshold HR for >1 minute. Intervals.icu API field: icu_hrr,
+        displayed as HRRc. Higher = faster parasympathetic recovery.
+
+        Qualifying criteria: icu_hrr is not None (self-selects — only fires
+        when threshold HR held >1min and cooldown recorded).
+
+        Window minimums: 7d >= 1 session, 28d >= 3 sessions.
+        Trend: 7d mean vs 28d mean, >10% difference = meaningful
+        (conservative threshold for noisy field metric; lab CV ~4% but
+        field CV likely 10-15% due to variable workout type, intensity,
+        and recording conditions).
+
+        References:
+        - Fecchio et al. (2019) systematic review: HRR60s exhibits high
+          reliability (ICC up to 0.99, CV 3.4-13.5% across protocols)
+        - Lamberts et al. (2024): HRR60s ICC=0.97, TEM=4.3% in cyclists
+        - Buchheit (2006): HRR associated with training loads, not VO2max
+        - Intervals.icu: renamed HRR to HRRc to avoid confusion with
+          Heart Rate Reserve (Tinker, 2019)
+        """
+        def _filter_qualifying(activities: List[Dict]) -> List[float]:
+            """Return HRRc values from sessions where it was recorded."""
+            qualifying = []
+            for act in activities:
+                hrrc = act.get("icu_hrr")
+                if hrrc is None:
+                    continue
+                # API may return a dict (e.g. {"value": 34}) or a plain number
+                if isinstance(hrrc, dict):
+                    hrrc = hrrc.get("value") or hrrc.get("hrr")
+                if isinstance(hrrc, (int, float)) and hrrc > 0:
+                    qualifying.append(float(hrrc))
+            return qualifying
+
+        vals_7d = _filter_qualifying(activities_7d)
+        vals_28d = _filter_qualifying(activities_28d)
+
+        # 7d: >= 1 session (report value or mean)
+        mean_7d = round(statistics.mean(vals_7d), 1) if len(vals_7d) >= 1 else None
+        # 28d: >= 3 sessions (noise dampening for field metric)
+        mean_28d = round(statistics.mean(vals_28d), 1) if len(vals_28d) >= 3 else None
+
+        # Trend: >10% difference = meaningful (conservative for field noise)
+        trend = None
+        if mean_7d is not None and mean_28d is not None and mean_28d > 0:
+            pct_change = (mean_7d - mean_28d) / mean_28d
+            if pct_change > 0.10:
+                trend = "improving"
+            elif pct_change < -0.10:
+                trend = "declining"
+            else:
+                trend = "stable"
+
+        if self.debug:
+            print(f"  HRRc: 7d={mean_7d} ({len(vals_7d)} sessions), "
+                  f"28d={mean_28d} ({len(vals_28d)} sessions), trend={trend}")
+
+        return {
+            "mean_hrrc_7d": mean_7d,
+            "mean_hrrc_28d": mean_28d,
+            "qualifying_sessions_7d": len(vals_7d),
+            "qualifying_sessions_28d": len(vals_28d),
+            "trend": trend,
+            "note": ("HRRc = heart rate recovery (largest 60s HR drop in bpm "
+                     "after exceeding threshold HR for >1 min). Higher = "
+                     "better parasympathetic recovery. Null when threshold "
+                     "not reached, recording stopped before cooldown, or no "
+                     "HR data. Trend: 7d mean vs 28d mean, >10% = meaningful "
+                     "(min 1 session/7d, 3 sessions/28d). Display only — "
+                     "not wired into readiness or AAS.")
         }
 
     def _calculate_tid_comparison(self, seiler_tid_7d: Dict,
@@ -3567,6 +3654,10 @@ class IntervalsSync:
                 if act.get("type", "") in self.OUTDOOR_TYPES:
                     activity_name = "Training Session"
             
+            raw_hrrc = act.get("icu_hrr")
+            if isinstance(raw_hrrc, dict):
+                raw_hrrc = raw_hrrc.get("value") or raw_hrrc.get("hrr")
+            
             activity = {
                 "id": act.get("id", f"unknown_{i+1}"),
                 "date": act.get("start_date_local", "unknown"),
@@ -3595,6 +3686,7 @@ class IntervalsSync:
                 "variability_index": variability_index,
                 "decoupling": decoupling,
                 "efficiency_factor": act.get("icu_efficiency_factor"),
+                "hrrc": raw_hrrc,
                 "elevation_m": act.get("total_elevation_gain"),
                 "feel": act.get("feel"),
                 "rpe": act.get("icu_rpe"),
