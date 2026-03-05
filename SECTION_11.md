@@ -1,10 +1,18 @@
 # Section 11 — AI Coach Protocol
 
-**Protocol Version:** 11.11  
-**Last Updated:** 2026-03-04
+**Protocol Version:** 11.12  
+**Last Updated:** 2026-03-05
 **License:** [MIT](https://opensource.org/licenses/MIT)
 
 ### Changelog
+
+**v11.12 — HRRc Integration + Phase Transition Narrative:**
+- HRRc (heart rate recovery) added to activity output and capability namespace (7d/28d aggregate trend)
+- HRRc: largest 60s HR drop (bpm) after exceeding threshold HR for >1 min. API field `icu_hrr`. Display only
+- Trend: 7d mean vs 28d mean, >10% = meaningful. Min 1 session/7d, 3 sessions/28d
+- Phase transition narrative guidance added to weekly/block report templates
+- Phase timeline added to block report template
+- References: Fecchio et al. (2019) HRR reproducibility; Lamberts et al. (2024) cyclist HRR reliability; Buchheit (2006)
 
 **v11.11 — Phase Detection v2 (Dual-Stream Architecture):**
 - Phase detection rewritten from single-point snapshot to dual-stream architecture
@@ -687,6 +695,7 @@ When validating datasets, cross-check computed fatigue and load ratios against v
 | Hard Days per Week           | 2–3 typical / 1 (base/recovery) / 0 (deload)       | —                                  | —                                   | For high-volume athletes (10+ hrs/week)                             |
 | Consistency Index            | ≥0.9 consistent / <0.8 non-compliant               | —                                  | —                                   | Sessions Completed ÷ Sessions Planned                               |
 | Aggregate Durability (7d)    | <3% good / 3–5% moderate / >5% declining           | 7d mean > 28d mean by >2%         | 28d mean > 5% sustained             | Mean decoupling from steady-state sessions (VI ≤ 1.05, ≥ 90min)    |
+| HRRc Trend                   | stable (within ±10% of 28d mean)                   | declining (7d >10% below 28d)     | —                                   | Largest 60s HR drop after threshold. Min 1/7d, 3/28d. Display only  |
 | TID Drift                    | consistent (7d = 28d)                              | shifting (7d ≠ 28d classification) | acute_depolarization (7d PI <2, 28d PI ≥2) | Seiler TID comparison between 7d and 28d windows           |
 
 **Monotony Deload Context:**  
@@ -1156,6 +1165,43 @@ Trend direction matters more than absolute values — an athlete's baseline deco
 
 ---
 
+#### HRRc — Heart Rate Recovery (Capability Metric)
+
+HRRc measures how quickly heart rate recovers after a hard effort — a marker of parasympathetic reactivation quality. Intervals.icu computes HRRc as the largest 60-second HR drop (in bpm) starting from a HR above the athlete's configured threshold, after exceeding that threshold for at least 1 minute. The API field is `icu_hrr`.
+
+**Data Source:** The `capability.hrrc` object in the data mirror provides rolling 7-day and 28-day aggregate HRRc from qualifying sessions.
+
+**Qualifying Sessions:**
+- `icu_hrr` is not null and > 0 (self-selects: only fires when threshold HR held >1min and cooldown recorded)
+- No duration, VI, or sport-type filter — HRRc self-selects by its own triggering criteria
+
+**Window Minimums:**
+
+| Field               | Description                                                | Min Sessions |
+|---------------------|------------------------------------------------------------|--------------|
+| mean_hrrc_7d        | Mean HRRc (bpm) from qualifying sessions in last 7 days   | ≥ 1 session  |
+| mean_hrrc_28d       | Mean HRRc (bpm) from qualifying sessions in last 28 days  | ≥ 3 sessions |
+| trend               | 7d vs 28d comparison: improving / stable / declining       | Both windows |
+
+**Trend Logic:**
+- `improving`: 7d mean > 28d mean by > 10%
+- `stable`: 7d and 28d means within ±10%
+- `declining`: 7d mean < 28d mean by > 10%
+
+The 10% threshold is conservative for a field metric. Lab reliability of HRR60s is high (CV 3–14%, ICC up to 0.99 per Fecchio et al. 2019 systematic review), but field variability is substantially higher due to variable workout type, intensity, recording duration, and recovery posture. The asymmetric window minimums (1 session/7d, 3 sessions/28d) reflect the reality that most athletes generate 1–2 HRRc readings per week — the 28d baseline is where noise dampening matters.
+
+Higher HRRc = faster recovery = better parasympathetic rebound. Trend direction matters more than absolute values — an athlete's baseline HRRc varies with fitness, age, exercise modality, and conditions. Compare like-for-like where possible.
+
+**Scope:** Display only. HRRc is not wired into readiness assessment or AAS. It complements the existing autonomic/wellness signal chain (resting HRV, resting HR, subjective markers) as an exercise-context recovery quality marker.
+
+**References:**
+- Fecchio et al. (2019): Systematic review of HRR reproducibility. HRR60s exhibits high reliability across protocols.
+- Lamberts et al. (2024): HRR60s in trained-to-elite cyclists — ICC = 0.97, TEM = 4.3%.
+- Buchheit (2006): HRR associated with training loads, not VO2max.
+- Tinker (2019): Intervals.icu renamed HRR to HRRc to distinguish from Heart Rate Reserve.
+
+---
+
 #### W′ Balance Metrics *(When Interval Data Available)*
 
 If workout files include W′ balance data (from Intervals.icu or WKO), the following metrics provide anaerobic capacity insights:
@@ -1612,7 +1658,10 @@ This subsection defines the formal self-validation and audit metadata structure 
     "tid_drift": "consistent",
     "durability_7d_mean": 2.1,
     "durability_28d_mean": 2.5,
-    "durability_trend": "stable"
+    "durability_trend": "stable",
+    "hrrc_7d_mean": 38,
+    "hrrc_28d_mean": 36,
+    "hrrc_trend": "stable"
   }
 }
 ```
@@ -1671,6 +1720,10 @@ This subsection defines the formal self-validation and audit metadata structure 
 | `durability_7d_mean`           | number   | Mean HR–Power decoupling (%) from qualifying steady-state sessions, 7-day       |
 | `durability_28d_mean`          | number   | Mean HR–Power decoupling (%) from qualifying steady-state sessions, 28-day      |
 | `durability_trend`             | string   | Durability trend: "improving" / "stable" / "declining"                          |
+| `hrrc`                         | number/null | Per-activity HRRc: largest 60-second HR drop (bpm) after exceeding configured threshold HR for >1 min. Intervals.icu API field `icu_hrr`. Null when threshold not reached, recording stopped before cooldown, or no HR data. Higher = better parasympathetic recovery. |
+| `capability.hrrc.mean_hrrc_7d` | number/null | Mean HRRc (bpm) from qualifying sessions in last 7 days. Requires ≥ 1 session. |
+| `capability.hrrc.mean_hrrc_28d`| number/null | Mean HRRc (bpm) from qualifying sessions in last 28 days. Requires ≥ 3 sessions. |
+| `capability.hrrc.trend`        | string/null | HRRc trend: "improving" / "stable" / "declining". >10% difference between 7d and 28d means = meaningful. Null if either window has insufficient sessions. Display only — not wired into readiness or AAS. |
 
 ---
 
