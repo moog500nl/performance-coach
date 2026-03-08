@@ -8,6 +8,7 @@ Working implementations for Section 11 integrations.
 |--------|-------------|--------|
 | [SETUP_ASSISTANT.md](../SETUP_ASSISTANT.md) | Interactive AI-guided setup — paste into any AI chat | ✅ Ready |
 | [json-auto-sync](json-auto-sync/) | Automated GitHub Actions sync (every 15 min) | ✅ Ready |
+| [json-local-sync](json-local-sync/) | Automated local sync for agentic platforms (no GitHub) | ✅ Ready |
 | [json-manual](json-manual/) | Manual export from Mac/PC | ✅ Ready |
 | [reports](reports/) | Pre/post workout report templates | ✅ Ready |
 | [agentic](agentic/) | Write planned workouts to Intervals.icu calendar (code execution required) | ✅ Ready |
@@ -16,17 +17,23 @@ Working implementations for Section 11 integrations.
 
 ## Quick Start
 
-### Option A: Automated Sync (Recommended)
+### Option A: Automated Sync (Recommended for web chat)
 
-Best for: Always-fresh data, zero maintenance after setup.
+Best for: Always-fresh data via GitHub, zero maintenance after setup.
 
 → [json-auto-sync/SETUP.md](json-auto-sync/SETUP.md)
 
 ### Option B: Manual Export
 
-Best for: One-off exports, different time ranges, no GitHub needed, most privacy.
+Best for: One-off exports, different time ranges, no GitHub needed.
 
 → [json-manual/SETUP.md](json-manual/SETUP.md)
+
+### Option C: Local Automated Sync
+
+Best for: Agentic platforms (OpenClaw, Claude Code, Cowork, etc.) running on the same machine as your data. Always-fresh data, no GitHub needed, maximum privacy.
+
+→ [json-local-sync/SETUP.md](json-local-sync/SETUP.md)
 
 ---
 
