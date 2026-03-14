@@ -60,7 +60,7 @@ Both sync methods work with both platform types. The four valid combinations:
 | Platform | Sync | How AI reads data |
 |----------|------|-------------------|
 | Web/phone chat | GitHub | GitHub connector or raw URL |
-| Web/phone chat | Local | Cloud connector (Google Drive, OneDrive, etc.) |
+| Web/phone chat | Local | Cloud connector (Google Drive, OneDrive — platform support varies) |
 | Agentic | Local | Filesystem (fastest) |
 | Agentic | GitHub | GitHub connector |
 
@@ -309,7 +309,7 @@ You are my endurance coach. Follow Section 11 protocol strictly.
 
 ## DATA ACCESS:
 Read data using the first method that works:
-1. **Connected repo/filesystem** — If data files are available via connector (GitHub, Google Drive, OneDrive) or local filesystem, read latest.json, history.json, and intervals.json directly
+1. **Connected repo/filesystem** — If data files are available via connector (GitHub, Google Drive, OneDrive — platform support varies) or local filesystem, read latest.json, history.json, and intervals.json directly
 2. **URL fetch** — Fetch https://raw.githubusercontent.com/[USERNAME]/[REPO]/main/latest.json (append ?date= with today's date). Same for history.json
 3. If activities don't match today's date, re-fetch or re-read before concluding no data exists
 4. Load intervals.json when analysing a specific activity with `has_intervals: true` — use for interval compliance, pacing, cardiac drift, recovery quality
@@ -448,9 +448,10 @@ For web chat users on the local path, sync.py writes to a cloud-synced folder an
 2. Set the data directory inside the synced folder (e.g., `~/Google Drive/My Drive/training-data/`)
 3. The timer's `--output` points to this folder — same setup as above, just a different path
 4. Connect the AI platform's connector to the folder:
-   - **Claude:** Settings → Integrations → Google Drive
-   - **ChatGPT:** Settings → Apps → Google Drive (or OneDrive)
    - **Gemini:** Native Google Drive access — just reference the folder
+   - **Perplexity:** Settings → Connectors → Google Drive (Pro plan required)
+   - **ChatGPT:** Settings → Apps → Google Drive (Workspace accounts only — not personal Gmail)
+   - **Claude:** Google Drive connector reads Google Docs only, not .json files. Use the GitHub connector instead (Settings → Integrations → GitHub)
    - **Other platforms:** Check their connector/integration settings
 
 The AI coach now reads fresh data every time they open a chat. See `examples/json-local-sync/SETUP.md` for more details and alternative setups (VPS + rclone, NAS with cloud sync, etc.).

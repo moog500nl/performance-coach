@@ -57,7 +57,7 @@ Keep your Intervals.icu data fresh for your AI coach automatically.
 
 **[GitHub sync](examples/json-auto-sync/SETUP.md)** — GitHub Actions syncs every 15 minutes to a private repo. Your AI reads via GitHub connector or raw URL. Zero maintenance after setup.
 
-**[Local sync](examples/json-local-sync/SETUP.md)** — a script on a machine you control syncs your data on a 60-second timer. Your AI reads directly from the filesystem or via a cloud connector (Google Drive, OneDrive, etc.). No GitHub needed.
+**[Local sync](examples/json-local-sync/SETUP.md)** — a script on a machine you control syncs your data on a 60-second timer. Your AI reads directly from the filesystem or via a cloud connector (Google Drive, OneDrive — [platform support varies](#platform-setup)). No GitHub needed.
 
 **[Manual export](examples/json-manual/SETUP.md)** — run once, upload the file. No automation.
 
@@ -73,7 +73,7 @@ Choose your path:
 Your AI needs access to `SECTION_11.md` (the protocol) and `DOSSIER.md` (your profile). How depends on your setup:
 
 - **GitHub connector:** If these files are in your connected repo, the AI reads them directly — no upload needed. If only `DOSSIER.md` is in your data repo, upload `SECTION_11.md` separately (or connect the CrankAddict/section-11 repo too).
-- **Cloud connector (Google Drive, OneDrive, etc.):** If these files are in your synced folder, the AI reads them through the connector — no upload needed.
+- **Cloud connector (Google Drive, OneDrive — [platform support varies](#platform-setup)):** If these files are in your synced folder, the AI reads them through the connector — no upload needed.
 - **Local/agentic:** The AI reads directly from the filesystem — no upload needed.
 - **URL fetch (no connector):** Upload both files to your AI platform's knowledge base manually.
 
@@ -94,7 +94,7 @@ You are my endurance coach. Follow Section 11 protocol strictly.
 
 ## DATA ACCESS:
 Read data using the first method that works:
-1. **Connected repo/filesystem** — If data files are available via connector (GitHub, Google Drive, OneDrive) or local filesystem, read latest.json, history.json, and intervals.json directly
+1. **Connected repo/filesystem** — If data files are available via connector (GitHub, Google Drive, OneDrive — platform support varies) or local filesystem, read latest.json, history.json, and intervals.json directly
 2. **URL fetch** — Fetch https://raw.githubusercontent.com/[USERNAME]/[REPO]/main/latest.json (append ?date= with today's date). Same for history.json
 3. If activities don't match today's date, re-fetch or re-read before concluding no data exists
 4. Load intervals.json when analysing a specific activity with `has_intervals: true` — use for interval compliance, pacing, cardiac drift, recovery quality
@@ -138,7 +138,7 @@ Omit fields only if data unavailable for that activity type.
 
 **If using URL fetch:** Replace `[USERNAME]/[REPO]` with your GitHub data mirror path.
 
-**If using a connector (GitHub, Google Drive, OneDrive):** The AI reads files directly — no URL editing needed. If you committed `DOSSIER.md` to your data repo, the connector provides your data and dossier in one connection. `SECTION_11.md` can be uploaded separately or accessed via a second connector to the CrankAddict/section-11 repo.
+**If using a connector (GitHub, Google Drive, OneDrive — [platform support varies](#platform-setup)):** The AI reads files directly — no URL editing needed. If you committed `DOSSIER.md` to your data repo, the connector provides your data and dossier in one connection. `SECTION_11.md` can be uploaded separately or accessed via a second connector to the CrankAddict/section-11 repo.
 
 **If using local sync:** The AI reads files from the data directory. No URL editing needed. See [local sync setup](examples/json-local-sync/SETUP.md) for project instructions tailored to filesystem access.
 
@@ -160,6 +160,19 @@ Most major AI platforms now have native GitHub connectors that can access privat
 ¹ ChatGPT's Codex agent has full GitHub write access (commits, PRs, code reviews). The web chat connector is read-only.
 ² Claude supports custom remote MCP connectors on all plans (free: 1 connector). A user could connect a [GitHub MCP server](https://github.com/github/github-mcp-server) with write access, but this requires setting up a GitHub OAuth App or PAT — non-trivial.
 ³ A separate [Google Workspace GitHub extension](https://workspace.google.com/marketplace/app/github_integration/556146275714) offers write access (repos, issues, reviews) within Gemini Apps. Requires the Google Integrations helper app. This is separate from the import-code connector. Workflow dispatch not confirmed.
+
+**Google Drive connector status (.json files).** For users on the [local sync](examples/json-local-sync/SETUP.md) path who want their AI to read data files via Google Drive instead of GitHub.
+
+| Platform | Google Drive (.json) | How to Connect | Plan Notes |
+|----------|---------------------|----------------|------------|
+| Gemini | ✅ | + → Drive (enable Workspace extensions) | Free tier works |
+| Perplexity | ✅ | Settings → Connectors → Google Drive | Pro, Max, and Enterprise |
+| ChatGPT | ⚠️ | Settings → Apps → Google Drive | Workspace accounts only — not personal Gmail |
+| Claude | ❌ | — | Google Docs only — use GitHub connector |
+| Grok | ✅ | Settings → Connected Apps → Google Drive | Business/Enterprise only |
+| Mistral | ⚠️ | Side panel → Connectors → Google Drive | Visible on all tiers; access not yet available |
+
+**Note:** Cloud storage connectors are still rolling out across platforms. Availability may change by plan, region, and account type. Check your platform's current connector settings if something listed here doesn't appear.
 
 #### ChatGPT (Projects)
 

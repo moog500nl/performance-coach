@@ -1,6 +1,6 @@
 # Local Sync Setup Guide
 
-Run Section 11 from a machine you control — no GitHub needed. A script syncs your training data from Intervals.icu on a timer, and your AI coach reads the output — either directly from the filesystem (agentic platforms) or via a connector like Google Drive (web/phone AI chats).
+Run Section 11 from a machine you control — no GitHub needed. A script syncs your training data from Intervals.icu on a timer, and your AI coach reads the output — either directly from the filesystem (agentic platforms) or via a cloud connector (web/phone AI chats — [platform support varies](../../README.md#platform-setup)).
 
 > **Other setup paths:** If you prefer GitHub-based sync, see [json-auto-sync](../json-auto-sync/SETUP.md). For one-off manual exports, see [json-manual](../json-manual/SETUP.md).
 
@@ -22,7 +22,7 @@ For always-fresh data (agentic coaches, heartbeat checks), a machine that stays 
 ### How the AI reads your data
 
 - **Agentic platforms** (OpenClaw, Claude Code, Cowork, Codex CLI, Gemini CLI) — run on the same machine, read files directly from the filesystem. Simplest path.
-- **Web/phone AI chats** (Claude, ChatGPT, Gemini, etc.) — sync.py writes to a cloud-synced folder (Google Drive, OneDrive, Dropbox), and the AI reads via its connector. Your computer or server does the syncing; the AI just reads the result.
+- **Web/phone AI chats** (ChatGPT, Gemini, Perplexity, etc.) — sync.py writes to a cloud-synced folder (Google Drive, OneDrive, Dropbox), and the AI reads via its connector. Your computer or server does the syncing; the AI just reads the result. Note: not all platforms support all cloud connectors for .json files — see the [connector table](../../README.md#platform-setup) for details. Claude's Google Drive connector only reads Google Docs; Claude users should use the GitHub connector path instead.
 
 ### Why local
 
@@ -179,7 +179,7 @@ Do NOT fetch from URLs — all files are local.
 
 If your AI coach is a web or phone app (Claude, ChatGPT, Gemini, etc.) rather than an agentic platform, it can't read files from your machine directly. You need a bridge: sync.py writes to a cloud-synced folder, and the AI reads via its connector.
 
-**The simplest version:** sync.py outputs to your Google Drive folder. Google Drive desktop app syncs it to the cloud. Claude/ChatGPT/Gemini reads it through their Google Drive connector. That's it.
+**The simplest version:** sync.py outputs to your Google Drive folder. Google Drive desktop app syncs it to the cloud. Gemini/Perplexity reads it through their Google Drive connector. That's it. (ChatGPT's Drive connector requires a Workspace account; Claude's doesn't support .json files — see the [connector table](../../README.md#platform-setup).)
 
 ### How to set it up
 
