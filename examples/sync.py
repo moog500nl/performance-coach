@@ -2065,6 +2065,7 @@ class IntervalsSync:
                     phase_duration += 1
                 else:
                     break
+            phase_duration += 1  # include current in-progress week
         
         # Dossier agreement
         dossier_agreement = None
