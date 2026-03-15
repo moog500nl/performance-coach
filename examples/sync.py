@@ -4,6 +4,16 @@ Intervals.icu → GitHub/Local JSON Export
 Exports training data for LLM access.
 Supports both automated GitHub sync and manual local export.
 
+Version 3.86 - Primary sport TSS filtering for phase detection: planned_tss_delta and next_week_tss_delta
+  now filter to primary sport (numerator from planned workouts, denominator from weekly history).
+  Prevents cross-training TSS (e.g. SkiErg ~9 TSS/session) from contaminating phase classification.
+  - _format_events: sport_type passthrough from raw event type field
+  - _build_weekly_tier: primary_sport + primary_sport_tss + sport_tss_breakdown on each weekly_180d row
+  - _phase_stream1_features: primary_tss_values extracted from weekly rows
+  - _phase_stream2_features: numerator and denominator filtered to primary sport, all-sport fallback
+  - _detect_phase_v2: primary_sport threaded from derived_metrics
+  Falls back to all-sport when primary sport data unavailable. Single-sport athletes unaffected.
+
 Version 3.85 - Wellness field expansion: all Intervals.icu wellness fields now passed through to latest.json
   and history.json. Adds subjective state (stress, mood, motivation, injury, hydration), vitals (spO2,
   blood glucose, blood pressure, Baevsky SI, lactate, respiration), body composition (body fat, abdomen),
@@ -41,40 +51,12 @@ Version 3.80 - --update orphan cleanup: detects and removes local files no longe
   prompts for confirmation. Empty parent directories cleaned up automatically.
   Skips manifest.json, .tmp files, and hidden files/directories.
 
-Version 3.79 - Feel/RPE fix: removed feel from daily history rows (activity-level field, not wellness),
-  added RPE to weekly history tier, correct activity-sourced aggregation with counts.
-  - _build_daily_rows: removed incorrect feel flattening to daily scalar
-  - _build_weekly_tier: added week_rpe collector, avg_rpe + rpe_count + feel_count in output
-  - Fixed null safety: feel collection uses `is not None` instead of truthy check
-  - Report templates updated: feel/RPE in post-workout, pre-workout, weekly, block reports
-
-Version 3.78 - Bug fix: weekly history aligned to configured week start (was hardcoded Monday)
-  - _build_weekly_tier respects week_start_day setting; fixes Sunday-start week misalignment
-  - Update checker: removed manifest.json fallback from _check_for_updates(), changelog.json only
-  - Log rotation: sync.log trimmed to 200 lines when over 1MB
-
-Version 3.77 - Hash-based manifest (--generate-manifest, --update uses SHA256, no manual version bumps)
-Version 3.76 - Bug fixes: workout summary off-by-one trailing rep, deload phase detection Path C
-Version 3.75 - Working directory awareness, --init/--update/--lockfile flags, local sync pipeline
-Version 3.73 - Phase detection: Stream 2 windows aligned to training week, configurable week start (config/env/CLI)
-Version 3.72 - Readiness Decision: pre-computed go/modify/skip via P0-P3 priority ladder, 7 signals, phase modifiers
-Version 3.71 - HRRc integration: 7d/28d aggregate trend in capability namespace (display only)
-Version 3.7 - Phase detection v2: dual-stream (retrospective + prospective), 8 states, confidence scoring, hysteresis
-
-Version 3.6.5 - Real activity/event IDs, coach_notes + chat_notes arrays, push.py annotate round-trip
-Version 3.6.4 - READ_THIS_FIRST display_formatting instruction, report template XhYm alignment
-Version 3.6.3 - Human-readable _formatted fields (duration, sleep, training hours), floored to minutes
-Version 3.6.2 - Workout summary parser (Pattern A/B), tiered planned workout detail (0-7d full, 8-42d skeleton)
-Version 3.6.1 - Hard day HR zone fallback (2-rung ladder), intensity_basis audit field
-Version 3.6.0 - Efficiency Factor (EF) tracking, 7d/28d aggregate with trend
-
-Version 3.5.1 - HRV outlier filter (_is_valid_hrv(), 10-250ms range), applied to baselines/RI/summaries
-Version 3.5.0 - Race calendar (90-day, RACE_A/B/C), race-week protocol (D-7 to D-0), TSB projection
-
-Version 3.4.1 - KeyError fix, defensive .get(), anonymization improvements
-Version 3.4.0 - Aggregate durability (7d/28d decoupling), dual-timeframe TID, capability namespace
-Version 3.3.4 - Seiler TID classification, Treff PI, multi-sport TID, 7→3 zone mapping
-Version 3.3.0 - Graduated alerts, history.json, notifications, smart fitness metrics, ACWR/monotony/strain
+Version 3.79 - Feel/RPE fix: feel removed from daily rows, RPE added to weekly tier, report templates updated
+Version 3.78 - Week alignment fix, log rotation, update checker cleanup
+Versions 3.7–3.77 — Phase detection v2, readiness decision, HRRc, week alignment, local sync pipeline, hash manifest
+Versions 3.6.0–3.6.5 — EF tracking, HR zone fallback, workout summary parser, real IDs, coach notes
+Versions 3.5.0–3.5.1 — Race calendar, HRV outlier filter
+Versions 3.3.0–3.4.1 — Durability, TID, alerts, history.json, smart fitness metrics
 """
 
 import requests
@@ -104,7 +86,7 @@ class IntervalsSync:
     HISTORY_FILE = "history.json"
     UPSTREAM_REPO = "CrankAddict/section-11"
     CHANGELOG_FILE = "changelog.json"
-    VERSION = "3.85"
+    VERSION = "3.86"
     INTERVALS_FILE = "intervals.json"
 
     # Sport families eligible for interval-level data extraction.
@@ -1125,7 +1107,8 @@ class IntervalsSync:
             planned_workouts=formatted_planned_workouts,
             race_calendar=race_calendar,
             previous_phase=previous_phase,
-            today=today
+            today=today,
+            primary_sport=primary_sport
         )
         phase_detected = phase_result["phase"]
         
@@ -2083,7 +2066,8 @@ class IntervalsSync:
     
     def _detect_phase_v2(self, weekly_rows: List[Dict], planned_workouts: List[Dict],
                           race_calendar: Dict, previous_phase: Optional[str] = None,
-                          today: str = None, dossier_declared: Optional[str] = None) -> Dict:
+                          today: str = None, dossier_declared: Optional[str] = None,
+                          primary_sport: Optional[str] = None) -> Dict:
         """
         Dual-stream phase detection (v2).
         
@@ -2101,7 +2085,7 @@ class IntervalsSync:
         
         # Compute features from both streams
         s1 = self._phase_stream1_features(weekly_rows)
-        s2 = self._phase_stream2_features(planned_workouts, race_calendar, s1, today)
+        s2 = self._phase_stream2_features(planned_workouts, race_calendar, s1, today, primary_sport)
         
         # Data quality assessment
         data_quality = self._phase_data_quality(weekly_rows, s1, reason_codes)
@@ -2174,6 +2158,7 @@ class IntervalsSync:
             "hard_day_values": [],
             "monotony_trend": None,
             "tss_values": [],
+            "primary_tss_values": [],
             "suggested_phase": None
         }
         
@@ -2192,6 +2177,7 @@ class IntervalsSync:
         
         # TSS values for trend
         result["tss_values"] = [r.get("total_tss", 0) or 0 for r in recent]
+        result["primary_tss_values"] = [r.get("primary_sport_tss", 0) or 0 for r in recent]
         
         # ACWR trend: direction over the window
         acwr_values = [r.get("acwr") for r in recent if r.get("acwr") is not None]
@@ -2261,7 +2247,8 @@ class IntervalsSync:
         return None
     
     def _phase_stream2_features(self, planned_workouts: List[Dict], race_calendar: Dict,
-                                 stream1: Dict, today: str) -> Dict:
+                                 stream1: Dict, today: str,
+                                 primary_sport: Optional[str] = None) -> Dict:
         """
         Extract Stream 2 (prospective) features from planned workouts and race calendar.
         
@@ -2272,6 +2259,11 @@ class IntervalsSync:
         
         - Current week remainder: today → last day of training week
         - Next week: next full training week (7 days)
+        
+        When primary_sport is set, planned_tss_delta and next_week_tss_delta
+        are filtered to primary sport only (numerator from planned workouts,
+        denominator from weekly history). Falls back to all-sport when
+        primary sport data is unavailable.
         """
         result = {
             "planned_tss_delta": None,
@@ -2310,6 +2302,7 @@ class IntervalsSync:
         current_week_workouts = []
         next_week_workouts = []
         current_week_tss = 0
+        current_week_tss_primary = 0
         
         for pw in planned_workouts:
             pw_date_str = (pw.get("date") or "")[:10]
@@ -2320,11 +2313,17 @@ class IntervalsSync:
             except ValueError:
                 continue
             
-            # Current week remainder (today through Saturday)
+            pw_tss = pw.get("planned_tss") or 0
+            pw_sport = self.SPORT_FAMILIES.get(pw.get("sport_type", ""))
+            is_primary = (pw_sport == primary_sport) if primary_sport else False
+            
+            # Current week remainder (today through end of training week)
             if today_date <= pw_date <= current_week_end:
                 current_week_workouts.append(pw)
-                current_week_tss += (pw.get("planned_tss") or 0)
-            # Next full training week (Sunday through Saturday)
+                current_week_tss += pw_tss
+                if is_primary:
+                    current_week_tss_primary += pw_tss
+            # Next full training week
             elif next_week_start <= pw_date <= next_week_end:
                 next_week_workouts.append(pw)
         
@@ -2334,6 +2333,7 @@ class IntervalsSync:
         # Hard-coded 5 means athletes training 7×/week get coverage >1.0, and 3×/week get 0.6.
         # Impact is limited: plan_coverage only adjusts confidence, not classification.
         tss_values = stream1.get("tss_values", [])
+        primary_tss_values = stream1.get("primary_tss_values", [])
         weeks_avail = stream1.get("weeks_available", 0)
         expected_sessions = 5
         if weeks_avail > 0:
@@ -2347,24 +2347,36 @@ class IntervalsSync:
         ) if expected_sessions > 0 else 0.0
         
         # Planned TSS delta: current week remainder planned / avg of prior 3 weeks actual
-        avg_tss_prev_21d = None
-        if tss_values and len(tss_values) >= 3:
-            avg_tss_prev_21d = statistics.mean(tss_values[-3:])
-        elif tss_values:
-            avg_tss_prev_21d = statistics.mean(tss_values)
+        # Use primary-sport values when available; fall back to all-sport
+        use_primary = primary_sport and primary_tss_values and any(v > 0 for v in primary_tss_values)
+        denom_values = primary_tss_values if use_primary else tss_values
+        numer_current = current_week_tss_primary if use_primary else current_week_tss
+        
+        avg_tss_prev = None
+        if denom_values and len(denom_values) >= 3:
+            avg_tss_prev = statistics.mean(denom_values[-3:])
+        elif denom_values:
+            avg_tss_prev = statistics.mean(denom_values)
         
         # Scale: project current week remainder to full-week equivalent
         # so it's comparable to the historical weekly average.
         # days_remaining = days_to_week_end + 1 (inclusive of today)
         days_remaining = days_to_week_end + 1
-        if avg_tss_prev_21d and avg_tss_prev_21d > 0 and current_week_tss > 0 and days_remaining > 0:
-            projected_week_tss = current_week_tss * (7 / days_remaining)
-            result["planned_tss_delta"] = round(projected_week_tss / avg_tss_prev_21d, 2)
+        if avg_tss_prev and avg_tss_prev > 0 and numer_current > 0 and days_remaining > 0:
+            projected_week_tss = numer_current * (7 / days_remaining)
+            result["planned_tss_delta"] = round(projected_week_tss / avg_tss_prev, 2)
         
         # Next week TSS delta (for Deload confirmation: does load resume?)
-        next_week_tss = sum(pw.get("planned_tss") or 0 for pw in next_week_workouts)
-        if avg_tss_prev_21d and avg_tss_prev_21d > 0 and next_week_tss > 0:
-            result["next_week_tss_delta"] = round(next_week_tss / avg_tss_prev_21d, 2)
+        next_week_tss_all = sum(pw.get("planned_tss") or 0 for pw in next_week_workouts)
+        if use_primary:
+            next_week_tss = sum(
+                (pw.get("planned_tss") or 0) for pw in next_week_workouts
+                if self.SPORT_FAMILIES.get(pw.get("sport_type", "")) == primary_sport
+            )
+        else:
+            next_week_tss = next_week_tss_all
+        if avg_tss_prev and avg_tss_prev > 0 and next_week_tss > 0:
+            result["next_week_tss_delta"] = round(next_week_tss / avg_tss_prev, 2)
         
         # Hard sessions planned (current week remainder only)
         # A planned workout is "hard" if its name or type suggests intensity
@@ -3809,6 +3821,7 @@ class IntervalsSync:
             atl_end = None
             tsb_end = None
             ramp_rate = None
+            sport_tss = defaultdict(float)
             
             for d in range(7):
                 date = current + timedelta(days=d)
@@ -3848,6 +3861,9 @@ class IntervalsSync:
                         longest_ride = ride_seconds
                     
                     sf = self.SPORT_FAMILIES.get(a.get("type", ""), None)
+                    a_tss = a.get("icu_training_load", 0) or 0
+                    if a_tss > 0 and sf:
+                        sport_tss[sf] += a_tss
                     zones, basis = self._get_activity_zones(a, sport_family=sf)
                     if zones and basis:
                         # Accumulate for hard day classification (separate by basis)
@@ -3895,10 +3911,16 @@ class IntervalsSync:
                 except Exception:
                     week_monotony = None
             
+            week_primary_sport = max(sport_tss, key=sport_tss.get) if sport_tss else None
+            week_primary_sport_tss = round(sport_tss[week_primary_sport], 0) if week_primary_sport else None
+            
             rows.append({
                 "week_start": current.strftime("%Y-%m-%d"),
                 "total_hours": round(week_seconds / 3600, 2),
                 "total_tss": round(week_tss, 0),
+                "primary_sport": week_primary_sport,
+                "primary_sport_tss": week_primary_sport_tss,
+                "sport_tss_breakdown": {k: round(v, 0) for k, v in sport_tss.items()} if sport_tss else None,
                 "activity_count": week_activities,
                 "ctl_end": round(ctl_end, 1) if ctl_end else None,
                 "atl_end": round(atl_end, 1) if atl_end else None,
@@ -5096,6 +5118,7 @@ class IntervalsSync:
                 "date": evt_date,
                 "name": evt.get("name", ""),
                 "type": evt.get("category", ""),
+                "sport_type": evt.get("type", ""),
                 "planned_tss": evt.get("icu_training_load"),
                 "duration_hours": round((evt.get("moving_time") or 0) / 3600, 2),
                 "duration_formatted": self._format_duration(int(evt.get("moving_time") or 0)),
