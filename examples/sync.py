@@ -4,6 +4,9 @@ Intervals.icu → GitHub/Local JSON Export
 Exports training data for LLM access.
 Supports both automated GitHub sync and manual local export.
   
+Version 3.95 - Polyline + event metadata: 500m downsampled polyline in terrain_summary for
+  weather/wind/pacing lookups. Start time (HH:MM) on events when set. Indoor flag passthrough.
+
 Version 3.94 - Phase detection: live weekly rows from activities_28d. Replaces v3.89 single-week
   overlay with full 4-week bucketing — all weekly rows (TSS, primary_sport_tss, hard_days) computed
   fresh every run. CTL/ATL enriched from history.json as stable background. Eliminates the entire
@@ -78,7 +81,7 @@ class IntervalsSync:
     HISTORY_FILE = "history.json"
     UPSTREAM_REPO = "CrankAddict/section-11"
     CHANGELOG_FILE = "changelog.json"
-    VERSION = "3.94"
+    VERSION = "3.95"
     INTERVALS_FILE = "intervals.json"
     ROUTES_FILE = "routes.json"
 
@@ -662,6 +665,22 @@ class IntervalsSync:
         if max_category == "hilly" and course_character in ("flat", "rolling"):
             course_character = "hilly"
         
+        # Downsample trackpoints at 500m intervals for polyline
+        POLYLINE_INTERVAL_M = 500.0
+        polyline = []
+        next_threshold = 0.0
+        for i, tp in enumerate(trackpoints):
+            if cum_dist[i] >= next_threshold or i == 0 or i == len(trackpoints) - 1:
+                km = round(cum_dist[i] / 1000, 1)
+                pt = [km, round(tp["lat"], 5), round(tp["lon"], 5)]
+                if has_elevation:
+                    pt.append(round(smoothed_ele[i]))
+                polyline.append(pt)
+                if i == 0:
+                    next_threshold = POLYLINE_INTERVAL_M
+                else:
+                    next_threshold = cum_dist[i] + POLYLINE_INTERVAL_M
+        
         return {
             "source": "gpx_attachment",
             "total_distance_km": total_distance_km,
@@ -669,7 +688,8 @@ class IntervalsSync:
             "elevation_per_km": elevation_per_km,
             "course_character": course_character,
             "climbs": climbs,
-            "descents": descents
+            "descents": descents,
+            "polyline": polyline
         }
     
     def _detect_segments(self, trackpoints: List[Dict], cum_dist: List[float],
@@ -6464,6 +6484,17 @@ class IntervalsSync:
             if coach_notes:
                 entry["coach_notes"] = coach_notes
             
+            # Start time: extract HH:MM when a real time is set (not midnight)
+            raw_start = evt.get("start_date_local") or ""
+            if "T" in raw_start:
+                time_part = raw_start.split("T")[1][:5]
+                if time_part != "00:00":
+                    entry["start_time"] = time_part
+            
+            # Indoor flag: only include when True
+            if evt.get("indoor"):
+                entry["indoor"] = True
+            
             if is_near:
                 # Days 0-7: full detail
                 entry["description"] = clean_desc
@@ -6506,7 +6537,7 @@ class IntervalsSync:
                         evt_date = datetime.strptime(start, "%Y-%m-%d").date()
                         days_until = (evt_date - today_date).days
                         if days_until >= 0:
-                            race_events.append({
+                            race_entry = {
                                 "name": evt.get("name", "Unnamed Race"),
                                 "date": start,
                                 "category": cat,
@@ -6516,7 +6547,17 @@ class IntervalsSync:
                                 "distance_meters": evt.get("distance"),
                                 "has_terrain": evt.get("id") in getattr(self, '_terrain_event_ids', set()),
                                 "_raw": evt  # Keep raw for race-week building
-                            })
+                            }
+                            # Start time: extract HH:MM when a real time is set
+                            raw_start = evt.get("start_date_local") or ""
+                            if "T" in raw_start:
+                                time_part = raw_start.split("T")[1][:5]
+                                if time_part != "00:00":
+                                    race_entry["start_time"] = time_part
+                            # Indoor flag: only include when True
+                            if evt.get("indoor"):
+                                race_entry["indoor"] = True
+                            race_events.append(race_entry)
                     except ValueError:
                         continue
         
