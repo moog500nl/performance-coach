@@ -65,9 +65,9 @@ Keep your Intervals.icu data fresh for your AI coach automatically.
 
 **[GitHub sync](examples/json-auto-sync/SETUP.md)** — GitHub Actions syncs every 15 minutes to a private repo. Your AI reads via GitHub connector or raw URL.
 
-**[On-demand sync](examples/json-on-demand/SETUP.md)** — trigger a sync from your phone or browser via your repo's README. Download the data as a ZIP artifact. No schedule, no local Python.
+**[On-demand sync](examples/json-on-demand/SETUP.md)** — trigger a fresh sync from your phone or browser via your repo's README. Download the data as a ZIP artifact. No schedule, no local Python.
 
-**[Manual export](examples/json-manual/SETUP.md)** — run once, upload the file. No automation.
+**[Manual export](examples/json-manual/SETUP.md)** — run once, upload the file. No automation. Custom ranges available.
 
 ### 3. Configure Your AI Platform
 
@@ -150,6 +150,7 @@ You are my endurance coach. Follow Section 11 protocol strictly.
 
 ## DATA ACCESS:
 Read data using the first method that works:
+0. **Attached files** — If JSON data files are provided directly in the conversation, use those
 1. **Connected repo/filesystem** — If data files are available via connector (GitHub, Google Drive, OneDrive — platform support varies) or local filesystem, read latest.json, history.json, and intervals.json directly
 2. **URL fetch** — Fetch https://raw.githubusercontent.com/[USERNAME]/[REPO]/main/latest.json (append ?date= with today's date). Same for history.json
 3. If activities don't match today's date, re-fetch or re-read before concluding no data exists
