@@ -1,10 +1,20 @@
 # Section 11 — AI Coach Protocol
 
-**Protocol Version:** 11.23  
+**Protocol Version:** 11.24  
 **Last Updated:** 2026-03-30
 **License:** [MIT](https://opensource.org/licenses/MIT)
 
 ### Changelog
+
+**v11.24 — Route & Terrain Protocol:**
+- New section: route analysis, terrain-adjusted power estimation, wind overlay, drafting, segment reasoning, nutrition timing, weather, pre-ride briefing flow
+- Variable power pacing by gradient (Atkinson & Brunskill, Boswell)
+- Progressive target adjustment cross-referencing sustainability_profile and durability metrics
+- Wind impact classification by gradient tier
+- Strava segment feasibility and wind×bearing attempt/skip logic
+- Conditional terrain context block in pre-workout reports
+- Evidence base: 11 entries (9 cited, 2 convention disclosures)
+- Requires sync.py v3.95 (polyline, start_time, indoor flag)
 
 **v11.23 — Checklist 5b: No Conversational Data Substitution**  
 - New self-validation checklist item 5b: training metrics must come from the current JSON data read — never from conversation history, prior messages, cached session context, or AI memory/recall. No data read = no metric cited.
@@ -1299,6 +1309,184 @@ Cold weather is a minor environmental modifier. It does not require tiers, sessi
 | Racinais et al. (2023) Br J Sports Med — IOC consensus | Updated IOC recommendations on event regulations in heat; WBGT-based risk classification | Environmental risk classification framework |
 | Montain & Coyle (1992) | Dehydration exacerbates thermal and cardiovascular strain during exercise in heat | Hydration as heat stress modifier |
 | Rundell et al. (2004, 2013) | Higher prevalence of airway hyperresponsiveness and EIB in athletes training in cold/dry air at high ventilation rates; repeated exposure causes airway damage | Flag high-intensity sessions below 0°C; cold weather bronchospasm risk |
+
+---
+
+### Route & Terrain Protocol
+
+When `routes.json` contains terrain data for a planned event (`has_terrain: true` on the event in `latest.json`), the AI has access to the full route profile — distance, elevation, climbs, descents, gradients at 500m resolution, and GPS coordinates. This section defines how to interpret that data and apply it to coaching decisions: pacing, effort distribution, nutrition timing, segment targeting, and pre-ride briefing.
+
+Route intelligence applies to any coaching conversation where terrain is known — race preparation, pre-ride planning, session context, or block-level event previewing. It is not limited to race day.
+
+#### Route Analysis
+
+**`routes.json` structure:** Each event with a GPX/TCX attachment produces a `terrain_summary` containing: `total_distance_km`, `total_elevation_m`, `elevation_per_km`, `course_character`, `climbs` array, `descents` array, and `polyline` (GPS track downsampled at 500m intervals with elevation).
+
+**Course character** classifies the overall route profile. Section 11 convention:
+
+| Classification | Criteria |
+|---|---|
+| flat | <200m total elevation AND <5 m/km |
+| rolling | ≥200m or ≥5 m/km, no categorized climbs |
+| hilly | ≥1500m or ≥20 m/km, OR has Cat 2 / Cat 1 / HC climb |
+| mountain | ≥3000m or ≥30 m/km |
+
+Climb category presence upgrades classification — a route with a Cat 1 climb is `hilly` regardless of total elevation. A route with ≥30 m/km elevation density is `mountain` even without a single long categorized climb (catches routes with many short steep pitches).
+
+**Climb classification** follows conventional UCI/Tour-derived categories based on elevation gain:
+
+| Category | Elevation Gain | Character |
+|---|---|---|
+| Cat 4 | 100–200m | Short or gentle climb |
+| Cat 3 | 200–400m | Moderate climb |
+| Cat 2 | 400–650m | Significant sustained climb |
+| Cat 1 | 650–1000m | Major climb |
+| HC | 1000m+ | Extreme climb |
+
+These are elevation-based conventions, not gradient-based. A 150m gain at 10% average is physiologically harder than 200m at 4% — the category captures scale, not intensity. The AI should communicate both category and gradient when briefing climbs. Climbs below 100m elevation gain with <3% average gradient are filtered out as terrain noise.
+
+**Climb detail fields:** Each climb entry includes `position_km` (distance from start), `distance_km`, `elevation_m`, `avg_gradient_pct`, `max_gradient_pct` (steepest 200m subsection), `category`, and `start_coords`/`end_coords`. Use `max_gradient_pct` to warn about steep sections within an otherwise moderate climb — "averages 5.8% but kicks to 11.2% in the final kilometer."
+
+**Descents as recovery windows:** Descents are not just terrain features — they are tactical recovery and fueling opportunities. Each descent entry includes the same positional and gradient fields. The AI should frame descents relative to the efforts around them: "4.2 km descent after the Cat 2 — eat, drink, recover before the rolling section."
+
+**Polyline:** The `polyline` array provides `[km, lat, lon, elevation]` at every 500m of road distance, plus start and end points. This gives the AI gradient context at any point on the route — not just within detected climbs and descents. Use for: identifying false flats between climbs, spotting gradual elevation trends that don't trigger climb detection, and providing gradient-aware pacing guidance across the full course.
+
+#### Terrain-Adjusted Power Estimation
+
+Constant power on a variable-gradient course is not optimal. Research consistently shows that increasing power on climbs and decreasing it on descents — bounded variability — produces faster finishing times at the same physiological cost.
+
+**Variable power pacing by gradient:**
+
+The time savings from increasing power are disproportionately large on climbs and negligible on fast descents, because aerodynamic drag scales cubically with speed while gravitational resistance scales linearly with gradient:
+
+- On a 6% grade, a 5% power increase above flat baseline saves approximately 78 seconds per 2.5 km (Atkinson & Brunskill, 2000).
+- On a 1% grade, the same 5% increase saves only 16 seconds per 2.5 km.
+- On descents above approximately 60 km/h, additional power provides diminishing returns — aerodynamic position matters more than watts.
+- As a practical guideline, increase power 10–20% above flat baseline on climbs, scaling approximately 3–5% per 1% of gradient. Reduce power on descents — the time cost of soft-pedaling downhill is minimal.
+- Comparative modeling confirms the effect: at identical average power of 300W, a variable strategy (285W flat / 325W climbing) beat constant 300W by 30 seconds over a 20 km TT with a 7% grade finish (2PEAK).
+- Finite element optimization modeling showed 0.45–2.84% overall time improvement from variable vs constant power pacing (Boswell, 2025).
+
+**Connecting to sustainability_profile:** The `capability.sustainability_profile` provides what the athlete can sustain at race-relevant durations. Apply gradient adjustments on top of these ceilings — not on top of FTP directly. For a climb estimated at 20 minutes, reference the athlete's 20-minute sustainability data, then adjust for gradient. If the climb's average gradient is 6%, the target power is 10–18% above the athlete's flat sustainable power for that duration — but capped at the athlete's actual observed MMP for that duration.
+
+**Progressive target adjustment:** Effective threshold power decreases with accumulated work. After 2 hours at moderate intensity, power at the moderate-to-heavy transition drops approximately 10% (Maunder et al., 2022). In Five Monuments analysis, top-5 finishers maintained stable power beyond 60 kJ/kg of accumulated work while finishers 6th–30th showed significant declines (Leo et al., 2023/2025). The AI should reduce sustainable power targets by approximately 5% per hour after the first 2 hours, calibrated against the athlete's individual durability baseline from `durability_7d_mean` and `durability_28d_mean`. A climb at km 120 does not get the same target as the same gradient at km 30.
+
+**Reduction rate honesty:** The ~5% per hour linear guideline is a practical heuristic informed by the Maunder (~10% at 2h) and Leo (durability decay beyond 60 kJ/kg) findings, not a directly cited threshold from a single study. Actual decay rates vary by athlete — the individual `durability_7d_mean` and `durability_28d_mean` baselines are the calibration signal. The heuristic provides a starting point when individual data is sparse.
+
+**Fast starts are costly.** Exceeding planned power by more than 5% in the opening minutes consistently produces slower overall finishing times in events over 30 minutes. The AI should flag early overcooking, not just late fading.
+
+#### Wind Overlay
+
+Wind direction and speed from weather data, matched against route bearing, determines headwind/tailwind assessment at any point on the course.
+
+**Convention:** Meteorological wind direction is the direction wind comes FROM (0° = north, 90° = east). Segment or route bearing is the direction the athlete RIDES (standard geographic bearing). When wind direction equals route bearing, the athlete rides directly into the wind — headwind.
+
+**Headwind/tailwind classification:**
+
+```
+angle_diff = abs(route_bearing - wind_direction)
+if angle_diff > 180:
+    angle_diff = 360 - angle_diff
+
+if angle_diff < 45:       → headwind
+elif angle_diff < 135:    → crosswind
+else:                     → tailwind
+```
+
+Route bearing can be computed from consecutive polyline points for any section of the course. A route that goes north for 40 km then returns south has opposite wind effects on each leg.
+
+**Wind impact by gradient tier:**
+
+Wind impact is proportional to the athlete's speed, because aerodynamic drag scales with velocity cubed. On steep climbs, speed is low and gravity dominates — wind is a minor factor. On flat terrain, speed is high and aero drag dominates — wind is the primary external variable.
+
+| Gradient | Speed regime | Wind impact | Coaching implication |
+|---|---|---|---|
+| Flat (<3%) | High (35+ km/h) | Dominant factor | Headwind substantially increases power cost at speed. Reduce speed target, not overcook effort. Tailwind = free speed |
+| Moderate climb (3–6%) | Medium (15–25 km/h) | Secondary factor | Headwind adds cost but gradient is primary. Tailwind helps but don't oversell it |
+| Steep climb (>6%) | Low (<15 km/h) | Minimal | Aerodynamic drag is a small fraction of total resistance at climbing speeds. Don't mention wind on steep climbs |
+
+The AI should not cite wind as a factor on steep climbs — it misleads the athlete about what's actually hard. On flat and rolling terrain, wind context is essential for pacing and effort budgeting.
+
+#### Drafting Estimates
+
+In group riding situations, drafting reduces aerodynamic drag significantly, but the benefit is position-dependent: second wheel sees roughly 5–10% drag reduction, while riders deep in a large peloton can see 40% or more (Blocken et al., 2018). The commonly cited ~30% is a mid-group average. This substantially lowers the power required to maintain a given speed on flat and rolling terrain. On steep climbs, drafting benefit diminishes as gravity becomes the dominant resistance force.
+
+When the AI knows the athlete will be in a group (race, group ride, sportive), power estimates for flat and rolling sections should account for drafting. Solo breakaway or time trial efforts use undrafted power. The AI should not assume drafting unless the context confirms it — a solo training ride is undrafted regardless of course character.
+
+#### Segment Reasoning (Strava Integration)
+
+When the agentic platform has Strava API access, segment data enriches route intelligence. This is protocol for the AI layer — not pipeline automation in `sync.py`.
+
+**Priority hierarchy:** Starred segments (from `/athlete/segments/starred`) that fall on today's route are automatic priority targets. The athlete may also name specific segments in conversation. All other segments found along the route via `/segments/explore` are opportunistic — mention if conditions are perfect, don't pre-brief.
+
+**Feasibility assessment:** Cross-reference the segment's expected duration (estimated from distance and gradient) with the athlete's power curve from `capability.sustainability_profile`. If the athlete's MMP at the expected segment duration is within 5% of the estimated power requirement, it's a realistic target. If the gap exceeds 10–15%, the AI should say so directly — the segment is above the athlete's current capability at that point in the ride. Factor in position in the ride: a segment at km 80 after 1500m of climbing requires progressive durability adjustment (see Terrain-Adjusted Power Estimation above).
+
+**Wind × bearing = attempt/skip:** Compute headwind/tailwind from segment bearing (start to end coordinates) vs wind direction. A tailwind on a climb segment is the best-case scenario. A headwind on a flat segment makes PRs unlikely and the effort disproportionately expensive. The AI should proactively recommend which segments have favorable conditions today and which to skip, with reasoning.
+
+**Strava API endpoints (reference):**
+
+| Endpoint | Purpose |
+|---|---|
+| `GET /segments/explore?bounds=...&activity_type=riding` | Find segments in bounding boxes along the route |
+| `GET /segments/{id}` | Full segment detail including polyline |
+| `GET /athlete/segments/starred` | Athlete's starred segments — automatic priorities |
+| `GET /segment_efforts?segment_id={id}` | Athlete's effort history — PR context |
+
+The AI does not call these endpoints directly from `sync.py`. They are available when the agentic platform has Strava OAuth access. Reasoning rules apply regardless of how segment data arrives — Strava API, athlete-provided segment IDs, or manual upload.
+
+#### Nutrition Timing Relative to Terrain
+
+Terrain structure dictates when the athlete can and cannot eat. Fueling during a steep climb is physiologically harder (high breathing rate, high effort) and mechanically awkward. Descents and flat sections are optimal fueling windows.
+
+**Rules:**
+
+- Fuel before climbs, not during them. Carbohydrates require 15–20 minutes to absorb (Jeukendrup, 2014). Cue nutrition 15–20 minutes before the effort, which on a hilly course often means fueling on the preceding flat or descent.
+- Descents are the primary fueling opportunity on mountain and hilly courses. The athlete can eat and drink without effort cost. If a climb follows, the descent is the last comfortable fueling window.
+- On flat and rolling courses, nutrition timing is less constrained — the athlete can fuel at any point. Follow standard kJ-based dosing: approximately 250–300 kJ between fuel cues as a backstop.
+- The AI should connect terrain to the nutrition skeleton in a pre-ride briefing: "Eat at km 15 on the flat before the Cat 3. Next opportunity is the descent at km 35. Fuel again at km 52 before the Cat 2."
+
+#### Weather Data Source
+
+For pre-ride weather and wind data, yr.no (Norwegian Meteorological Institute) provides free, high-quality forecasts with wind direction, speed, temperature, and precipitation. No API key required for reasonable usage.
+
+MyWindSock offers cycling-specific wind analysis overlaid on route files — parked as a future integration option. Currently protocol-only: the AI can reference wind data from any source the athlete or platform provides.
+
+The AI cross-references temperature against the Environmental Conditions Protocol (see above) for heat stress tier assessment. Wind data feeds the wind overlay logic in this section. Do not duplicate heat/cold guidance here — reference the existing protocol.
+
+#### Pre-Ride Briefing Flow
+
+When route data is available, the AI can produce a structured pre-ride briefing as part of a coaching conversation or pre-workout report. This follows a logical sequence: understand the course → identify key efforts → check conditions → plan pacing → plan nutrition.
+
+**Briefing structure:**
+
+1. **Route summary** — distance, total climbing, course character, number of significant climbs, overall profile narrative ("hilly first half, flat return" or "steady Cat 2 followed by fast descent and rolling finish").
+
+2. **Key climbs and terrain features** — for each categorized climb: position in ride, distance, average and maximum gradient, category. Frame descents as recovery windows between efforts. Note sustained flat sections where the athlete can settle into tempo.
+
+3. **Segment opportunities** — when Strava segment data is available: priority segments with feasibility assessment, conditions-based attempt/skip recommendations, target power and pacing notes. Non-priority segments mentioned only if conditions are unusually favorable.
+
+4. **Conditions assessment** — wind direction and speed matched against route sections and segment bearings. Temperature and heat stress tier (cross-reference Environmental Conditions Protocol). Precipitation if relevant. The value-add is connecting conditions to specific course features: "Tailwind for the Cat 3 at km 22 — favorable. Headwind on the exposed flat from km 45–60 — conserve."
+
+5. **Pacing strategy** — effort distribution across the course. Variable power targets by gradient (see Terrain-Adjusted Power Estimation). Where to push, where to save. Progressive adjustment for long events. Early overcooking warning.
+
+6. **Nutrition skeleton** — fueling timing anchored to terrain features. Pre-climb fueling windows, descent fueling opportunities, flat-section backstops. Connects kJ expenditure estimates to the route profile.
+
+**Conditional inclusion in pre-workout reports:** When `has_terrain: true` on a planned event and `routes.json` contains the corresponding terrain data, the pre-workout report should include a condensed terrain context block after the planned workout section: course character, key climbs (condensed), and a pacing note. The full briefing is available on request. Do not include terrain context when `has_terrain` is false or absent — the data doesn't exist.
+
+#### Route & Terrain — Evidence Base
+
+| Reference | Finding | Section 11 Application |
+|---|---|---|
+| Atkinson & Brunskill (2000), via CTS | 5% power increase saves 78s on 6% grade vs 16s on 1% grade over 2.5 km | Variable power pacing: disproportionate time gain on climbs vs flats |
+| 2PEAK pacing comparison | 285W flat / 325W climbing beat constant 300W by 30s over 20 km TT at identical average power | Confirms variable power superiority at same physiological cost |
+| Boswell (2025), Springer Nature | Finite element optimization showed 0.45–2.84% time improvement from variable vs constant power | Quantifies variable power benefit range |
+| Maunder et al. (2022), Eur J Appl Physiol | Power at moderate-to-heavy transition decreased ~10% after 2h cycling at 90% VT1 | Progressive target reduction for long events; cross-ref sustainability profile |
+| Leo et al. (2023/2025) | Five Monuments top-5 vs 6th–30th: stable power beyond 60 kJ/kg vs significant decline | Durability as differentiator; calibrate targets to accumulated work |
+| Blocken et al. (2018) | CFD analysis of peloton aerodynamics: position-dependent drag reduction from ~5–10% (second wheel) to 40%+ (deep in peloton) | Drafting estimate for group riding power calculations |
+| Jeukendrup (2014) | Carbohydrate absorption requires 15–20 min; dose-response confirmed up to absorption ceiling | Nutrition timing: fuel before climbs, not during |
+| Coyle et al. | CHO ingestion maintains blood glucose (actual fatigue trigger), does not spare muscle glycogen | Fueling prevents bonk via blood glucose, not glycogen sparing |
+| Springer Nature (2025) | Power response to wind is non-linear and velocity-dependent; headwind substantially increases power cost at speed | Wind impact scales with speed regime, not gradient directly |
+| Climb classification | UCI/Tour conventional categories — elevation-based thresholds | Industry convention, not a single research finding |
+| Course character heuristic | Section 11 convention — flat/rolling/hilly/mountain boundaries from total elevation + elevation density + climb presence | Engineering decision for route classification |
 
 ---
 
