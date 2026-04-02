@@ -209,11 +209,11 @@ Most major AI platforms now have native GitHub connectors that can access privat
 | Platform | GitHub Connector | Private Repos | Can Trigger Actions | Plan Notes |
 |----------|-----------------|---------------|---------------------|------------|
 | ChatGPT | Settings → Apps → GitHub | Yes | No (read-only)¹ | Varies by plan and experience |
-| Claude | Settings → Integrations → GitHub | Yes | No (read-only)² | All plans including Free |
+| Claude | Settings → Connectors → GitHub | Yes | No (read-only)² | All plans including Free |
 | Gemini | + → Import code / Connected Apps | Yes (link account) | No (read-only snapshot)³ | Account/region dependent — see Gemini docs |
 | Grok | Settings → Connected Apps | Yes | No (read-only) | Grok Business/Enterprise; consumer tier availability TBD |
-| Mistral | Connectors directory (MCP) | Yes | Not yet (writes supported, dispatch TBD) | All tiers including free |
-| Perplexity | App Connectors → GitHub | Yes | No (read-only) | Pro, Max, and Enterprise |
+| Mistral | Side panel → Intelligence → Connectors → GitHub | Yes | No (full read/write, no dispatch) | All tiers including free |
+| Perplexity | Connectors → GitHub | Yes | No (full read/write, no dispatch) | Pro, Max, and Enterprise |
 
 **Google Drive connector status (.json files).** For users on the [local sync](examples/json-local-sync/SETUP.md) path who want their AI to read data files via Google Drive instead of GitHub.
 
@@ -224,7 +224,7 @@ Most major AI platforms now have native GitHub connectors that can access privat
 | ChatGPT | ⚠️ | Settings → Apps → Google Drive | Workspace accounts only — not personal Gmail |
 | Claude | ❌ | — | Google Docs only — use GitHub connector |
 | Grok | ✅ | Settings → Connected Apps → Google Drive | Business/Enterprise only |
-| Mistral | ⚠️ | Side panel → Connectors → Google Drive | Visible on all tiers; access not yet available |
+| Mistral | ⚠️ | Side panel → Connectors → Google Drive | Beta — Team & Enterprise; admin setup required |
 
 **Note:** Cloud storage connectors are still rolling out across platforms. Availability may change by plan, region, and account type. Check your platform's current connector settings if something listed here doesn't appear.
 
