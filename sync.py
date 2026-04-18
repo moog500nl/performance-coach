@@ -4,6 +4,16 @@ Intervals.icu → GitHub/Local JSON Export
 Exports training data for LLM access.
 Supports both automated GitHub sync and manual local export.
 
+Version 3.103 - Aggregate Durability filter relaxed: duration floor lowered from 90 min (5400 s)
+  to 60 min (3600 s) to include structured indoor and racing sessions that produce valid cardiac
+  drift signal. Minimum qualifying session threshold for 28d mean raised from 2 to 5 — with fewer
+  sessions the mean is statistically unreliable and can trigger a false alarm from a single
+  high-decoupling outlier. Mean is suppressed (null) when N < 5; new insufficient_sample_28d flag
+  surfaces the reason. Alert logic gains a companion info-level alert when 1–4 qualifying sessions
+  exist, so the AI sees "metric suppressed — N=2" rather than unexplained nulls. The existing alarm
+  at 28d mean > 5% is unchanged in threshold and tier; it now requires a credible sample before it
+  can fire. SECTION_11.md note updated to reflect 60 min floor.
+
 Version 3.102 - Phase detection fixes: corrected three independent bugs causing in-Build weeks
   to misclassify as Base on Mon/Tue after a deload→Build cycle. (1) ctl_slope was a 2-point chord
   divided by len(values) instead of (n-1) and included the in-progress current week's partial
@@ -2922,18 +2932,28 @@ class IntervalsSync:
         Filters to steady-state power sessions only:
         - decoupling is not None
         - variability_index is not None and > 0 and <= 1.05
-        - moving_time >= 5400 (90 minutes)
+        - moving_time >= 3600 (60 minutes)
 
         Per Maunder et al. (2021), Rothschild et al. (2025): meaningful
-        cardiac drift requires prolonged exercise. 90 min is the practical
-        field floor where drift becomes detectable.
+        cardiac drift requires prolonged exercise. 60 min is the practical
+        field floor for structured indoor and racing sessions where drift
+        signal is present. Original 90-min floor was conservative and
+        excluded the majority of sessions for athletes training indoors.
 
         Negative decoupling is included — it indicates HR drifted down
         relative to power (strong durability or cooling conditions).
 
+        Means require >= 5 qualifying sessions (28d window) to be credible.
+        With fewer sessions a single high-decoupling outlier can dominate
+        the mean and produce a false alarm. Mean is suppressed (null) when
+        N < 5; insufficient_sample_28d flag is set True in that case.
+
         Returns dict with 7d/28d means, high-drift counts, qualifying
-        session counts, and trend direction.
+        session counts, insufficient_sample flag, and trend direction.
         """
+        # Minimum qualifying sessions required before computing a reliable mean
+        MIN_QUALIFYING = 5
+
         def _filter_qualifying(activities: List[Dict]) -> List[float]:
             """Return decoupling values from qualifying sessions."""
             qualifying = []
@@ -2947,16 +2967,18 @@ class IntervalsSync:
                         and vi is not None
                         and vi > 0
                         and vi <= 1.05
-                        and mt >= 5400):
+                        and mt >= 3600):
                     qualifying.append(dec)
             return qualifying
 
         vals_7d = _filter_qualifying(activities_7d)
         vals_28d = _filter_qualifying(activities_28d)
 
-        # Compute means (need >= 2 qualifying sessions)
+        # Compute means — 28d requires MIN_QUALIFYING for reliability;
+        # 7d uses 2 as minimum (short window makes 5 unreachable most weeks).
         mean_7d = round(statistics.mean(vals_7d), 2) if len(vals_7d) >= 2 else None
-        mean_28d = round(statistics.mean(vals_28d), 2) if len(vals_28d) >= 2 else None
+        mean_28d = round(statistics.mean(vals_28d), 2) if len(vals_28d) >= MIN_QUALIFYING else None
+        insufficient_sample_28d = 0 < len(vals_28d) < MIN_QUALIFYING
 
         # High drift counts (> 5%)
         high_drift_7d = sum(1 for v in vals_7d if v > 5.0)
@@ -2975,7 +2997,8 @@ class IntervalsSync:
 
         if self.debug:
             print(f"  Durability: 7d={mean_7d} ({len(vals_7d)} sessions), "
-                  f"28d={mean_28d} ({len(vals_28d)} sessions), trend={trend}")
+                  f"28d={mean_28d} ({len(vals_28d)} sessions), trend={trend}, "
+                  f"insufficient_sample_28d={insufficient_sample_28d}")
 
         return {
             "mean_decoupling_7d": mean_7d,
@@ -2984,11 +3007,14 @@ class IntervalsSync:
             "high_drift_count_28d": high_drift_28d,
             "qualifying_sessions_7d": len(vals_7d),
             "qualifying_sessions_28d": len(vals_28d),
+            "insufficient_sample_28d": insufficient_sample_28d,
             "trend": trend,
             "note": ("Steady-state power sessions only (VI <= 1.05, VI > 0, "
-                     ">= 90min, power data). Negative decoupling = strong "
+                     ">= 60min, power data). Negative decoupling = strong "
                      "durability. Trend compares 7d vs 28d mean "
-                     "(+/-1% = stable).")
+                     "(+/-1% = stable). 28d mean requires >= 5 qualifying "
+                     "sessions; insufficient_sample_28d=true when 1-4 sessions "
+                     "exist (mean suppressed to prevent false alarms).")
         }
 
     def _calculate_efficiency_factor(self, activities_7d: List[Dict],
@@ -4963,7 +4989,7 @@ class IntervalsSync:
                         "tier": 1
                     })
         
-        # --- Durability Alerts (v3.4.0) ---
+        # --- Durability Alerts (v3.4.0, updated v3.103) ---
         # Aggregate decoupling trend from capability metrics
         capability = derived_metrics.get("capability", {})
         durability = capability.get("durability", {})
@@ -4971,8 +4997,27 @@ class IntervalsSync:
         dur_mean_28d = durability.get("mean_decoupling_28d")
         dur_trend = durability.get("trend")
         dur_high_drift_7d = durability.get("high_drift_count_7d", 0)
+        dur_qualifying_28d = durability.get("qualifying_sessions_28d", 0)
+        dur_insufficient_28d = durability.get("insufficient_sample_28d", False)
+
+        # Info: insufficient qualifying sessions — metric suppressed, not a real alarm
+        # (mean_decoupling_28d will be null; this explains why)
+        if dur_insufficient_28d:
+            alerts.append({
+                "metric": "durability",
+                "value": dur_qualifying_28d,
+                "severity": "info",
+                "threshold": "< 5 qualifying sessions (28d)",
+                "context": (f"Durability metric suppressed: only {dur_qualifying_28d} qualifying "
+                            f"session(s) in 28d window (need >= 5, >= 60min, VI <= 1.05). "
+                            f"Too few sessions for a reliable mean — not an alarm."),
+                "persistence_days": None,
+                "tier": 3
+            })
 
         # Alarm: sustained high decoupling (28d mean > 5%)
+        # dur_mean_28d is null when qualifying_sessions_28d < 5, so alarm
+        # cannot fire on an unreliable thin-sample mean (v3.103).
         if dur_mean_28d is not None and dur_mean_28d > 5.0:
             alerts.append({
                 "metric": "durability",
