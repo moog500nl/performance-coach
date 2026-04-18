@@ -1,9 +1,9 @@
 {
   "_schema": {
     "version": "1.0",
-    "description": "Daily nutrition log for MK — aligned to Cronometer daily summary export format.",
+    "description": "Daily nutrition log for MK \u2014 aligned to Cronometer daily summary export format.",
     "how_to_populate": [
-      "Option A (Recommended): In Cronometer, go to Settings → Export Data → Daily Nutrition Summary. Copy the relevant daily row fields into this file.",
+      "Option A (Recommended): In Cronometer, go to Settings \u2192 Export Data \u2192 Daily Nutrition Summary. Copy the relevant daily row fields into this file.",
       "Option B: Manual entry from Cronometer's daily summary view.",
       "Option C: Use Claude to help you transcribe a Cronometer CSV export into this format."
     ],
@@ -19,47 +19,1147 @@
       "sick"
     ],
     "targets_reference": {
-      "protein_g_daily": "175–195 g (every day, all day types)",
+      "protein_g_daily": "175\u2013195 g (every day, all day types)",
       "kcal_by_day_type": {
-        "rest": "2100–2300",
-        "z2_easy": "2400–2600",
-        "z4_quality": "2700–2900",
-        "long_z2_2to3h": "3000–3300",
-        "long_z2_3to4h": "3200–3500",
-        "back_to_back": "3100–3400 each day",
-        "deload": "2200–2400"
+        "rest": "2100\u20132300",
+        "z2_easy": "2400\u20132600",
+        "z4_quality": "2700\u20132900",
+        "long_z2_2to3h": "3000\u20133300",
+        "long_z2_3to4h": "3200\u20133500",
+        "back_to_back": "3100\u20133400 each day",
+        "deload": "2200\u20132400"
       },
       "carbs_g_by_day_type": {
-        "rest": "145–195 (1.5–2.0 g/kg)",
-        "z2_easy": "242–291 (2.5–3.0 g/kg)",
-        "z4_quality": "388–485 (4.0–5.0 g/kg)",
-        "long_z2": "388–485 (4.0–5.0 g/kg)",
-        "back_to_back": "435–485 (4.5–5.0 g/kg)"
+        "rest": "145\u2013195 (1.5\u20132.0 g/kg)",
+        "z2_easy": "242\u2013291 (2.5\u20133.0 g/kg)",
+        "z4_quality": "388\u2013485 (4.0\u20135.0 g/kg)",
+        "long_z2": "388\u2013485 (4.0\u20135.0 g/kg)",
+        "back_to_back": "435\u2013485 (4.5\u20135.0 g/kg)"
       },
-      "fat_g_daily": "70–90 g (stable across day types)"
+      "fat_g_daily": "70\u201390 g (stable across day types)"
     }
   },
   "daily": [
     {
-      "_comment": "EXAMPLE ENTRY — delete this and replace with your real data",
+      "date": "2026-04-13",
+      "kcal_consumed": 1927.88,
+      "protein_g": 104.65,
+      "carbs_g": 107.62,
+      "net_carbs_g": 86.42,
+      "fiber_g": 21.16,
+      "fat_g": 123.56,
+      "water_ml": 1606.28,
+      "sodium_mg": 2545.33,
+      "potassium_mg": 2604.45,
+      "sugars_g": 41.37,
+      "added_sugars_g": 1.94,
+      "saturated_fat_g": 22.38,
+      "omega3_g": 6.54,
+      "calcium_mg": 254.48,
+      "iron_mg": 9.69,
+      "vitamin_d_iu": 722.74,
+      "day_complete": false,
+      "day_type": null,
+      "notes": "",
+      "meals": {
+        "Uncategorized": [
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "13:23"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "13:23"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "13:23"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "20:30"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "20:30"
+          }
+        ],
+        "Breakfast": [
+          {
+            "food": "L'usine, Sliced Bread Brown",
+            "amount": "2.00 serving",
+            "kcal": 154.0,
+            "protein_g": 6.0,
+            "carbs_g": 28.0,
+            "fat_g": 2.0
+          },
+          {
+            "food": "Jumbo, Hummus, Naturel",
+            "amount": "120.00 g",
+            "kcal": 273.6,
+            "protein_g": 7.44,
+            "carbs_g": 17.76,
+            "fat_g": 21.12
+          },
+          {
+            "food": "Ah, Cherry Tomatoes",
+            "amount": "100.00 g",
+            "kcal": 31.0,
+            "protein_g": 0.9,
+            "carbs_g": 6.0,
+            "fat_g": 0.8
+          },
+          {
+            "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+            "amount": "1.00 Can",
+            "kcal": 62.7,
+            "protein_g": 0.0,
+            "carbs_g": 14.85,
+            "fat_g": 0.0
+          }
+        ],
+        "Lunch": [
+          {
+            "food": "Bread Roll, Soft, White",
+            "amount": "1.00 small - 2\" square, pan or dinner roll",
+            "kcal": 77.34,
+            "protein_g": 2.57,
+            "carbs_g": 13.06,
+            "fat_g": 1.82
+          },
+          {
+            "food": "Mayonnaise",
+            "amount": "1.00 tbsp",
+            "kcal": 93.5,
+            "protein_g": 0.13,
+            "carbs_g": 0.08,
+            "fat_g": 10.29
+          },
+          {
+            "food": "Salmon, Smoked",
+            "amount": "40.00 g",
+            "kcal": 46.8,
+            "protein_g": 7.31,
+            "carbs_g": 0.0,
+            "fat_g": 1.73
+          },
+          {
+            "food": "Sausage, Pork, Fresh",
+            "amount": "100.00 g",
+            "kcal": 325.0,
+            "protein_g": 18.53,
+            "carbs_g": 1.42,
+            "fat_g": 27.25
+          },
+          {
+            "food": "Boiled Eggs",
+            "amount": "0.50 medium",
+            "kcal": 34.1,
+            "protein_g": 2.77,
+            "carbs_g": 0.25,
+            "fat_g": 2.33
+          },
+          {
+            "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+            "amount": "1.00 Can",
+            "kcal": 62.7,
+            "protein_g": 0.0,
+            "carbs_g": 14.85,
+            "fat_g": 0.0
+          }
+        ],
+        "Dinner": [
+          {
+            "food": "Za'atar Salmon baked in Tahini",
+            "amount": "0.40 full recipe",
+            "kcal": 767.14,
+            "protein_g": 59.01,
+            "carbs_g": 11.36,
+            "fat_g": 56.22
+          }
+        ]
+      },
+      "compliance_flags": [
+        "protein_low:105g (target 175-195g)"
+      ]
+    },
+    {
+      "date": "2026-04-14",
+      "kcal_consumed": 1797.63,
+      "protein_g": 53.17,
+      "carbs_g": 237.81,
+      "net_carbs_g": 218.95,
+      "fiber_g": 18.63,
+      "fat_g": 75.42,
+      "water_ml": 2058.11,
+      "sodium_mg": 1442.71,
+      "potassium_mg": 1400.3,
+      "sugars_g": 29.89,
+      "added_sugars_g": 0.0,
+      "saturated_fat_g": 15.09,
+      "omega3_g": 1.09,
+      "calcium_mg": 441.18,
+      "iron_mg": 13.37,
+      "vitamin_d_iu": 0.0,
+      "day_complete": false,
+      "day_type": null,
+      "notes": "",
+      "meals": {
+        "Uncategorized": [
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "17:25"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "17:25"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "17:25"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "17:25"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "17:25"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "17:25"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "17:25"
+          }
+        ],
+        "Breakfast": [
+          {
+            "food": "Sourdough Bread",
+            "amount": "3.00 medium slice",
+            "kcal": 252.96,
+            "protein_g": 10.0,
+            "carbs_g": 48.25,
+            "fat_g": 2.25,
+            "time": "08:59"
+          },
+          {
+            "food": "Hummus",
+            "amount": "3.00 tbsp",
+            "kcal": 99.68,
+            "protein_g": 3.11,
+            "carbs_g": 7.7,
+            "fat_g": 6.76,
+            "time": "08:59"
+          },
+          {
+            "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+            "amount": "1.00 Can",
+            "kcal": 62.7,
+            "protein_g": 0.0,
+            "carbs_g": 14.85,
+            "fat_g": 0.0,
+            "time": "09:00"
+          },
+          {
+            "food": "Tomato Raw, Includes Cherry, Grape, Roma",
+            "amount": "1.00 thick slice - 1/2\" thick",
+            "kcal": 4.86,
+            "protein_g": 0.24,
+            "carbs_g": 1.05,
+            "fat_g": 0.05,
+            "time": "08:59"
+          }
+        ],
+        "Lunch": [
+          {
+            "food": "Mixed Nuts, with Peanuts, Oil Roasted, Salted",
+            "amount": "70.00 g",
+            "kcal": 424.9,
+            "protein_g": 14.03,
+            "carbs_g": 14.74,
+            "fat_g": 37.77,
+            "time": "14:05"
+          }
+        ],
+        "Dinner": [
+          {
+            "food": "Coconut milk",
+            "amount": "6.00 tsp",
+            "kcal": 48.75,
+            "protein_g": 0.19,
+            "carbs_g": 0.38,
+            "fat_g": 4.88,
+            "time": "13:25"
+          },
+          {
+            "food": "Tofu, Fried",
+            "amount": "5.00 piece",
+            "kcal": 175.5,
+            "protein_g": 12.23,
+            "carbs_g": 5.76,
+            "fat_g": 13.12,
+            "time": "13:26"
+          },
+          {
+            "food": "Onion, White, Yellow or Red, Cooked",
+            "amount": "1.00 large slice - 1/4\" thick",
+            "kcal": 14.08,
+            "protein_g": 0.44,
+            "carbs_g": 3.25,
+            "fat_g": 0.06,
+            "time": "18:50"
+          },
+          {
+            "food": "Baked Potato, Plain, Skin Eaten",
+            "amount": "0.75 cup, chopped",
+            "kcal": 85.09,
+            "protein_g": 2.29,
+            "carbs_g": 19.35,
+            "fat_g": 0.12,
+            "time": "18:50"
+          },
+          {
+            "food": "White Rice, Steamed",
+            "amount": "1.50 cup",
+            "kcal": 308.11,
+            "protein_g": 6.38,
+            "carbs_g": 66.76,
+            "fat_g": 0.66,
+            "time": "18:50"
+          }
+        ],
+        "Snacks": [
+          {
+            "food": "Croky, Pop'd Potatoes, Bolognese",
+            "amount": "1.00 pack",
+            "kcal": 321.0,
+            "protein_g": 4.28,
+            "carbs_g": 55.72,
+            "fat_g": 9.75,
+            "time": "17:06"
+          }
+        ]
+      },
+      "compliance_flags": [
+        "protein_low:53g (target 175-195g)",
+        "kcal_critically_low:1798 (min 1800 on any day)"
+      ]
+    },
+    {
+      "date": "2026-04-15",
+      "kcal_consumed": 1850.0,
+      "protein_g": 71.08,
+      "carbs_g": 150.84,
+      "net_carbs_g": 130.19,
+      "fiber_g": 19.95,
+      "fat_g": 110.1,
+      "water_ml": 3085.8,
+      "sodium_mg": 2781.79,
+      "potassium_mg": 1462.98,
+      "sugars_g": 39.04,
+      "added_sugars_g": 6.21,
+      "saturated_fat_g": 18.3,
+      "omega3_g": 0.75,
+      "calcium_mg": 442.12,
+      "iron_mg": 11.05,
+      "vitamin_d_iu": 114.84,
+      "day_complete": false,
+      "day_type": null,
+      "notes": "",
+      "meals": {
+        "Uncategorized": [
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "15:40"
+          },
+          {
+            "food": "Spicy cannellini beans, leeks and eggs",
+            "amount": "1.50 serving",
+            "kcal": 732.97,
+            "protein_g": 24.98,
+            "carbs_g": 45.79,
+            "fat_g": 51.7,
+            "time": "19:47"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "15:40"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "19:48"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "15:40"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "19:48"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "15:40"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "19:48"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "19:48"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "19:48"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "19:48"
+          }
+        ],
+        "Breakfast": [
+          {
+            "food": "Whole Wheat Bread, Store Bought",
+            "amount": "3.00 large slice",
+            "kcal": 325.08,
+            "protein_g": 16.06,
+            "carbs_g": 55.1,
+            "fat_g": 4.52,
+            "time": "08:33"
+          },
+          {
+            "food": "Tomato Raw, Includes Cherry, Grape, Roma",
+            "amount": "1.00 tbsp, chopped",
+            "kcal": 2.03,
+            "protein_g": 0.1,
+            "carbs_g": 0.44,
+            "fat_g": 0.02,
+            "time": "08:33"
+          },
+          {
+            "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+            "amount": "1.00 Can",
+            "kcal": 62.7,
+            "protein_g": 0.0,
+            "carbs_g": 14.85,
+            "fat_g": 0.0,
+            "time": "08:34"
+          },
+          {
+            "food": "Hummus",
+            "amount": "4.00 tbsp",
+            "kcal": 132.9,
+            "protein_g": 4.15,
+            "carbs_g": 10.27,
+            "fat_g": 9.02,
+            "time": "08:33"
+          }
+        ],
+        "Lunch": [
+          {
+            "food": "Fish Tales, Sockeye Smoked Wild Salmon",
+            "amount": "50.00 g",
+            "kcal": 57.32,
+            "protein_g": 11.65,
+            "carbs_g": 0.0,
+            "fat_g": 2.45,
+            "time": "13:15"
+          },
+          {
+            "food": "Rio Mare, Tuna in Olive Oil",
+            "amount": "80.00 g",
+            "kcal": 328.0,
+            "protein_g": 13.6,
+            "carbs_g": 0.0,
+            "fat_g": 30.4,
+            "time": "13:21"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "13:23"
+          }
+        ],
+        "Snacks": [
+          {
+            "food": "AH Paprika Chips",
+            "amount": "1.00 package",
+            "kcal": 209.0,
+            "protein_g": 0.55,
+            "carbs_g": 24.4,
+            "fat_g": 12.0,
+            "time": "17:32"
+          }
+        ]
+      },
+      "compliance_flags": [
+        "protein_low:71g (target 175-195g)"
+      ]
+    },
+    {
+      "_comment": "EXAMPLE ENTRY \u2014 delete this and replace with your real data",
       "date": "2026-04-16",
       "day_type": "z2_easy",
-      "kcal_consumed": 2480,
+      "kcal_consumed": 2448.29,
       "kcal_target": 2500,
-      "protein_g": 186,
-      "carbs_g": 268,
-      "fat_g": 75,
-      "fiber_g": 34,
-      "water_ml": 2900,
+      "protein_g": 67.0,
+      "carbs_g": 185.61,
+      "fat_g": 91.66,
+      "fiber_g": 22.9,
+      "water_ml": 2243.18,
       "fasted_session": false,
-      "notes": "Example entry. Pre-ride: oats + banana. Post-ride: whey shake + yogurt. Dinner: salmon + rice."
+      "notes": "Example entry. Pre-ride: oats + banana. Post-ride: whey shake + yogurt. Dinner: salmon + rice.",
+      "net_carbs_g": 162.37,
+      "sodium_mg": 2777.01,
+      "potassium_mg": 1895.94,
+      "sugars_g": 33.07,
+      "added_sugars_g": 0.96,
+      "saturated_fat_g": 17.81,
+      "omega3_g": 1.51,
+      "calcium_mg": 444.53,
+      "iron_mg": 14.35,
+      "vitamin_d_iu": 112.74,
+      "day_complete": false,
+      "meals": {
+        "Uncategorized": [
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "20:13"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "20:13"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "20:13"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "20:13"
+          }
+        ],
+        "Breakfast": [
+          {
+            "food": "Hummus",
+            "amount": "6.00 tbsp",
+            "kcal": 199.35,
+            "protein_g": 6.22,
+            "carbs_g": 15.4,
+            "fat_g": 13.53,
+            "time": "14:21"
+          },
+          {
+            "food": "Fonte, Sliced Bread, Brown",
+            "amount": "1.50 x 2.0 slices",
+            "kcal": 225.0,
+            "protein_g": 9.0,
+            "carbs_g": 43.5,
+            "fat_g": 1.5,
+            "time": "14:21"
+          },
+          {
+            "food": "Ah, Cherry Tomatoes",
+            "amount": "100.00 g",
+            "kcal": 31.0,
+            "protein_g": 0.9,
+            "carbs_g": 6.0,
+            "fat_g": 0.8,
+            "time": "14:21"
+          },
+          {
+            "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+            "amount": "1.00 Can",
+            "kcal": 62.7,
+            "protein_g": 0.0,
+            "carbs_g": 14.85,
+            "fat_g": 0.0,
+            "time": "14:21"
+          }
+        ],
+        "Lunch": [
+          {
+            "food": "Mixed Nuts, with Peanuts, Oil Roasted, Salted",
+            "amount": "75.00 g",
+            "kcal": 455.25,
+            "protein_g": 15.03,
+            "carbs_g": 15.79,
+            "fat_g": 40.46,
+            "time": "14:22"
+          },
+          {
+            "food": "Salmon, Smoked",
+            "amount": "50.00 g",
+            "kcal": 58.5,
+            "protein_g": 9.14,
+            "carbs_g": 0.0,
+            "fat_g": 2.16,
+            "time": "14:22"
+          },
+          {
+            "food": "Boiled Eggs",
+            "amount": "2.00 medium",
+            "kcal": 136.4,
+            "protein_g": 11.07,
+            "carbs_g": 0.99,
+            "fat_g": 9.34,
+            "time": "14:22"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "14:22"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "14:22"
+          }
+        ],
+        "Dinner": [
+          {
+            "food": "White Rice, Steamed",
+            "amount": "1.25 cup",
+            "kcal": 256.76,
+            "protein_g": 5.31,
+            "carbs_g": 55.64,
+            "fat_g": 0.55,
+            "time": "19:29"
+          },
+          {
+            "food": "Potato Croquettes",
+            "amount": "1.50 each - 3\" to 3 1/2\" diameter",
+            "kcal": 172.27,
+            "protein_g": 2.8,
+            "carbs_g": 17.36,
+            "fat_g": 10.58,
+            "time": "19:29"
+          },
+          {
+            "food": "Soybean Soup, Miso Broth",
+            "amount": "0.67 cup",
+            "kcal": 44.73,
+            "protein_g": 3.19,
+            "carbs_g": 3.43,
+            "fat_g": 2.22,
+            "time": "19:29"
+          },
+          {
+            "food": "Seaweed Salad",
+            "amount": "0.50 cup",
+            "kcal": 63.1,
+            "protein_g": 2.97,
+            "carbs_g": 5.65,
+            "fat_g": 4.23,
+            "time": "19:29"
+          },
+          {
+            "food": "Pickled ginger",
+            "amount": "1.67 tbsp, sliced",
+            "kcal": 4.17,
+            "protein_g": 0.09,
+            "carbs_g": 0.93,
+            "fat_g": 0.04,
+            "time": "19:29"
+          },
+          {
+            "food": "Curry Sauce, Prepared With Water",
+            "amount": "0.60 cup",
+            "kcal": 79.07,
+            "protein_g": 1.28,
+            "carbs_g": 6.09,
+            "fat_g": 6.24,
+            "time": "19:29"
+          }
+        ],
+        "Snacks": [
+          {
+            "food": "Woodford Reserve, Kentucky Straight Bourbon Whiskey",
+            "amount": "6.00 x 1.5 oz",
+            "kcal": 660.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "21:51"
+          }
+        ]
+      },
+      "compliance_flags": [
+        "protein_low:67g (target 175-195g)",
+        "carbs_low_for_z2_easy:186g (target 242-291g)"
+      ]
+    },
+    {
+      "date": "2026-04-17",
+      "kcal_consumed": 2043.15,
+      "protein_g": 77.82,
+      "carbs_g": 212.65,
+      "net_carbs_g": 188.94,
+      "fiber_g": 23.29,
+      "fat_g": 100.26,
+      "water_ml": 2108.07,
+      "sodium_mg": 3463.65,
+      "potassium_mg": 1490.03,
+      "sugars_g": 35.8,
+      "added_sugars_g": 4.46,
+      "saturated_fat_g": 28.43,
+      "omega3_g": 1.41,
+      "calcium_mg": 709.95,
+      "iron_mg": 16.02,
+      "vitamin_d_iu": 88.88,
+      "day_complete": false,
+      "day_type": null,
+      "notes": "",
+      "meals": {
+        "Uncategorized": [
+          {
+            "food": "Water",
+            "amount": "473.18 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "11:37"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "11:37"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "11:37"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "14:55"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "14:55"
+          }
+        ],
+        "Breakfast": [
+          {
+            "food": "Hummus",
+            "amount": "5.00 tbsp",
+            "kcal": 166.13,
+            "protein_g": 5.18,
+            "carbs_g": 12.83,
+            "fat_g": 11.27,
+            "time": "11:37"
+          },
+          {
+            "food": "Ah, Cherry Tomatoes",
+            "amount": "100.00 g",
+            "kcal": 31.0,
+            "protein_g": 0.9,
+            "carbs_g": 6.0,
+            "fat_g": 0.8,
+            "time": "11:38"
+          },
+          {
+            "food": "Fonte, Sliced Bread, Brown",
+            "amount": "1.50 x 2.0 slices",
+            "kcal": 225.0,
+            "protein_g": 9.0,
+            "carbs_g": 43.5,
+            "fat_g": 1.5,
+            "time": "11:37"
+          },
+          {
+            "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+            "amount": "1.00 Can",
+            "kcal": 62.7,
+            "protein_g": 0.0,
+            "carbs_g": 14.85,
+            "fat_g": 0.0,
+            "time": "11:38"
+          }
+        ],
+        "Lunch": [
+          {
+            "food": "Breakfast Sausage, Pork",
+            "amount": "100.00 g",
+            "kcal": 438.0,
+            "protein_g": 15.12,
+            "carbs_g": 0.62,
+            "fat_g": 41.66,
+            "time": "11:38"
+          },
+          {
+            "food": "Brie Cheese",
+            "amount": "0.33 cup, diced",
+            "kcal": 160.32,
+            "protein_g": 9.96,
+            "carbs_g": 0.22,
+            "fat_g": 13.29,
+            "time": "11:36"
+          },
+          {
+            "food": "Hot Pepper Sauce",
+            "amount": "0.75 tbsp",
+            "kcal": 1.16,
+            "protein_g": 0.05,
+            "carbs_g": 0.19,
+            "fat_g": 0.04,
+            "time": "11:36"
+          },
+          {
+            "food": "Cucumber, Raw, With Peel",
+            "amount": "4.00 slice",
+            "kcal": 4.2,
+            "protein_g": 0.19,
+            "carbs_g": 0.89,
+            "fat_g": 0.05,
+            "time": "11:36"
+          },
+          {
+            "food": "Arugula, Raw",
+            "amount": "1.50 cup, cut pieces",
+            "kcal": 7.5,
+            "protein_g": 0.77,
+            "carbs_g": 1.09,
+            "fat_g": 0.2,
+            "time": "11:36"
+          },
+          {
+            "food": "Bread Roll, Soft, White",
+            "amount": "1.00 medium - 2 1/2\" diameter",
+            "kcal": 118.78,
+            "protein_g": 3.94,
+            "carbs_g": 20.05,
+            "fat_g": 2.8,
+            "time": "14:10"
+          }
+        ],
+        "Dinner": [
+          {
+            "food": "Onion, White, Yellow or Red, Cooked",
+            "amount": "0.33 large slice - 1/4\" thick",
+            "kcal": 4.69,
+            "protein_g": 0.15,
+            "carbs_g": 1.08,
+            "fat_g": 0.02,
+            "time": "18:42"
+          },
+          {
+            "food": "Flatbread, White",
+            "amount": "0.50 cup",
+            "kcal": 145.28,
+            "protein_g": 8.2,
+            "carbs_g": 25.89,
+            "fat_g": 1.49,
+            "time": "18:45"
+          },
+          {
+            "food": "Cilantro, Leaves, Raw",
+            "amount": "5.00 tbsp, chopped",
+            "kcal": 1.15,
+            "protein_g": 0.11,
+            "carbs_g": 0.18,
+            "fat_g": 0.03,
+            "time": "18:42"
+          },
+          {
+            "food": "Curry Sauce, Prepared With Water",
+            "amount": "0.50 cup",
+            "kcal": 65.89,
+            "protein_g": 1.06,
+            "carbs_g": 5.07,
+            "fat_g": 5.2,
+            "time": "18:42"
+          },
+          {
+            "food": "White Rice, Steamed",
+            "amount": "1.00 cup",
+            "kcal": 205.41,
+            "protein_g": 4.25,
+            "carbs_g": 44.51,
+            "fat_g": 0.44,
+            "time": "18:42"
+          },
+          {
+            "food": "Green Peas, Cooked from Frozen",
+            "amount": "0.33 cup, whole pieces",
+            "kcal": 41.6,
+            "protein_g": 2.75,
+            "carbs_g": 7.61,
+            "fat_g": 0.14,
+            "time": "18:42"
+          },
+          {
+            "food": "Tofu, Not Silken, Cooked, Firm",
+            "amount": "0.33 cup, cubed",
+            "kcal": 87.15,
+            "protein_g": 10.1,
+            "carbs_g": 3.18,
+            "fat_g": 4.66,
+            "time": "18:42"
+          }
+        ],
+        "Snacks": [
+          {
+            "food": "Boiled Eggs",
+            "amount": "1.00 medium",
+            "kcal": 68.2,
+            "protein_g": 5.54,
+            "carbs_g": 0.49,
+            "fat_g": 4.67,
+            "time": "14:55"
+          },
+          {
+            "food": "AH Paprika Chips",
+            "amount": "1.00 package",
+            "kcal": 209.0,
+            "protein_g": 0.55,
+            "carbs_g": 24.4,
+            "fat_g": 12.0,
+            "time": "20:02"
+          }
+        ]
+      },
+      "compliance_flags": [
+        "protein_low:78g (target 175-195g)"
+      ]
+    },
+    {
+      "date": "2026-04-18",
+      "kcal_consumed": 524.05,
+      "protein_g": 16.12,
+      "carbs_g": 78.25,
+      "net_carbs_g": 66.43,
+      "fiber_g": 11.77,
+      "fat_g": 17.33,
+      "water_ml": 150.67,
+      "sodium_mg": 565.29,
+      "potassium_mg": 366.24,
+      "sugars_g": 24.46,
+      "added_sugars_g": 0.0,
+      "saturated_fat_g": 1.9,
+      "omega3_g": 0.09,
+      "calcium_mg": 53.91,
+      "iron_mg": 1.79,
+      "vitamin_d_iu": 0.0,
+      "day_complete": false,
+      "day_type": null,
+      "notes": "",
+      "meals": {
+        "Breakfast": [
+          {
+            "food": "Hummus",
+            "amount": "6.00 tbsp",
+            "kcal": 199.35,
+            "protein_g": 6.22,
+            "carbs_g": 15.4,
+            "fat_g": 13.53,
+            "time": "10:37"
+          },
+          {
+            "food": "L'usine, Sliced Bread Brown",
+            "amount": "3.00 serving",
+            "kcal": 231.0,
+            "protein_g": 9.0,
+            "carbs_g": 42.0,
+            "fat_g": 3.0,
+            "time": "10:37"
+          },
+          {
+            "food": "Ah, Cherry Tomatoes",
+            "amount": "100.00 g",
+            "kcal": 31.0,
+            "protein_g": 0.9,
+            "carbs_g": 6.0,
+            "fat_g": 0.8,
+            "time": "10:37"
+          },
+          {
+            "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+            "amount": "1.00 Can",
+            "kcal": 62.7,
+            "protein_g": 0.0,
+            "carbs_g": 14.85,
+            "fat_g": 0.0,
+            "time": "10:37"
+          }
+        ]
+      },
+      "compliance_flags": [
+        "protein_low:16g (target 175-195g)",
+        "kcal_critically_low:524 (min 1800 on any day)"
+      ]
     }
   ],
   "weekly_targets": {
     "_note": "Claude will compute 7-day rolling averages from daily entries. These are reference targets only.",
     "avg_protein_g": 185,
-    "avg_kcal_range": "2400–2700",
-    "weight_loss_rate_kg_per_week": "0.3–0.5"
+    "avg_kcal_range": "2400\u20132700",
+    "weight_loss_rate_kg_per_week": "0.3\u20130.5"
   },
   "cronometer_field_mapping": {
     "_note": "Maps Cronometer CSV export column names to fields in this schema",
@@ -68,6 +1168,24 @@
     "Carbohydrates (g)": "carbs_g",
     "Fat (g)": "fat_g",
     "Fiber (g)": "fiber_g",
-    "Water (g)": "water_ml — note: Cronometer reports grams, which equals ml for water"
-  }
+    "Water (g)": "water_ml \u2014 note: Cronometer reports grams, which equals ml for water"
+  },
+  "generated_at": "2026-04-18T08:56:52Z",
+  "sync_version": "1.0.0",
+  "script_hash": "3c66cf2e",
+  "data_range": {
+    "earliest": "2026-04-13",
+    "latest": "2026-04-18",
+    "total_days": 6,
+    "complete_days": 0,
+    "incomplete_days": 6,
+    "unlogged_days": 0
+  },
+  "_needs_day_type": [
+    "2026-04-13",
+    "2026-04-14",
+    "2026-04-15",
+    "2026-04-17",
+    "2026-04-18"
+  ]
 }
