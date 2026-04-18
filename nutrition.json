@@ -1,0 +1,73 @@
+{
+  "_schema": {
+    "version": "1.0",
+    "description": "Daily nutrition log for MK — aligned to Cronometer daily summary export format.",
+    "how_to_populate": [
+      "Option A (Recommended): In Cronometer, go to Settings → Export Data → Daily Nutrition Summary. Copy the relevant daily row fields into this file.",
+      "Option B: Manual entry from Cronometer's daily summary view.",
+      "Option C: Use Claude to help you transcribe a Cronometer CSV export into this format."
+    ],
+    "day_type_options": [
+      "rest",
+      "z2_easy",
+      "z4_quality",
+      "long_z2",
+      "back_to_back_day1",
+      "back_to_back_day2",
+      "deload",
+      "travel",
+      "sick"
+    ],
+    "targets_reference": {
+      "protein_g_daily": "175–195 g (every day, all day types)",
+      "kcal_by_day_type": {
+        "rest": "2100–2300",
+        "z2_easy": "2400–2600",
+        "z4_quality": "2700–2900",
+        "long_z2_2to3h": "3000–3300",
+        "long_z2_3to4h": "3200–3500",
+        "back_to_back": "3100–3400 each day",
+        "deload": "2200–2400"
+      },
+      "carbs_g_by_day_type": {
+        "rest": "145–195 (1.5–2.0 g/kg)",
+        "z2_easy": "242–291 (2.5–3.0 g/kg)",
+        "z4_quality": "388–485 (4.0–5.0 g/kg)",
+        "long_z2": "388–485 (4.0–5.0 g/kg)",
+        "back_to_back": "435–485 (4.5–5.0 g/kg)"
+      },
+      "fat_g_daily": "70–90 g (stable across day types)"
+    }
+  },
+  "daily": [
+    {
+      "_comment": "EXAMPLE ENTRY — delete this and replace with your real data",
+      "date": "2026-04-16",
+      "day_type": "z2_easy",
+      "kcal_consumed": 2480,
+      "kcal_target": 2500,
+      "protein_g": 186,
+      "carbs_g": 268,
+      "fat_g": 75,
+      "fiber_g": 34,
+      "water_ml": 2900,
+      "fasted_session": false,
+      "notes": "Example entry. Pre-ride: oats + banana. Post-ride: whey shake + yogurt. Dinner: salmon + rice."
+    }
+  ],
+  "weekly_targets": {
+    "_note": "Claude will compute 7-day rolling averages from daily entries. These are reference targets only.",
+    "avg_protein_g": 185,
+    "avg_kcal_range": "2400–2700",
+    "weight_loss_rate_kg_per_week": "0.3–0.5"
+  },
+  "cronometer_field_mapping": {
+    "_note": "Maps Cronometer CSV export column names to fields in this schema",
+    "Energy (kcal)": "kcal_consumed",
+    "Protein (g)": "protein_g",
+    "Carbohydrates (g)": "carbs_g",
+    "Fat (g)": "fat_g",
+    "Fiber (g)": "fiber_g",
+    "Water (g)": "water_ml — note: Cronometer reports grams, which equals ml for water"
+  }
+}
