@@ -163,7 +163,31 @@
 
 ---
 
-## 5. Nutrition / Fueling
+## 5. Food Preferences & Dinner Planning
+
+### Diet & Restrictions
+
+| Field | Value |
+|-------|-------|
+| Diet | Pescatarian (fish & seafood yes; meat no) |
+| Dietary restrictions | None |
+| Allergies | None |
+| Foods disliked | None |
+
+### Cooking Time
+
+| Day type | Available prep time | Notes |
+|----------|-------------------|-------|
+| Weeknight | ~45 min active prep | Hands-off roasting/baking time is fine |
+| Weekend | Longer — no constraint | Can tackle more involved recipes |
+
+### Recipe Book Scope
+
+Dinner recommendations come from the 115-book collection in `cooking book list.txt`. Breakfast and lunch use general knowledge. Baking/dessert books are excluded from dinner suggestions unless specifically requested.
+
+---
+
+## 6. Nutrition / Fueling
 
 ### Training Fuel Recipe
 
@@ -266,7 +290,7 @@ Complete MDS Trek 75km (5 stages: 14/12/19/19/13km) in October 2026 at a comfort
 - Loaded walking (6–8kg pack) must begin by July — foot, ankle, hip and lower back conditioning cannot be faked with cycling
 - Foot care is critical: blisters are the primary DNF cause in multi-day treks; test socks, shoes and anti-chafe protocol before the event
 
-**Current status (May 2026):** CTL 17.3, FTP 200W (outdoor), eFTP 158W, weight 99kg. Returned from Japan May 5 after 2-week break. TSB +14.4 (very fresh). HRV amber from jet lag. Reactivation week begins May 6. Training plan targets CTL 38–42 and weight 90kg by July 15 holiday. See training-plan-2026-05-05.md for full 10-week block.
+**Current status (May 2026):** CTL 17.3, FTP 200W (outdoor), eFTP 158W, weight 99kg. Returned from Japan May 5 after 2-week break. TSB +14.4 (very fresh). HRV amber from jet lag. Reactivation week begins May 6. Training plan targets CTL 38–42 by July 15 holiday (weight checkpoint ~94kg). Ultimate weight target: 90kg by October (MDS 120). See training-plan-2026-05-05.md for full 10-week block.
 
 ---
 
