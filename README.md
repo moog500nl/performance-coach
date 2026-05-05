@@ -10,7 +10,15 @@ April 18 Revision:
 
 
 
-Now includes a diet coach component, analysing synced data fron cronometer. 
+Now includes a diet coach component, analysing synced data fron cronometer.
+
+
+
+May 5 Revision:
+
+
+
+Added list of personal cookbooks to reference for dinner recommendations.
 
 
 
