@@ -1,81 +1,28 @@
 {
-  "generated_at": "2026-05-01T22:06:39.720512",
+  "generated_at": "2026-05-06T16:28:30.799218",
   "version": "3.102",
   "script_hash": "864452f12c91",
   "scan_hours": 72,
   "retention_days": 14,
   "activities": [
     {
-      "activity_id": "i140654431",
-      "date": "2026-04-17",
+      "activity_id": "i145949752",
+      "date": "2026-05-06",
       "type": "VirtualRide",
-      "name": "Zwift - Endurance #1",
-      "interval_summary": [
-        "1x 57s 219w",
-        "1x 4m43s 176w"
-      ],
+      "name": "Zwift - Pacer Group Ride with Bernie",
+      "interval_summary": null,
       "intervals": [
         {
           "type": "RECOVERY",
-          "duration_secs": 423,
-          "avg_power": 113,
-          "max_power": 157,
-          "avg_hr": 108,
-          "max_hr": 119,
-          "avg_cadence": 91.35461,
+          "duration_secs": 3619,
+          "avg_power": 128,
+          "max_power": 335,
+          "avg_hr": 114,
+          "max_hr": 125,
+          "avg_cadence": 86.64051,
           "zone": 2,
-          "training_load": 4.021144,
-          "decoupling": -8.630712
-        },
-        {
-          "type": "WORK",
-          "label": "57s@219w105rpm",
-          "duration_secs": 57,
-          "avg_power": 219,
-          "max_power": 221,
-          "avg_hr": 117,
-          "max_hr": 128,
-          "avg_cadence": 104.91228,
-          "zone": 5,
-          "training_load": 1.5833334,
-          "decoupling": 8.0024185
-        },
-        {
-          "type": "RECOVERY",
-          "duration_secs": 259,
-          "avg_power": 113,
-          "max_power": 219,
-          "avg_hr": 117,
-          "max_hr": 133,
-          "avg_cadence": 94.810814,
-          "zone": 2,
-          "training_load": 2.855475,
-          "decoupling": -38.33298
-        },
-        {
-          "type": "WORK",
-          "label": "283s@176w101rpm",
-          "duration_secs": 283,
-          "avg_power": 176,
-          "max_power": 182,
-          "avg_hr": 131,
-          "max_hr": 139,
-          "avg_cadence": 101.09965,
-          "zone": 3,
-          "training_load": 6.0186634,
-          "decoupling": 5.148125
-        },
-        {
-          "type": "RECOVERY",
-          "duration_secs": 2593,
-          "avg_power": 133,
-          "max_power": 264,
-          "avg_hr": 124,
-          "max_hr": 136,
-          "avg_cadence": 95.058235,
-          "zone": 2,
-          "training_load": 34.239525,
-          "decoupling": 2.1170506
+          "training_load": 43.12893,
+          "decoupling": 0.057880644
         }
       ]
     }
