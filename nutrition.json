@@ -59,7 +59,7 @@
       "iron_mg": 9.69,
       "vitamin_d_iu": 722.74,
       "day_complete": false,
-      "day_type": null,
+      "day_type": "rest",
       "notes": "",
       "meals": {
         "Uncategorized": [
@@ -227,7 +227,7 @@
       "iron_mg": 13.37,
       "vitamin_d_iu": 0.0,
       "day_complete": false,
-      "day_type": null,
+      "day_type": "z2_easy",
       "notes": "",
       "meals": {
         "Uncategorized": [
@@ -427,7 +427,7 @@
       "iron_mg": 11.05,
       "vitamin_d_iu": 114.84,
       "day_complete": false,
-      "day_type": null,
+      "day_type": "z2_easy",
       "notes": "",
       "meals": {
         "Uncategorized": [
@@ -854,7 +854,7 @@
       "iron_mg": 16.02,
       "vitamin_d_iu": 88.88,
       "day_complete": false,
-      "day_type": null,
+      "day_type": "z2_easy",
       "notes": "",
       "meals": {
         "Uncategorized": [
@@ -1107,7 +1107,7 @@
       "iron_mg": 1.79,
       "vitamin_d_iu": 0.0,
       "day_complete": false,
-      "day_type": null,
+      "day_type": "travel",
       "notes": "",
       "meals": {
         "Breakfast": [
@@ -1173,7 +1173,7 @@
       "iron_mg": 6.56,
       "vitamin_d_iu": 906.32,
       "day_complete": false,
-      "day_type": null,
+      "day_type": "rest",
       "notes": "",
       "compliance_flags": [
         "protein_low:86g (target 175-195g)"
@@ -1198,7 +1198,7 @@
       "iron_mg": 9.13,
       "vitamin_d_iu": 96.16,
       "day_complete": false,
-      "day_type": null,
+      "day_type": "z2_easy",
       "notes": "",
       "compliance_flags": [
         "protein_low:92g (target 175-195g)"
@@ -1223,7 +1223,7 @@
       "iron_mg": 4.95,
       "vitamin_d_iu": 31.4,
       "day_complete": false,
-      "day_type": null,
+      "day_type": "z4_quality",
       "notes": "",
       "compliance_flags": [
         "protein_low:72g (target 175-195g)"
@@ -1248,7 +1248,7 @@
       "iron_mg": 6.13,
       "vitamin_d_iu": 33.58,
       "day_complete": false,
-      "day_type": null,
+      "day_type": "z2_easy",
       "notes": "",
       "compliance_flags": [
         "protein_low:125g (target 175-195g)"
@@ -1273,7 +1273,7 @@
       "iron_mg": 7.0,
       "vitamin_d_iu": 279.2,
       "day_complete": false,
-      "day_type": null,
+      "day_type": "z2_easy",
       "notes": "",
       "compliance_flags": [
         "protein_low:134g (target 175-195g)"
@@ -1298,7 +1298,7 @@
       "iron_mg": 11.37,
       "vitamin_d_iu": 492.0,
       "day_complete": false,
-      "day_type": null,
+      "day_type": "long_z2",
       "notes": "",
       "compliance_flags": [
         "protein_low:106g (target 175-195g)"
@@ -1323,7 +1323,7 @@
       "iron_mg": 5.65,
       "vitamin_d_iu": 293.4,
       "day_complete": false,
-      "day_type": null,
+      "day_type": "rest",
       "notes": "",
       "compliance_flags": [
         "protein_low:111g (target 175-195g)"
@@ -1356,18 +1356,5 @@
     "incomplete_days": 13,
     "unlogged_days": 0
   },
-  "_needs_day_type": [
-    "2026-04-13",
-    "2026-04-14",
-    "2026-04-15",
-    "2026-04-17",
-    "2026-04-18",
-    "2026-05-05",
-    "2026-05-06",
-    "2026-05-07",
-    "2026-05-08",
-    "2026-05-09",
-    "2026-05-10",
-    "2026-05-11"
-  ]
+  "_needs_day_type": []
 }
