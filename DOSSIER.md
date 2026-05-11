@@ -169,7 +169,7 @@
 
 | Field | Value |
 |-------|-------|
-| Diet | Pescatarian (fish & seafood yes; meat no) |
+| Diet | Pescatarian / Vegetarian (fish & seafood yes; meat no) |
 | Dietary restrictions | None |
 | Allergies | None |
 | Foods disliked | None |
@@ -183,7 +183,7 @@
 
 ### Recipe Book Scope
 
-Dinner recommendations come from the 115-book collection in `cooking book list.txt`. Breakfast and lunch use general knowledge. Baking/dessert books are excluded from dinner suggestions unless specifically requested.
+Dinner recommendations come from the 115-book collection in `cooking book list.txt`. Breakfast and lunch use general knowledge. Baking/dessert books are excluded from dinner suggestions unless specifically requested. Don't always suggest fish dishes, vegetarian is fine too.
 
 ---
 
