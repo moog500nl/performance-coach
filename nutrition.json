@@ -1176,8 +1176,174 @@
       "day_type": "rest",
       "notes": "",
       "compliance_flags": [
-        "protein_low:86g (target 175-195g)"
-      ]
+        "protein_low:86g (target 175-195g)",
+        "carbs_high_for_rest:217g (target 145-195g)",
+        "kcal_high_for_rest:2739 (target 2100-2300)"
+      ],
+      "meals": {
+        "Uncategorized": [
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "12:11"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "12:11"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "12:11"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "12:11"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "12:12"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "12:13"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "20:19"
+          }
+        ],
+        "Breakfast": [
+          {
+            "food": "De Zaanse Hoeve, Yoghurt, Greek Style, 2% Fat",
+            "amount": "246.00 g",
+            "kcal": 150.42,
+            "protein_g": 14.76,
+            "carbs_g": 11.64,
+            "fat_g": 4.92,
+            "time": "09:39"
+          },
+          {
+            "food": "barnhouse, Krunchy Dinkel mit regionalem Dinkel",
+            "amount": "60.00 g",
+            "kcal": 270.56,
+            "protein_g": 5.81,
+            "carbs_g": 43.2,
+            "fat_g": 9.0,
+            "time": "09:41"
+          },
+          {
+            "food": "Jazz, Fresh Apple",
+            "amount": "100.00 g",
+            "kcal": 53.72,
+            "protein_g": 0.41,
+            "carbs_g": 14.05,
+            "fat_g": 0.17,
+            "time": "10:06"
+          },
+          {
+            "food": "Honey",
+            "amount": "1.00 oz",
+            "kcal": 86.18,
+            "protein_g": 0.09,
+            "carbs_g": 23.36,
+            "time": "09:43"
+          }
+        ],
+        "Lunch": [
+          {
+            "food": "Ah, Cherry Tomatoes",
+            "amount": "100.00 g",
+            "kcal": 31.0,
+            "protein_g": 0.9,
+            "carbs_g": 6.0,
+            "fat_g": 0.8,
+            "time": "12:57"
+          },
+          {
+            "food": "Tesco, White Bread, Medium Sliced",
+            "amount": "3.00 Slice",
+            "kcal": 288.0,
+            "protein_g": 9.6,
+            "carbs_g": 57.3,
+            "fat_g": 2.7,
+            "time": "12:57"
+          },
+          {
+            "food": "Hummus",
+            "amount": "5.00 tbsp",
+            "kcal": 166.13,
+            "protein_g": 5.18,
+            "carbs_g": 12.83,
+            "fat_g": 11.27,
+            "time": "12:57"
+          }
+        ],
+        "Dinner": [
+          {
+            "food": "Salmon Puttanesca",
+            "amount": "2.00 serving",
+            "kcal": 823.55,
+            "protein_g": 48.42,
+            "carbs_g": 24.07,
+            "fat_g": 61.36,
+            "time": "13:13"
+          }
+        ],
+        "Snacks": [
+          {
+            "food": "AH Paprika Chips",
+            "amount": "1.00 package",
+            "kcal": 209.0,
+            "protein_g": 0.55,
+            "carbs_g": 24.4,
+            "fat_g": 12.0,
+            "time": "17:28"
+          },
+          {
+            "food": "Woodford Reserve, Kentucky Straight Bourbon Whiskey",
+            "amount": "6.00 x 1.5 oz",
+            "kcal": 660.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "21:51"
+          }
+        ]
+      }
     },
     {
       "date": "2026-05-06",
@@ -1201,8 +1367,184 @@
       "day_type": "z2_easy",
       "notes": "",
       "compliance_flags": [
-        "protein_low:92g (target 175-195g)"
-      ]
+        "protein_low:92g (target 175-195g)",
+        "carbs_low_for_z2_easy:160g (target 242-291g)",
+        "kcal_low_for_z2_easy:2080 (target 2400-2600)"
+      ],
+      "meals": {
+        "Uncategorized": [
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "12:49"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "12:49"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "12:49"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "17:25"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "17:25"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "17:25"
+          },
+          {
+            "food": "AH Paprika Chips",
+            "amount": "1.00 package",
+            "kcal": 209.0,
+            "protein_g": 0.55,
+            "carbs_g": 24.4,
+            "fat_g": 12.0,
+            "time": "18:24"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "20:10"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "20:10"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "20:10"
+          }
+        ],
+        "Breakfast": [
+          {
+            "food": "De Zaanse Hoeve, Yoghurt, Greek Style, 2% Fat",
+            "amount": "200.00 g",
+            "kcal": 122.29,
+            "protein_g": 12.0,
+            "carbs_g": 9.47,
+            "fat_g": 4.0,
+            "time": "12:48"
+          },
+          {
+            "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+            "amount": "1.00 Can",
+            "kcal": 62.7,
+            "protein_g": 0.0,
+            "carbs_g": 14.85,
+            "fat_g": 0.0,
+            "time": "12:48"
+          }
+        ],
+        "Lunch": [
+          {
+            "food": "Chicken sandwich, with mayo",
+            "amount": "1.00 sandwich",
+            "kcal": 322.99,
+            "protein_g": 19.67,
+            "carbs_g": 30.07,
+            "fat_g": 13.35,
+            "time": "12:49"
+          },
+          {
+            "food": "Breakfast Sausage, Pork",
+            "amount": "80.00 g",
+            "kcal": 350.4,
+            "protein_g": 12.1,
+            "carbs_g": 0.5,
+            "fat_g": 33.33,
+            "time": "12:49"
+          }
+        ],
+        "Dinner": [
+          {
+            "food": "Baked Fish in Tahini Sauce",
+            "amount": "1.00 serving",
+            "kcal": 705.13,
+            "protein_g": 37.75,
+            "carbs_g": 31.53,
+            "fat_g": 51.34,
+            "time": "17:44"
+          }
+        ],
+        "Snacks": [
+          {
+            "food": "Tesco, White Bread, Medium Sliced",
+            "amount": "2.00 Slice",
+            "kcal": 192.0,
+            "protein_g": 6.4,
+            "carbs_g": 38.2,
+            "fat_g": 1.8,
+            "time": "17:24"
+          },
+          {
+            "food": "Hummus",
+            "amount": "3.00 tbsp",
+            "kcal": 99.68,
+            "protein_g": 3.11,
+            "carbs_g": 7.7,
+            "fat_g": 6.76,
+            "time": "17:24"
+          },
+          {
+            "food": "Ah, Cherry Tomatoes",
+            "amount": "50.00 g",
+            "kcal": 15.5,
+            "protein_g": 0.45,
+            "carbs_g": 3.0,
+            "fat_g": 0.4,
+            "time": "17:24"
+          }
+        ]
+      }
     },
     {
       "date": "2026-05-07",
@@ -1226,8 +1568,98 @@
       "day_type": "z4_quality",
       "notes": "",
       "compliance_flags": [
-        "protein_low:72g (target 175-195g)"
-      ]
+        "protein_low:72g (target 175-195g)",
+        "carbs_low_for_z4_quality:235g (target 388-485g)",
+        "kcal_low_for_z4_quality:2164 (target 2700-2900)"
+      ],
+      "meals": {
+        "Uncategorized": [
+          {
+            "food": "Albert Heijn, Bacon Egg Sandwich",
+            "amount": "1.00 Package",
+            "kcal": 408.72,
+            "protein_g": 20.28,
+            "carbs_g": 30.11,
+            "fat_g": 23.4,
+            "time": "17:13"
+          },
+          {
+            "food": "Coke",
+            "amount": "3.00 small can - each 8 fl oz",
+            "kcal": 272.62,
+            "protein_g": 0.52,
+            "carbs_g": 70.44,
+            "fat_g": 0.15,
+            "time": "22:11"
+          },
+          {
+            "food": "Jack Daniel's, Tennessee Whiskey, Sour Mash",
+            "amount": "6.00 x 25.0 ml",
+            "kcal": 328.17,
+            "time": "22:12"
+          }
+        ],
+        "Breakfast": [
+          {
+            "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+            "amount": "1.00 Can",
+            "kcal": 62.7,
+            "protein_g": 0.0,
+            "carbs_g": 14.85,
+            "fat_g": 0.0,
+            "time": "16:49"
+          },
+          {
+            "food": "De Zaanse Hoeve, Yoghurt, Greek Style, 2% Fat",
+            "amount": "250.00 g",
+            "kcal": 152.86,
+            "protein_g": 15.0,
+            "carbs_g": 11.83,
+            "fat_g": 5.0,
+            "time": "16:48"
+          },
+          {
+            "food": "barnhouse, Krunchy Dinkel mit regionalem Dinkel",
+            "amount": "70.00 g",
+            "kcal": 315.66,
+            "protein_g": 6.78,
+            "carbs_g": 50.4,
+            "fat_g": 10.5,
+            "time": "16:49"
+          }
+        ],
+        "Lunch": [
+          {
+            "food": "Chicken sandwich, with mayo",
+            "amount": "1.00 sandwich",
+            "kcal": 322.99,
+            "protein_g": 19.67,
+            "carbs_g": 30.07,
+            "fat_g": 13.35,
+            "time": "16:49"
+          },
+          {
+            "food": "Smoked Sausage, Pork and Beef, with Cheese",
+            "amount": "2.00 oz",
+            "kcal": 176.13,
+            "protein_g": 7.43,
+            "carbs_g": 2.03,
+            "fat_g": 15.2,
+            "time": "16:50"
+          }
+        ],
+        "Snacks": [
+          {
+            "food": "Japanese Rice Crackers",
+            "amount": "10.00 each",
+            "kcal": 124.64,
+            "protein_g": 2.21,
+            "carbs_g": 24.79,
+            "fat_g": 1.5,
+            "time": "16:55"
+          }
+        ]
+      }
     },
     {
       "date": "2026-05-08",
@@ -1251,8 +1683,184 @@
       "day_type": "z2_easy",
       "notes": "",
       "compliance_flags": [
-        "protein_low:125g (target 175-195g)"
-      ]
+        "protein_low:125g (target 175-195g)",
+        "carbs_low_for_z2_easy:200g (target 242-291g)",
+        "kcal_low_for_z2_easy:2033 (target 2400-2600)"
+      ],
+      "meals": {
+        "Uncategorized": [
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "19:47"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "19:47"
+          }
+        ],
+        "Breakfast": [
+          {
+            "food": "De Zaanse Hoeve, Yoghurt, Greek Style, 2% Fat",
+            "amount": "200.00 g",
+            "kcal": 122.29,
+            "protein_g": 12.0,
+            "carbs_g": 9.47,
+            "fat_g": 4.0,
+            "time": "08:50"
+          },
+          {
+            "food": "barnhouse, Krunchy Dinkel mit regionalem Dinkel",
+            "amount": "60.00 g",
+            "kcal": 270.56,
+            "protein_g": 5.81,
+            "carbs_g": 43.2,
+            "fat_g": 9.0,
+            "time": "08:50"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "13:44"
+          },
+          {
+            "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+            "amount": "1.00 Can",
+            "kcal": 62.7,
+            "protein_g": 0.0,
+            "carbs_g": 14.85,
+            "fat_g": 0.0,
+            "time": "08:50"
+          }
+        ],
+        "Lunch": [
+          {
+            "food": "Salmon, Smoked",
+            "amount": "50.00 g",
+            "kcal": 58.5,
+            "protein_g": 9.14,
+            "carbs_g": 0.0,
+            "fat_g": 2.16,
+            "time": "11:59"
+          },
+          {
+            "food": "Laoganma, Spicy Chilli Crisp",
+            "amount": "5.00 g",
+            "kcal": 35.0,
+            "protein_g": 0.33,
+            "carbs_g": 0.58,
+            "fat_g": 3.42,
+            "time": "12:02"
+          },
+          {
+            "food": "Tesco, White Bread, Medium Sliced",
+            "amount": "1.00 Slice",
+            "kcal": 96.0,
+            "protein_g": 3.2,
+            "carbs_g": 19.1,
+            "fat_g": 0.9,
+            "time": "11:59"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "13:44"
+          },
+          {
+            "food": "Shrimp, Cooked from Fresh",
+            "amount": "200.00 g",
+            "kcal": 198.0,
+            "protein_g": 47.96,
+            "carbs_g": 0.4,
+            "fat_g": 0.56,
+            "time": "11:50"
+          },
+          {
+            "food": "Hummus",
+            "amount": "3.00 tbsp",
+            "kcal": 99.68,
+            "protein_g": 3.11,
+            "carbs_g": 7.7,
+            "fat_g": 6.76,
+            "time": "11:59"
+          }
+        ],
+        "Dinner": [
+          {
+            "food": "Harissa Glazed Aubergine Halloumi",
+            "amount": "1.00 serving",
+            "kcal": 881.06,
+            "protein_g": 42.84,
+            "carbs_g": 79.98,
+            "fat_g": 48.07,
+            "time": "13:33"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "13:44"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "13:44"
+          }
+        ],
+        "Snacks": [
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "13:44"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "13:44"
+          },
+          {
+            "food": "AH Paprika Chips",
+            "amount": "1.00 package",
+            "kcal": 209.0,
+            "protein_g": 0.55,
+            "carbs_g": 24.4,
+            "fat_g": 12.0,
+            "time": "15:12"
+          }
+        ]
+      }
     },
     {
       "date": "2026-05-09",
@@ -1276,8 +1884,164 @@
       "day_type": "z2_easy",
       "notes": "",
       "compliance_flags": [
-        "protein_low:134g (target 175-195g)"
-      ]
+        "protein_low:134g (target 175-195g)",
+        "carbs_low_for_z2_easy:175g (target 242-291g)",
+        "kcal_low_for_z2_easy:2094 (target 2400-2600)"
+      ],
+      "meals": {
+        "Uncategorized": [
+          {
+            "food": "De Zaanse Hoeve, Yoghurt, Greek Style, 2% Fat",
+            "amount": "200.00 g",
+            "kcal": 122.29,
+            "protein_g": 12.0,
+            "carbs_g": 9.47,
+            "fat_g": 4.0,
+            "time": "08:52"
+          },
+          {
+            "food": "barnhouse, Krunchy Dinkel mit regionalem Dinkel",
+            "amount": "60.00 g",
+            "kcal": 270.56,
+            "protein_g": 5.81,
+            "carbs_g": 43.2,
+            "fat_g": 9.0,
+            "time": "08:52"
+          },
+          {
+            "food": "Asda, Pomegranate Seeds",
+            "amount": "20.00 g",
+            "kcal": 20.21,
+            "protein_g": 0.34,
+            "carbs_g": 4.6,
+            "fat_g": 0.24,
+            "time": "08:52"
+          },
+          {
+            "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+            "amount": "1.00 Can",
+            "kcal": 62.7,
+            "protein_g": 0.0,
+            "carbs_g": 14.85,
+            "fat_g": 0.0,
+            "time": "08:53"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "20:22"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "20:22"
+          }
+        ],
+        "Lunch": [
+          {
+            "food": "Salmon, Smoked",
+            "amount": "100.00 g",
+            "kcal": 117.0,
+            "protein_g": 18.28,
+            "carbs_g": 0.0,
+            "fat_g": 4.32,
+            "time": "11:55"
+          },
+          {
+            "food": "Hummus",
+            "amount": "3.00 tbsp",
+            "kcal": 99.68,
+            "protein_g": 3.11,
+            "carbs_g": 7.7,
+            "fat_g": 6.76,
+            "time": "11:55"
+          },
+          {
+            "food": "Tasty Basics, Crackers, Cheese - Pepper",
+            "amount": "3.00 cracker",
+            "kcal": 300.0,
+            "protein_g": 24.9,
+            "carbs_g": 19.8,
+            "fat_g": 14.7,
+            "time": "11:54"
+          }
+        ],
+        "Dinner": [
+          {
+            "food": "Miso-Glazed Salmon with Stir-Fried Greens",
+            "amount": "1.50 serving",
+            "kcal": 420.74,
+            "protein_g": 42.84,
+            "carbs_g": 27.42,
+            "fat_g": 15.67,
+            "time": "10:46"
+          },
+          {
+            "food": "Lagunitas, IPA",
+            "amount": "666.00 ml",
+            "kcal": 346.78,
+            "protein_g": 5.33,
+            "carbs_g": 26.64,
+            "fat_g": 2.0,
+            "time": "20:21"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "15:22"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "15:22"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "15:22"
+          }
+        ],
+        "Snacks": [
+          {
+            "food": "Mackerel, Canned, Drained",
+            "amount": "80.00 g",
+            "kcal": 124.8,
+            "protein_g": 18.55,
+            "carbs_g": 0.0,
+            "fat_g": 5.04,
+            "time": "15:22"
+          },
+          {
+            "food": "Lay's, Max, Natural",
+            "amount": "0.40 per",
+            "kcal": 209.6,
+            "protein_g": 2.68,
+            "carbs_g": 21.08,
+            "fat_g": 13.2,
+            "time": "17:34"
+          }
+        ]
+      }
     },
     {
       "date": "2026-05-10",
@@ -1301,8 +2065,200 @@
       "day_type": "long_z2",
       "notes": "",
       "compliance_flags": [
-        "protein_low:106g (target 175-195g)"
-      ]
+        "protein_low:106g (target 175-195g)",
+        "carbs_low_for_long_z2:261g (target 388-485g)",
+        "kcal_low_for_long_z2:2129 (target 3000-3300)"
+      ],
+      "meals": {
+        "Breakfast": [
+          {
+            "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+            "amount": "1.00 Can",
+            "kcal": 62.7,
+            "protein_g": 0.0,
+            "carbs_g": 14.85,
+            "fat_g": 0.0,
+            "time": "09:10"
+          },
+          {
+            "food": "barnhouse, Krunchy Dinkel mit regionalem Dinkel",
+            "amount": "50.00 g",
+            "kcal": 225.47,
+            "protein_g": 4.85,
+            "carbs_g": 36.0,
+            "fat_g": 7.5,
+            "time": "09:10"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "17:20"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "17:20"
+          },
+          {
+            "food": "Tasty Basics, Crackers, Kaas - Peper",
+            "amount": "1.00 cracker",
+            "kcal": 100.0,
+            "protein_g": 8.3,
+            "carbs_g": 6.6,
+            "fat_g": 4.9,
+            "time": "09:09"
+          },
+          {
+            "food": "De Zaanse Hoeve, Yoghurt, Greek Style, 2% Fat",
+            "amount": "100.00 g",
+            "kcal": 61.14,
+            "protein_g": 6.0,
+            "carbs_g": 4.73,
+            "fat_g": 2.0,
+            "time": "09:10"
+          },
+          {
+            "food": "Salmon, Smoked",
+            "amount": "100.00 g",
+            "kcal": 117.0,
+            "protein_g": 18.28,
+            "carbs_g": 0.0,
+            "fat_g": 4.32,
+            "time": "09:10"
+          }
+        ],
+        "Lunch": [
+          {
+            "food": "Albert Heijn, Witte Bollen",
+            "amount": "2.00 serving",
+            "kcal": 244.0,
+            "protein_g": 8.3,
+            "carbs_g": 49.4,
+            "fat_g": 2.0,
+            "time": "12:42"
+          },
+          {
+            "food": "Herring, Salted",
+            "amount": "180.00 g",
+            "kcal": 309.54,
+            "protein_g": 31.68,
+            "carbs_g": 5.04,
+            "fat_g": 18.18,
+            "time": "12:41"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "17:20"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "17:20"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "17:20"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "17:20"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "17:20"
+          }
+        ],
+        "Dinner": [
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "09:10"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "09:10"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "17:19"
+          },
+          {
+            "food": "Water",
+            "amount": "236.59 mL",
+            "kcal": 0.0,
+            "protein_g": 0.0,
+            "carbs_g": 0.0,
+            "fat_g": 0.0,
+            "time": "17:20"
+          },
+          {
+            "food": "Holy Napoli, Neapolitan Pizza, Margherita",
+            "amount": "4.00 x 0.25 pizza",
+            "kcal": 800.0,
+            "protein_g": 28.0,
+            "carbs_g": 120.0,
+            "fat_g": 20.0,
+            "time": "17:41"
+          }
+        ],
+        "Snacks": [
+          {
+            "food": "AH Paprika Chips",
+            "amount": "1.00 package",
+            "kcal": 209.0,
+            "protein_g": 0.55,
+            "carbs_g": 24.4,
+            "fat_g": 12.0,
+            "time": "17:42"
+          }
+        ]
+      }
     },
     {
       "date": "2026-05-11",
@@ -1326,8 +2282,71 @@
       "day_type": "rest",
       "notes": "",
       "compliance_flags": [
-        "protein_low:111g (target 175-195g)"
-      ]
+        "protein_low:111g (target 175-195g)",
+        "kcal_low_for_rest:1802 (target 2100-2300)"
+      ],
+      "meals": {
+        "Uncategorized": [
+          {
+            "food": "Rose harissa chickpeas with flaked cod",
+            "amount": "2.00 serving",
+            "kcal": 585.62,
+            "protein_g": 58.87,
+            "carbs_g": 68.23,
+            "fat_g": 11.01,
+            "time": "13:14"
+          }
+        ],
+        "Breakfast": [
+          {
+            "food": "barnhouse, Krunchy Dinkel mit regionalem Dinkel",
+            "amount": "70.00 g",
+            "kcal": 315.66,
+            "protein_g": 6.78,
+            "carbs_g": 50.4,
+            "fat_g": 10.5,
+            "time": "12:49"
+          },
+          {
+            "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+            "amount": "1.00 Can",
+            "kcal": 62.7,
+            "protein_g": 0.0,
+            "carbs_g": 14.85,
+            "fat_g": 0.0,
+            "time": "12:48"
+          },
+          {
+            "food": "De Zaanse Hoeve, Yoghurt, Greek Style, 2% Fat",
+            "amount": "200.00 g",
+            "kcal": 122.29,
+            "protein_g": 12.0,
+            "carbs_g": 9.47,
+            "fat_g": 4.0,
+            "time": "12:48"
+          }
+        ],
+        "Lunch": [
+          {
+            "food": "Herring, Pickled",
+            "amount": "180.00 g",
+            "kcal": 471.6,
+            "protein_g": 25.54,
+            "carbs_g": 17.35,
+            "fat_g": 32.4,
+            "time": "12:49"
+          },
+          {
+            "food": "Albert Heijn, Witte Bollen",
+            "amount": "2.00 serving",
+            "kcal": 244.0,
+            "protein_g": 8.3,
+            "carbs_g": 49.4,
+            "fat_g": 2.0,
+            "time": "12:49"
+          }
+        ]
+      }
     }
   ],
   "weekly_targets": {
@@ -1345,7 +2364,7 @@
     "Fiber (g)": "fiber_g",
     "Water (g)": "water_ml \u2014 note: Cronometer reports grams, which equals ml for water"
   },
-  "generated_at": "2026-05-11T11:20:23Z",
+  "generated_at": "2026-05-11T11:52:06Z",
   "sync_version": "1.0.0",
   "script_hash": "3c66cf2e",
   "data_range": {
