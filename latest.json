@@ -72,7 +72,7 @@
   },
   "metadata": {
     "athlete_id": "REDACTED",
-    "last_updated": "2026-05-14T08:18:00.891799",
+    "last_updated": "2026-05-14T10:43:02.826671",
     "data_range_days": 7,
     "extended_range_days": 28,
     "version": "3.102"
@@ -613,9 +613,9 @@
           "current_week_hard_days_completed": 1,
           "current_week_hard_days_total": 1,
           "race_proximity": null,
-          "next_week_load": null,
+          "next_week_load": 4.48,
           "plan_coverage_current_week": 1.5,
-          "plan_coverage_next_week": 0.0
+          "plan_coverage_next_week": 2.5
         },
         "data_quality": "good",
         "stream_agreement": null
@@ -648,7 +648,7 @@
     "p_max": 518,
     "power_model_source": "wellness.sportInfo",
     "vo2max": null,
-    "calculation_timestamp": "2026-05-14T08:18:00.890973",
+    "calculation_timestamp": "2026-05-14T10:43:02.825895",
     "data_quality": {
       "hrv_data_points": 7,
       "rhr_data_points": 7,
@@ -1456,15 +1456,85 @@
       "workout_summary": null,
       "has_terrain": false,
       "description": ""
+    },
+    {
+      "id": 110075036,
+      "date": "2026-05-19",
+      "name": "VO2-4 Ascending Pyramid",
+      "type": "WORKOUT",
+      "sport_type": "Ride",
+      "planned_tss": 59,
+      "duration_hours": 0.95,
+      "duration_formatted": "57m",
+      "workout_summary": null,
+      "has_terrain": false,
+      "indoor": true,
+      "description": "VO2max pyramid session. 5 intervals at 108% FTP (216W): 2 min \u2192 3 min \u2192 4 min \u2192 3 min \u2192 2 min, with 3 min Z1 recovery between each. Total work: 14 min. Full WU with Z4 primer. ~57 min total. Target HR: 158-168 bpm in the 3-4 min efforts.\n\nWarmup\n- Easy start. Spin the legs out. Nothing hard for 10 minutes. 300^ Halfway through warm-up. Let the power build naturally. 540^ Almost there. Settle into a comfortable Z2 cadence.<!> 10m ramp 25-70%\n\n- 2 minutes at steady Z2. Breathing easy and controlled.<!> 2m 70%\n- First activation - 1 minute at Z3. Wake the legs up.<!> 1m 80%\n- Easy. Spin it out.<!> 1m 50%\n- Second activation. One more before the Z4 primer.<!> 1m 80%\n- Easy spin. Z4 primer coming next.<!> 1m 55%\n- Z4 primer - 1 minute at threshold. Wakes the system up before Z5. 45^ 15 seconds. Good.<!> 1m 92%\n- Settle. Main set starts in 2 minutes. First interval is just 2 minutes. 90^ 30 seconds. Get ready - this will feel hard immediately at 216W.<!> 2m 50%\n- Interval 1 - 2 minutes at 216W. Hard from the gun. 60^ 1 minute done. Hold the watts. 100^ 20 seconds left.<!> 2m 108%\n- Recovery - 3 minutes. HR won't drop much in short intervals - that's normal. 150^ 30 seconds to next interval. 3 minutes this time.<!> 3m 50%\n- Interval 2 - 3 minutes. Find a rhythm. HR should be climbing toward 160+ bpm. 90^ Halfway. Stay on the power. 150^ 30 seconds left. Commit.<!> 3m 108%\n- Recovery - 3 minutes. Next one is the hardest: 4 minutes. The peak of the pyramid. 150^ 30 seconds. Get ready.<!> 3m 50%\n- Interval 3 - 4 minutes. The peak. Controlled aggression. 60^ 1 minute in. HR should be pushing hard now - 158-168 bpm is the target. 120^ Halfway. This is where the VO2 stimulus happens. Stay on it. 200^ 40 seconds left. Don't back off. 225^ 15 seconds. Everything.<!> 4m 108%\n- Recovery - 3 minutes. Pyramid comes down now: 3 minutes, then 2. 150^ 30 seconds. Next interval: 3 minutes.<!> 3m 50%\n- Interval 4 - 3 minutes. Match interval 2. 90^ Halfway. You know how this ends. 150^ 30 seconds. Hang on.<!> 3m 108%\n- Recovery - 3 minutes. Last interval: just 2 minutes. Finish it. 150^ 30 seconds. Last one.<!> 3m 50%\n- Last interval - 2 minutes. Leave everything here. 60^ 1 minute left. All in. 100^ 20 seconds. Done after this.<!> 2m 108%\n\nCooldown\n- Well done. 12 minutes cool-down. Keep pedalling - don't stop abruptly after Z5 work. 360^ Halfway. Cadence easy and comfortable. 660^ Almost done. Good session.<!> 12m ramp 65-25%"
+    },
+    {
+      "id": 110073797,
+      "date": "2026-05-20",
+      "name": "Zone 2 #1",
+      "type": "WORKOUT",
+      "sport_type": "Ride",
+      "planned_tss": 44,
+      "duration_hours": 1.0,
+      "duration_formatted": "1h",
+      "workout_summary": null,
+      "has_terrain": false,
+      "indoor": true,
+      "description": ""
+    },
+    {
+      "id": 110075152,
+      "date": "2026-05-21",
+      "name": "SS-5 Full - 4x10 Sweet Spot",
+      "type": "WORKOUT",
+      "sport_type": "Ride",
+      "planned_tss": 88,
+      "duration_hours": 1.34,
+      "duration_formatted": "1h20m30s",
+      "workout_summary": "5m @90W | 5m @130W | 1m @156W | 1m @100W | 1m @156W | 30s @188W | 2m @100W | 4\u00d710m @188W / 5m rec",
+      "has_terrain": false,
+      "indoor": true,
+      "description": "Full SS-5 sweet spot session. 4 intervals of 10 minutes at 94% FTP (188W), with 5 min Z1 recovery between each. 40 minutes total time-in-zone. Upper sweet spot / low Z4 territory. Standard WU and CD. ~85 min total. Target HR: 140-150 bpm during intervals.\n\nWarmup\n- Easy start. Gradual ramp over 5 minutes. Cadence 85-95 rpm. 240^ Almost at Z2. Let the power build naturally.<!> 5m ramp 25-65%\n\n- 5 minutes steady Z2. Settle your breathing. HR comfortable and low. 240^ Z3 activations coming. One minute.<!> 5m 65%\n- Z3 activation - 1 minute. Wake the legs up.<!> 1m 78%\n- Easy spin. One more activation coming.<!> 1m 50%\n- Second activation. Last step before sweet spot.<!> 1m 78%\n- 30-second primer at 188W. Feel the zone before the main set.<!> 30s 94%\n- Settle. 2 minutes. Four blocks of 10 minutes at 188W. Upper sweet spot - this is proper work. 90^ 30 seconds. Ready?<!> 2m 50%\n- Interval 1 - 10 minutes at 188W. Controlled start - don't sprint off the line. 120^ 2 minutes in. HR rising. Target 140-150 bpm across all intervals. 300^ Halfway. Power steady. Let HR stabilise. 480^ 2 minutes left. Hold the line. 570^ 30 seconds. Finish clean.<!> 10m 94%\n- Recovery - 5 minutes. Keep pedalling. HR should drop back below 125 bpm. 240^ 1 minute to go. Interval 2 is identical to interval 1.<!> 5m 50%\n- Interval 2 - 10 minutes. Match the power from interval 1. Consistent is the goal. 120^ 2 minutes in. Rhythm established. 300^ Halfway. HR stable in the 140-150 bpm band? 480^ 2 minutes left. Power holding? 570^ 30 seconds.<!> 10m 94%\n- Recovery - 5 minutes. Two down, two to go. 240^ 1 minute. Interval 3 - same again.<!> 5m 50%\n- Interval 3 - 10 minutes. Third block. Fatigue is starting to show now. 120^ 2 minutes in. If HR is above 152 bpm, ease back 5W - don't push into threshold zone. 300^ Halfway. Power consistency across all three blocks is what matters. 480^ 2 minutes left. One more block after this. 570^ 30 seconds.<!> 10m 94%\n- Recovery - 5 minutes. Last one. 10 minutes at 188W. 240^ 1 minute. Final interval. Go get it.<!> 5m 50%\n- Interval 4 - 10 minutes. The fourth block. This is where this week is harder than last week. 120^ 2 minutes in. Hold the line. 300^ Halfway. Power drop vs interval 1? Under 5W is excellent. Over 10W - note it, that's your current ceiling. 420^ 3 minutes left. Don't let it slip. 480^ 2 minutes. Dig. 570^ 30 seconds. Everything left.<!> 10m 94%\n\nCooldown\n- Done. 10 minutes cool-down. 40 minutes of upper sweet spot in the legs. Good work. 300^ Halfway. Cadence easy. Let everything settle. 570^ Almost done.<!> 10m ramp 65-25%"
+    },
+    {
+      "id": 110074085,
+      "date": "2026-05-23",
+      "name": "Bernie Robopacer Ride",
+      "type": "WORKOUT",
+      "sport_type": "Ride",
+      "planned_tss": 68,
+      "duration_hours": 1.5,
+      "duration_formatted": "1h30m",
+      "workout_summary": null,
+      "has_terrain": false,
+      "indoor": true,
+      "description_preview": null
+    },
+    {
+      "id": 110074162,
+      "date": "2026-05-24",
+      "name": "Bernie Robopacer",
+      "type": "WORKOUT",
+      "sport_type": "Ride",
+      "planned_tss": 92,
+      "duration_hours": 2.0,
+      "duration_formatted": "2h",
+      "workout_summary": null,
+      "has_terrain": false,
+      "indoor": true,
+      "description_preview": null
     }
   ],
   "workout_summary_stats": {
-    "attempted": 0,
-    "success": 0,
+    "attempted": 2,
+    "success": 1,
     "patternA": 0,
-    "patternB": 0,
+    "patternB": 1,
     "bail_no_workout_doc": 0,
-    "bail_no_match": 0
+    "bail_no_match": 1
   },
   "weekly_summary": {
     "total_training_hours": 6.3,
