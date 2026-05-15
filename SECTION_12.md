@@ -16,17 +16,18 @@ Section 11 v11.26 covers **in-ride** fueling (KJ→carbs dosing, absorption limi
 
 | Priority | File | Contains |
 | ----- | ----- | ----- |
-| 1 | `history.json` daily wellness entries | Morning body weight (logged via Intervals.icu wellness) |
-| 2 | `nutrition.json` | Daily macro intake log (Cronometer-aligned) |
-| 3 | `latest.json` | Training load (CTL, ATL, TSB, ACWR, readiness, planned sessions) |
-| 4 | `history.json` | Training trends (weekly TSS, hours, fitness markers) |
-| 5 | `DOSSIER.md Section 6` | Nutrition targets and weight goals |
+| 1 | `latest.json` wellness array | Last 7 days of morning wellness including `weight_kg` (freshest local source) |
+| 2 | `history.json` daily wellness entries | 30-day historical `weight_kg` for trend computation |
+| 3 | `nutrition.json` | Daily macro intake log (Cronometer-aligned) |
+| 4 | `latest.json` | Training load (CTL, ATL, TSB, ACWR, readiness, planned sessions) |
+| 5 | `history.json` | Training trends (weekly TSS, hours, fitness markers) |
+| 6 | `DOSSIER.md Section 6` | Nutrition targets and weight goals |
 
-Weight is logged daily in Intervals.icu's wellness screen (same screen as HRV/RHR) and flows into `history.json` via `sync.py`. The `weight` field appears in each day's wellness entry. No separate weight file is maintained.
+Weight is logged daily in Intervals.icu's wellness screen (same screen as HRV/RHR) and flows into both `latest.json` (last 7 days) and `history.json` (full history) via `sync.py`. The field name in both files is `weight_kg`. **In local setups where the two files are pulled from GitHub independently, `latest.json` is often fresher than `history.json` — always read both, prefer `latest.json` for any overlapping dates, and use `history.json` only for entries older than the `latest.json` window.** No separate weight file is maintained.
 
 **Data Discipline Rule (mirrors Section 11 Rule 3):** Every nutrition metric cited must come from a file read in the current response. Never cite weights, macros, or intake figures from conversation history or session memory.
 
-**Missing data handling:** If `nutrition.json` is absent, do not attempt to estimate. If weight entries are missing from `history.json` wellness fields, prompt the athlete to log weight in Intervals.icu and run `sync.py`. Never invent or extrapolate figures.
+**Missing data handling:** If `nutrition.json` is absent, do not attempt to estimate. Before flagging missing weight, compare the most recent date in `latest.json` wellness against the most recent date in `history.json` wellness. If `latest.json` is fresher, this is a local sync lag (`history.json` not pulled recently), not a data gap — proceed using `latest.json` and note the lag in the report so the athlete can `git pull` when convenient. Only prompt the athlete to log weight in Intervals.icu and run `sync.py` when **both** files lack recent entries. Never invent or extrapolate figures.
 
 ---
 
@@ -36,16 +37,18 @@ When the athlete requests a nutrition review or diet check-in:
 
 ### **Step 1 — Load and validate all data sources (in order)**
 
-1. Read `history.json` → extract `weight` field from daily wellness entries for the last 30 days  
-2. Read `nutrition.json` → extract all daily entries, note most recent date  
-3. Read `latest.json` → extract: readiness\_decision, ACWR, TSB, CTL, planned sessions for today and next 7 days  
-4. Read `DOSSIER.md` Section 6 → confirm targets
+1. Read `latest.json` wellness array → extract `weight_kg` for the last 7 days  
+2. Read `history.json` wellness entries → extract `weight_kg` for days 8–30 prior  
+3. Merge into a unified weight series; if any date appears in both files, the `latest.json` value wins  
+4. Read `nutrition.json` → extract all daily entries, note most recent date  
+5. Read `latest.json` → extract: readiness\_decision, ACWR, TSB, CTL, planned sessions for today and next 7 days  
+6. Read `DOSSIER.md` Section 6 → confirm targets
 
-**Staleness check:** If weight wellness entries or nutrition data are \> 5 days old, flag this before proceeding. Prompt athlete to log weight in Intervals.icu and run `sync.py`, or to export from Cronometer and run `sync_cronometer.py`.
+**Staleness check:** If the merged weight series has no entries in the last 5 days, flag this before proceeding and prompt the athlete to log weight in Intervals.icu and run `sync.py`. If only `history.json` is stale but `latest.json` has recent wellness entries, this is a local sync lag (run `git pull` in the data repo), not missing data — note it in the report but proceed. Same applies for nutrition: if `nutrition.json` is \> 5 days old, prompt for `sync_cronometer.py`.
 
 ### **Step 2 — Compute weight trend analysis**
 
-From `history.json` daily wellness `weight` entries:
+From the merged `weight_kg` series built in Step 1 (`latest.json` wellness for recent dates, `history.json` wellness for older dates):
 
 1. Calculate 7-day rolling average weight for each available day  
 2. Calculate weekly rate of change (kg/week) from the 7-day average  
@@ -224,7 +227,7 @@ Add the following block to SKILL.md under **Data Sources** / **Optional files**:
 \#\#\# Nutrition Data (Section 12\)  
 \- \`nutrition.json\` — daily macro log (Cronometer-aligned); triggers nutrition compliance review  
 \- \`SECTION\_12.md\` — nutrition coaching protocol; load when nutrition review requested  
-\- Weight data — read from \`history.json\` daily wellness \`weight\` field (logged via Intervals.icu)
+\- Weight data — read \`weight\_kg\` from \`latest.json\` wellness array first (freshest 7-day window), then \`history.json\` wellness entries for older dates (logged via Intervals.icu)
 
 When present, load nutrition data after training data. Nutrition coaching is a separate output section, not merged with the training report. Section 12 governs all nutrition output.  
 ---
