@@ -69,8 +69,10 @@ From the last 7 days of `nutrition.json`:
 
 **Key compliance checks:**
 
-* Protein \< 160 g on any day → Flag (insufficient for muscle preservation)  
-* CHO \< 200 g on a Z4/Z5 day → Flag as fuelling error (training quality at risk)  
+* Protein \< 160 g on any training day → Flag (insufficient for muscle preservation)  
+* Protein \< 150 g on a rest day → Flag (rest day floor is 160–175 g; below 150 g is insufficient)  
+* CHO \< 250 g on a Z4/Z5 day → Flag as fuelling error (training quality at risk; target is 277–340 g)  
+* CHO \> 360 g on a Z4/Z5 day → Flag as overfuelled for session type (pushes above kcal ceiling)  
 * CHO \> 350 g on a rest day → Flag (undermining weight loss target)  
 * kcal \> 3,500 on a rest day → Flag
 
@@ -148,9 +150,11 @@ When evaluating `nutrition.json` against DOSSIER targets:
 | ----- | ----- | ----- |
 | CHO ≥ 350 g on rest day | Overfuelled | Note and suggest 150–200 g reduction |
 | CHO ≥ 350 g on Z2 easy day | Acceptable upper range | No flag |
-| CHO \< 250 g on Z4/Z5 day | Under-fuelled | Flag as fuelling error |
+| CHO \< 250 g on Z4/Z5 day | Under-fuelled | Flag as fuelling error (target 277–340 g) |
+| CHO \> 360 g on Z4/Z5 day | Overfuelled for session | Note — exceeds kcal ceiling; reduce to 277–340 g |
 | CHO \< 300 g on long Z2 (2h+) | Under-fuelled | Flag — likely to compromise session quality |
-| Protein \< 160 g any day | Insufficient | Flag as priority correction |
+| Protein \< 160 g on training day | Insufficient | Flag as priority correction |
+| Protein \< 150 g on rest day | Insufficient | Flag — rest day floor is 160–175 g |
 | kcal \< 1,800 any day | Dangerously low | Flag immediately — not compatible with training |
 
 ---
@@ -244,4 +248,5 @@ When the athlete provides a Cronometer CSV export:
 | ----- | ----- | ----- |
 | 12.0 | 2026-04-16 | Initial release — daily nutrition, weight trend, carb periodization, Section 11 integration |
 | 12.1 | 2026-04-16 | Weight source changed from weight\_history.json to history.json wellness entries (Intervals.icu pipeline) |
+| 12.2 | 2026-05-15 | Rest day protein floor lowered to 160–175 g (175–195 g is reserved for training days; macro maths confirmed at 99 kg). Z4 quality carb target corrected to 277–340 g (2.8–3.5 g/kg) — prior 388–485 g target caused macro sum to exceed kcal ceiling by ~400 kcal. Validation rules updated accordingly. |
 

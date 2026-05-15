@@ -19,7 +19,7 @@
       "sick"
     ],
     "targets_reference": {
-      "protein_g_daily": "175\u2013195 g (every day, all day types)",
+      "protein_g_daily": "175\u2013195 g on training days; 160\u2013175 g on rest days (1.6\u20131.7 g/kg adequate for muscle preservation without training stimulus)",
       "kcal_by_day_type": {
         "rest": "2100\u20132300",
         "z2_easy": "2400\u20132600",
@@ -32,7 +32,7 @@
       "carbs_g_by_day_type": {
         "rest": "145\u2013195 (1.5\u20132.0 g/kg)",
         "z2_easy": "242\u2013291 (2.5\u20133.0 g/kg)",
-        "z4_quality": "388\u2013485 (4.0\u20135.0 g/kg)",
+        "z4_quality": "277\u2013340 (2.8\u20133.5 g/kg) \u2014 covers pre-session, in-ride, and post-session recovery for a 90\u2013120 min session without exceeding kcal ceiling",
         "long_z2": "388\u2013485 (4.0\u20135.0 g/kg)",
         "back_to_back": "435\u2013485 (4.5\u20135.0 g/kg)"
       },
