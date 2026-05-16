@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-16T13:59:50.311878",
+  "generated_at": "2026-05-16T15:07:03.921901",
   "version": "3.102",
   "script_hash": "864452f12c91",
   "scan_hours": 72,
@@ -495,6 +495,27 @@
           "zone": 2,
           "training_load": 33.881058,
           "decoupling": -2.6874294
+        }
+      ]
+    },
+    {
+      "activity_id": "i148811660",
+      "date": "2026-05-16",
+      "type": "VirtualRide",
+      "name": "Zwift Bernie Roboride",
+      "interval_summary": null,
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 4555,
+          "avg_power": 133,
+          "max_power": 395,
+          "avg_hr": 114,
+          "max_hr": 129,
+          "avg_cadence": 84.990555,
+          "zone": 2,
+          "training_load": 61.99861,
+          "decoupling": 0.6775442
         }
       ]
     }
