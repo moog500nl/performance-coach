@@ -72,7 +72,7 @@
   },
   "metadata": {
     "athlete_id": "REDACTED",
-    "last_updated": "2026-05-17T08:56:39.575857",
+    "last_updated": "2026-05-17T09:24:58.674792",
     "data_range_days": 7,
     "extended_range_days": 28,
     "version": "3.102"
@@ -591,9 +591,9 @@
           "current_week_hard_days_completed": 1,
           "current_week_hard_days_total": 1,
           "race_proximity": null,
-          "next_week_load": 4.48,
+          "next_week_load": 3.61,
           "plan_coverage_current_week": 0.5,
-          "plan_coverage_next_week": 2.5
+          "plan_coverage_next_week": 2.0
         },
         "data_quality": "good",
         "stream_agreement": null
@@ -626,7 +626,7 @@
     "p_max": 518,
     "power_model_source": "wellness.sportInfo",
     "vo2max": null,
-    "calculation_timestamp": "2026-05-17T08:56:39.575059",
+    "calculation_timestamp": "2026-05-17T09:24:58.674035",
     "data_quality": {
       "hrv_data_points": 7,
       "rhr_data_points": 7,
@@ -1560,22 +1560,8 @@
       "description": "Full SS-5 sweet spot session. 4 intervals of 10 minutes at 94% FTP (188W), with 5 min Z1 recovery between each. 40 minutes total time-in-zone. Upper sweet spot / low Z4 territory. Standard WU and CD. ~85 min total. Target HR: 140-150 bpm during intervals.\n\nWarmup\n- Easy start. Gradual ramp over 5 minutes. Cadence 85-95 rpm. 240^ Almost at Z2. Let the power build naturally.<!> 5m ramp 25-65%\n\n- 5 minutes steady Z2. Settle your breathing. HR comfortable and low. 240^ Z3 activations coming. One minute.<!> 5m 65%\n- Z3 activation - 1 minute. Wake the legs up.<!> 1m 78%\n- Easy spin. One more activation coming.<!> 1m 50%\n- Second activation. Last step before sweet spot.<!> 1m 78%\n- 30-second primer at 188W. Feel the zone before the main set.<!> 30s 94%\n- Settle. 2 minutes. Four blocks of 10 minutes at 188W. Upper sweet spot - this is proper work. 90^ 30 seconds. Ready?<!> 2m 50%\n- Interval 1 - 10 minutes at 188W. Controlled start - don't sprint off the line. 120^ 2 minutes in. HR rising. Target 140-150 bpm across all intervals. 300^ Halfway. Power steady. Let HR stabilise. 480^ 2 minutes left. Hold the line. 570^ 30 seconds. Finish clean.<!> 10m 94%\n- Recovery - 5 minutes. Keep pedalling. HR should drop back below 125 bpm. 240^ 1 minute to go. Interval 2 is identical to interval 1.<!> 5m 50%\n- Interval 2 - 10 minutes. Match the power from interval 1. Consistent is the goal. 120^ 2 minutes in. Rhythm established. 300^ Halfway. HR stable in the 140-150 bpm band? 480^ 2 minutes left. Power holding? 570^ 30 seconds.<!> 10m 94%\n- Recovery - 5 minutes. Two down, two to go. 240^ 1 minute. Interval 3 - same again.<!> 5m 50%\n- Interval 3 - 10 minutes. Third block. Fatigue is starting to show now. 120^ 2 minutes in. If HR is above 152 bpm, ease back 5W - don't push into threshold zone. 300^ Halfway. Power consistency across all three blocks is what matters. 480^ 2 minutes left. One more block after this. 570^ 30 seconds.<!> 10m 94%\n- Recovery - 5 minutes. Last one. 10 minutes at 188W. 240^ 1 minute. Final interval. Go get it.<!> 5m 50%\n- Interval 4 - 10 minutes. The fourth block. This is where this week is harder than last week. 120^ 2 minutes in. Hold the line. 300^ Halfway. Power drop vs interval 1? Under 5W is excellent. Over 10W - note it, that's your current ceiling. 420^ 3 minutes left. Don't let it slip. 480^ 2 minutes. Dig. 570^ 30 seconds. Everything left.<!> 10m 94%\n\nCooldown\n- Done. 10 minutes cool-down. 40 minutes of upper sweet spot in the legs. Good work. 300^ Halfway. Cadence easy. Let everything settle. 570^ Almost done.<!> 10m ramp 65-25%"
     },
     {
-      "id": 110074085,
-      "date": "2026-05-23",
-      "name": "Bernie Robopacer Ride",
-      "type": "WORKOUT",
-      "sport_type": "Ride",
-      "planned_tss": 68,
-      "duration_hours": 1.5,
-      "duration_formatted": "1h30m",
-      "workout_summary": null,
-      "has_terrain": false,
-      "indoor": true,
-      "description": ""
-    },
-    {
       "id": 110074162,
-      "date": "2026-05-24",
+      "date": "2026-05-23",
       "name": "Bernie Robopacer",
       "type": "WORKOUT",
       "sport_type": "Ride",
