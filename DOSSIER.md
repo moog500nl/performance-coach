@@ -76,15 +76,15 @@
 
 | Day | Primary Session | Duration | Secondary |
 |-----|-----------------|----------|-----------|
-| Sunday | Long Z2 ride | 2–4hrs (building) | Loaded walk (from Jul) |
 | Monday | Rest or active recovery | — | Easy walk |
 | Tuesday | Z2 endurance | 1–1.5hrs | — |
 | Wednesday | Quality session (Z4/Z5 intervals) | 1–1.5hrs | — |
 | Thursday | Z2 endurance | 1–1.5hrs | — |
 | Friday | Rest or active recovery | — | Easy walk |
-| Saturday | Z2 endurance or back-to-back with Sunday | 1.5–2hrs | Loaded walk (from Jul) |
+| Saturday | Long Z2 ride | 2–4hrs (building) | Loaded walk (from Jul) |
+| **Sunday** | **Rest (firm — non-negotiable)** | — | Easy walk optional |
 
-**Note:** Back-to-back Sat/Sun sessions are deliberate — they train multi-day recovery resilience directly relevant to MDS. From July, Saturday or Sunday long session may be replaced by a loaded walk (2–3hrs, 6–8kg pack).
+**Note:** Sunday is a structural rest day — non-negotiable as of 2026-05-17. The long ride sits on Saturday; Friday rest preserves fresh legs for it. When multi-day endurance stimulus is needed (relevant to MDS multi-day recovery resilience), use back-to-back Fri+Sat instead of the previous Sat+Sun pattern. From July, the Saturday long session may be replaced by a loaded walk (2–3hrs, 6–8kg pack), or a loaded walk added on Friday as a secondary day.
 
 ### Session Details
 

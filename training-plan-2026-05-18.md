@@ -1,8 +1,9 @@
 # Training Plan — May 18–24, 2026
 
 **Generated:** 2026-05-14  
+**Revised:** 2026-05-17 — Sunday locked as firm rest day (structural change). Long ride moved Sun→Sat; original Sat 90-min Z2 dropped. See `user_weekly_schedule_sunday_rest.md` in memory and DOSSIER.md §3 for the updated Normal Weekly Schedule.  
 **Phase:** Base — Reactivation Week 3  
-**Context:** Week 2 went well — 7h15m, 321 TSS, 1 quality session, eFTP trending upward. Wellness signals consistently green (HRV 25–30, RHR 53–58, fatigue 1–2, soreness 1 throughout). ACWR is mathematically elevated (2.89) as an artifact of the post-Japan deload compressing the 28-day chronic base — actual physiological state is good. Athlete reports the plan feeling too easy: step up to the two-hard-session format this week. Volume holds at ~6.5 hrs with improved quality distribution.
+**Context:** Week 2 went well — 7h15m, 321 TSS, 1 quality session, eFTP trending upward. Wellness signals consistently green (HRV 25–30, RHR 53–58, fatigue 1–2, soreness 1 throughout). End of Week 3 (May 11–17): 6h49m, 309 TSS, 1 quality session; ACWR escalated to 2.27 (alarm) — still mathematically elevated as an artifact of the post-Japan deload compressing the 28-day chronic base, with physiological state remaining good (HRV 27 vs baseline 25.4; RHR 54; sleep 7h30m; today's wellness all "1"). Athlete reports plan feeling too easy: step up to two-hard-session format this week. Original plan called for ~6h22m / ~291–314 TSS across 5 sessions including a Sun long ride. **Option A revision**: Sunday becomes firm rest, Saturday absorbs the 2h long ride. Net: 4 sessions, ~5h22m, ~258–265 TSS — modest volume reduction lets ACWR cool toward ~2.0–2.1 by week's end while preserving both quality sessions and the long endurance day.
 
 ---
 
@@ -30,8 +31,8 @@
 | Wed May 20 | **Bernie RoboPacer** or **Zone 2 #1** | Z2 easy | 60 min |
 | Thu May 21 | **SS5-Full-4x10-SweetSpot.zwo** (custom — see below) | Sweet Spot | 85 min |
 | Fri May 22 | Rest | — | — |
-| Sat May 23 | **Bernie RoboPacer** | Z2 | 90 min |
-| Sun May 24 | **Bernie RoboPacer** | Z2 Long | 120 min |
+| Sat May 23 | **Bernie RoboPacer** (Long Z2) | Z2 Long | 120 min |
+| Sun May 24 | **Rest (firm — new structural rest day)** | — | — |
 
 ### Installing the .zwo files
 
@@ -64,7 +65,7 @@ Full week of one quality session only — the Week 2 format. This is unlikely gi
 
 ## Monday May 18 — Rest
 
-Full rest. Let the legs absorb the back-to-back Z2 this weekend. Tuesday's VO₂ session works best on genuinely fresh legs — this rest day matters.
+Full rest. Let the legs absorb Sunday's Bernie Roboride (1h31m, 73 TSS — the closer for week of May 11). Tuesday's VO₂ session works best on genuinely fresh legs — this rest day matters.
 
 ---
 
@@ -150,27 +151,11 @@ This is a recovery day in disguise. The temptation after a VO₂ session is to p
 
 ## Friday May 22 — Rest
 
-Full rest. Second structural rest day. With two hard sessions this week the Friday rest is non-negotiable — Sunday's long ride depends on arriving there with absorbed legs.
+Full rest. Second structural rest day. With two hard sessions this week the Friday rest is non-negotiable — Saturday's long ride depends on arriving there with absorbed legs.
 
 ---
 
-## Saturday May 23 — AE-2: Saturday Z2 (Extended)
-
-**Session:** Steady-State Endurance (Medium)  
-**Template:** AE-2  
-**Duration:** 90 min  
-**Target power:** 112–145W | **HR ceiling:** 128 bpm  
-**Cadence:** 85–95 rpm  
-
-**Zwift:** Bernie RoboPacer — 90 min, then leave. This is 15 min longer than last Saturday (75 min). The extension is deliberate: with the two-hard-session format established, total weekly volume still needs to be sufficient, and Saturday's Z2 is where we add it safely.
-
-**Est. TSS:** ~55–60
-
-Ride your own race — don't get pulled into surges within the Bernie group. If Bernie's route has climbs where the group accelerates, sit up and let them go. HR ceiling is the rule.
-
----
-
-## Sunday May 24 — AE-2: Sunday Long Ride (120 min)
+## Saturday May 23 — AE-2: Saturday Long Ride (120 min)
 
 **Session:** Steady-State Endurance (Long)  
 **Template:** AE-2  
@@ -184,10 +169,21 @@ Ride your own race — don't get pulled into surges within the Bernie group. If 
 If any one of the three fails, ride 90 min and call it well done.
 
 **Target power:** 112–145W | **HR ceiling:** 128 bpm  
+**Cadence:** 85–95 rpm  
 **Zwift:** Bernie RoboPacer — ride to the duration target, then leave.  
-**Est. TSS:** ~80–85 (120 min) / ~58–62 (90 min)
+**Est. TSS:** ~85–92 (120 min) / ~58–62 (90 min)
 
-This is 30 min longer than last Sunday's long ride target. At 120 min you're now properly building the aerobic base duration week-on-week. This is the pattern going forward: the Sunday ride steps up incrementally, and by August we're targeting 3–3.5 hrs.
+This is the long ride — relocated from Sunday to Saturday under the new schedule. Friday rest preserves fresh legs for it; Sunday rest absorbs it. At 120 min you're now properly building the aerobic base duration week-on-week. This is the pattern going forward: the Saturday ride steps up incrementally, and by August we're targeting 3–3.5 hrs.
+
+Ride your own race — don't get pulled into surges within the Bernie group. If Bernie's route has climbs where the group accelerates, sit up and let them go. HR ceiling is the rule.
+
+---
+
+## Sunday May 24 — Rest (firm)
+
+Full rest. Sunday is now a structural rest day — non-negotiable going forward. After Saturday's 2h long ride, this is where adaptation happens. Walk if you want; don't ride.
+
+The previous Sat+Sun back-to-back endurance pattern is retired. If multi-day endurance stimulus is needed for MDS prep, we'll use Fri+Sat instead — but the default is a true full rest day to close the week.
 
 ---
 
@@ -200,13 +196,14 @@ This is 30 min longer than last Sunday's long ride target. At 120 min you're now
 | Wed May 20 | Z2 Easy | 60 min | ~40 |
 | Thu May 21 | SS-5 Full 4×10 | ~85 min | ~73 |
 | Fri May 22 | Rest | — | 0 |
-| Sat May 23 | Z2 Extended | 90 min | ~58 |
-| Sun May 24 | Long Ride | 90–120 min | ~60–83 |
-| **Total** | **5 sessions** | **~6h22m** | **~291–314** |
+| Sat May 23 | Long Ride (Bernie 2h) | 120 min | ~85–92 |
+| Sun May 24 | Rest (firm) | — | 0 |
+| **Total** | **4 sessions** | **~5h22m** | **~258–265** |
 
 **TID target:** ≥80% Z1–Z2 (met: WU/CD and recovery intervals on the two quality days keep easy time well above 80%)  
 **Hard sessions:** 2 (Tuesday VO₂ + Thursday SS)  
-**48-hour spacing:** Tue hard → Wed Z2 → Thu hard ✓ (48 hrs between hard sessions)
+**48-hour spacing:** Tue hard → Wed Z2 → Thu hard ✓ (48 hrs between hard sessions)  
+**Schedule change:** Long ride moved Sun → Sat; Sunday is now a firm structural rest day. The originally planned Sat 90-min Z2 ride is dropped (consolidated into the longer Saturday session). Projected ACWR by end of week: ~2.0–2.1 (down from 2.27 today).
 
 ---
 
@@ -218,7 +215,7 @@ This is 30 min longer than last Sunday's long ride target. At 120 min you're now
 
 3. **ACWR trend** — by Thursday it should be dropping meaningfully as the two-week training block from May 6 onward builds up the chronic base. If ACWR is still above 2.0 by Thursday despite good wellness, this is still a mathematical lag issue, not a real overload signal.
 
-4. **Sunday duration** — if you make 120 min comfortably, that's the new Sunday baseline for the next 2–3 weeks before stepping to 150 min.
+4. **Saturday duration** — if you make 120 min comfortably, that's the new Saturday long-ride baseline for the next 2–3 weeks before stepping to 150 min.
 
 ---
 
@@ -227,6 +224,101 @@ This is 30 min longer than last Sunday's long ride target. At 120 min you're now
 If this week goes well:
 - Tuesday: VO₂ session progression — VO2-4 again (if Tuesday didn't feel complete) OR step up to VO2-1 (4×4 min classic long intervals)
 - Thursday: SS-5 extended — 4×12 min, or SS-1 (3×15 min) as an alternative format
-- Sunday long ride: 120 min confirmed as standard
-- Total volume: ~7 hrs
+- Saturday long ride: 120 min confirmed as standard (the new Sat long-ride slot replaces the previous Sunday placement)
+- Sunday: rest (firm — structural going forward)
+- Total volume: ~5.5–6 hrs (slightly below the previous Sat+Sun pattern; volume builds via Saturday duration extension and weekday endurance rather than weekend back-to-back)
 - Consider an FTP reassessment in 3–4 weeks once ACWR has normalised and 4–6 quality sessions are in the bank
+
+---
+
+## Glossary — Metrics Referenced in This Plan
+
+Definitions follow the conventions in SECTION_11.md (training protocol) and the underlying endurance science. Values in parentheses are this athlete's current settings where applicable.
+
+### Power & Thresholds
+
+| Term | Definition |
+|------|------------|
+| **FTP** | Functional Threshold Power — the highest steady-state power sustainable for ~1 hour. Anchors all power zones. (Current: **200W** outdoor and indoor.) |
+| **eFTP** | Effective FTP — model-estimated FTP derived from your recent power curve (CP/W' fit). Diagnostic only; never used to set zone targets. (Current: 158W — depressed because recent rides haven't tested sustained efforts.) |
+| **W** | Watts — instantaneous power output. |
+| **W'** | "W prime" — anaerobic work capacity above FTP, expressed in kilojoules. Finite reservoir that depletes during supra-threshold efforts and recharges below FTP. (Current: 13.5 kJ.) |
+| **p_max** | Peak instantaneous power (typically 1–5 second max). (Current: 518W.) |
+| **LTHR** | Lactate Threshold Heart Rate — the HR corresponding to LT2, the upper end of sustainable aerobic effort. Anchors all HR zones. (Current: **154 bpm**.) |
+| **Max HR** | Maximum observed/tested heart rate. (Current: 170 bpm.) |
+| **VO₂max** | Maximum rate of oxygen uptake. Not currently measured for this athlete. |
+
+### Zones
+
+| Term | Definition |
+|------|------------|
+| **Z1–Z7 (Coggan/7-zone)** | Power-based zones from active recovery (Z1) through neuromuscular sprints (Z7). Used in workout targets. |
+| **Z1 (Recovery)** | < 55% FTP. Easy spinning, recovery rides. |
+| **Z2 (Endurance)** | 56–75% FTP. Conversational pace. The aerobic base zone. |
+| **Z3 (Tempo)** | 76–90% FTP. "Comfortable hard." Often the **grey zone** — fatigue-heavy, adaptation-light. |
+| **Z4 (Threshold)** | 91–105% FTP. At or near FTP. Hard, sustainable for 10–60 min. |
+| **Sweet Spot** | Upper Z3 / lower Z4 (~84–97% FTP). High training stimulus at manageable recovery cost. |
+| **Z5 (VO₂max)** | 106–120% FTP. 3–8 min intervals targeting maximal oxygen uptake. |
+| **Z6 / Z7** | Anaerobic (Z6) and neuromuscular sprint (Z7) — short, near-maximal efforts. |
+| **Seiler 3-zone model** | Simplified physiological framework: Z1 = below LT1 (easy), Z2 = LT1–LT2 (grey zone/tempo), Z3 = above LT2 (hard/quality). Note: Seiler's Z2 ≠ Coggan's Z2 — Seiler Z2 is the *grey zone*. |
+
+### Training Load
+
+| Term | Definition |
+|------|------------|
+| **TSS** | Training Stress Score — load metric per session. 100 TSS = 1 hour at FTP. Scales with both duration and intensity. |
+| **IF** | Intensity Factor — normalised power ÷ FTP. 1.0 = at FTP. Drives TSS calculation. |
+| **NP** | Normalised Power — weighted average power that accounts for variability; better reflects metabolic cost than simple average. |
+| **CTL** | Chronic Training Load — 42-day exponentially weighted average TSS. Proxy for fitness. (Current: 24.3.) |
+| **ATL** | Acute Training Load — 7-day exponentially weighted average TSS. Proxy for fatigue. (Current: 39.4.) |
+| **TSB** | Training Stress Balance = CTL − ATL. Proxy for form/freshness. Positive = fresh; negative = loaded. (Current: −15.) |
+| **Ramp Rate** | Week-over-week change in CTL. Sustainable range generally 3–5 CTL/week in Base. (Current: +3.6.) |
+| **ACWR** | Acute:Chronic Workload Ratio — 7-day TSS ÷ 28-day TSS-average. Target 0.8–1.3; ≥1.35 = alert; ≥1.5 = alarm (P1 overload). (Current: 2.27.) |
+| **Monotony** | 7-day TSS standard deviation ratio. Low = varied loading, high = uniform stress. Alert >2.0. (Current: 1.41.) |
+| **Strain** | Weekly TSS × Monotony. Composite stress indicator. |
+
+### Wellness & Readiness
+
+| Term | Definition |
+|------|------------|
+| **HRV** | Heart Rate Variability (RMSSD) — beat-to-beat variation. Higher = better parasympathetic recovery state. Compared to 7-day rolling baseline. |
+| **RHR** | Resting Heart Rate — morning supine HR. Elevation vs baseline can indicate fatigue or illness. |
+| **RI** | Recovery Index — composite readiness score (HRV + RHR + sleep). >1.0 green, <0.7 red. (Current: 1.07.) |
+| **Sleep Score** | Garmin/wearable sleep quality score (0–100). Display only. |
+| **RPE** | Rating of Perceived Exertion — subjective 1–10 effort score logged post-session. |
+| **Feel** | Subjective post-session quality rating (1 = great, 5 = terrible) — Intervals.icu scale. |
+
+### Intensity Distribution
+
+| Term | Definition |
+|------|------------|
+| **TID** | Training Intensity Distribution — share of total time in Seiler Z1/Z2/Z3. |
+| **Easy Time Ratio** | (Z1 + Z2 easy time) ÷ total. Target ≥0.80 for polarized training, ≥0.85 in Base. (Current 7d: 0.74.) |
+| **Grey Zone %** | Seiler Z2 (tempo) time ÷ total. Minimize — "too much pain for too little gain." Base target <5%. (Current 7d: 5.2%.) |
+| **Quality Intensity %** | Z4+ time ÷ total. Base target 10–15%; Build 15–20%. (Current 7d: 5.2%.) |
+| **Polarized** | TID where Z1 > Z3 > Z2 with PI > 2.0 — most easy + meaningful hard work, minimal grey zone. |
+| **Pyramidal** | TID where Z1 > Z2 > Z3 — common in Base phase. Currently classified here. |
+| **Hard Day** | Day meeting Seiler/Foster ladder: Z3+ ≥30 min, Z4+ ≥10 min, Z5+ ≥5 min, Z6+ ≥2 min, or Z7 ≥1 min. Base target: 1/week; Build: 2/week. |
+| **48h Spacing Rule** | Minimum gap between hard sessions, with an easy/rest day between. Exception only when TSB > 0 and RI ≥ 0.85. |
+
+### Capability Metrics
+
+| Term | Definition |
+|------|------------|
+| **EF** | Efficiency Factor = NP ÷ Average HR. Rising EF on like-for-like sessions = improving aerobic efficiency. (Current 7d: 1.19.) |
+| **Decoupling** | Power:HR drift across a session (first half vs second). Negative or low = strong durability; >5% = aerobic fatigue. |
+| **Durability** | Trailing aggregate decoupling on steady-state ≥60-min sessions. Target trend: improving. |
+| **VI** | Variability Index = NP ÷ Avg Power. Lower = steadier ride. ≤1.05 qualifies as "steady-state" for durability/EF calcs. |
+| **MMP** | Mean Maximal Power — best sustained average power for a given duration (e.g., MMP 20-min). Forms the power curve. |
+| **HRRc** | Heart Rate Recovery — largest 60-second HR drop after sustained effort above LTHR. Higher = better parasympathetic recovery. |
+
+### Session Structure
+
+| Term | Definition |
+|------|------------|
+| **WU / CD** | Warm-up / Cool-down. Mandated for all structured sessions per the workout-library protocol. |
+| **AE-1, AE-2** | Aerobic Endurance templates (short/medium duration steady Z2). |
+| **SS-1, SS-5** | Sweet Spot templates. SS-1 = 2–3×15 min classic; SS-5 = repeated 10-min intervals (3×10 modified, 4×10 full). |
+| **VO2-1, VO2-4** | VO₂max templates. VO2-1 = 4×4 min classic; VO2-4 = ascending pyramid (2→3→4→3→2 min). |
+| **TH-1, TH-2** | Threshold templates (sustained Z4 work). |
+| **Cadence** | Pedalling rate in rpm. Z2 endurance target typically 85–95 rpm. |
