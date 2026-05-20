@@ -300,7 +300,7 @@ Complete MDS Trek 75km (5 stages: 14/12/19/19/13km) in October 2026 at a comfort
 
 | Date | Event | Notes |
 |------|-------|-------|
-| [Date] | [Event] | [Details] |
+| 2026-05-19 | Post-Japan Travel ACWR Override | Planned 2-week Japan trip completed (returned May 5). Ignore high ACWR/injury alarm (artifact of post-travel chronic workload decay). |
 | [Date] | [Event] | [Details] |
 
 ### Calibration & Data Log
