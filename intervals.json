@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-23T10:54:42.846396",
+  "generated_at": "2026-05-23T12:00:13.181434",
   "version": "3.102",
   "script_hash": "864452f12c91",
   "scan_hours": 72,
@@ -592,6 +592,25 @@
           "zone": 1,
           "training_load": 10.563889,
           "decoupling": 23.200188
+        }
+      ]
+    },
+    {
+      "activity_id": "i150789570",
+      "date": "2026-05-23",
+      "type": "Ride",
+      "name": "Amsterdam Cycling",
+      "interval_summary": [
+        "1x 2h38m 119bpm"
+      ],
+      "intervals": [
+        {
+          "type": "WORK",
+          "label": "9510s@119bpm",
+          "duration_secs": 9510,
+          "avg_hr": 119,
+          "max_hr": 145,
+          "zone": 1
         }
       ]
     }
