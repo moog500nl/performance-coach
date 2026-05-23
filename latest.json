@@ -72,7 +72,7 @@
   },
   "metadata": {
     "athlete_id": "REDACTED",
-    "last_updated": "2026-05-23T12:00:13.665868",
+    "last_updated": "2026-05-23T13:58:05.438298",
     "data_range_days": 7,
     "extended_range_days": 28,
     "version": "3.102"
@@ -139,7 +139,7 @@
   "history": {
     "available": true,
     "last_generated": "2026-04-18",
-    "age_days": 34,
+    "age_days": 35,
     "total_months": 2,
     "history_confidence": "low"
   },
@@ -577,9 +577,7 @@
     "phase_detection": {
       "phase": "Base",
       "confidence": "medium",
-      "reason_codes": [
-        "NO_PLANNED_WORKOUTS"
-      ],
+      "reason_codes": [],
       "basis": {
         "stream_1": {
           "ctl_slope": null,
@@ -590,12 +588,12 @@
         "stream_2": {
           "planned_tss_delta": null,
           "hard_sessions_planned": 0,
-          "current_week_hard_days_completed": 0,
-          "current_week_hard_days_total": 0,
+          "current_week_hard_days_completed": 2,
+          "current_week_hard_days_total": 2,
           "race_proximity": null,
-          "next_week_load": null,
+          "next_week_load": 1.27,
           "plan_coverage_current_week": 0.0,
-          "plan_coverage_next_week": 0.0
+          "plan_coverage_next_week": 1.25
         },
         "data_quality": "good",
         "stream_agreement": null
@@ -606,9 +604,7 @@
       "dossier_agreement": null
     },
     "phase_detected": "Base",
-    "phase_triggers": [
-      "NO_PLANNED_WORKOUTS"
-    ],
+    "phase_triggers": [],
     "seasonal_context": "Build / Early Race Season",
     "benchmark_indoor": {
       "current_ftp": 200,
@@ -630,7 +626,7 @@
     "p_max": 518,
     "power_model_source": "wellness.sportInfo",
     "vo2max": null,
-    "calculation_timestamp": "2026-05-23T12:00:13.665058",
+    "calculation_timestamp": "2026-05-23T13:58:05.437534",
     "data_quality": {
       "hrv_data_points": 7,
       "rhr_data_points": 7,
@@ -1718,14 +1714,83 @@
       "readiness": null
     }
   ],
-  "planned_workouts": [],
+  "planned_workouts": [
+    {
+      "id": 111843456,
+      "date": "2026-05-25",
+      "name": "MDS Prep Walk",
+      "type": "WORKOUT",
+      "sport_type": "Walk",
+      "planned_tss": 60,
+      "duration_hours": 3.67,
+      "duration_formatted": "3h40m",
+      "workout_summary": null,
+      "has_terrain": false,
+      "description": ""
+    },
+    {
+      "id": 111843586,
+      "date": "2026-05-26",
+      "name": "Tuesday Z2 Easy Recovery",
+      "type": "WORKOUT",
+      "sport_type": "Ride",
+      "planned_tss": 32,
+      "duration_hours": 1.0,
+      "duration_formatted": "1h",
+      "workout_summary": null,
+      "has_terrain": false,
+      "indoor": true,
+      "description": "60 minutes of easy Z2 active recovery on the bike, keeping heart rate low after Monday's 17km walk. Keep cadence comfortable (85-95 rpm) and stay strictly below HR ceiling (126 bpm).\n- 10^ Welcome to Tuesday Recovery! Smooth spin to warm up. 300^ Gradually easing into target power. Focus on a relaxed upper body.<!> 10m ramp 50-60% 90rpm\n- 10^ Main block: 40 mins at 58% FTP (~116W). Conversational pace is the rule today. 600^ Check your heart rate. It must stay strictly below 126 bpm. 1200^ Halfway point. How are your legs and feet feeling after Monday's 17km walk? 1800^ Keep a steady 85-95 rpm. Smooth circles.<!> 40m 57.9% 90rpm\n- 10^ Ramp out: stepping down to Z1. Let the heart rate fall naturally. 300^ Easy spinning. Rehydrate and focus on recovery. 580^ Great job completing your recovery ride! Time to rest.<!> 10m ramp 57.9-48% 85rpm"
+    },
+    {
+      "id": 111843819,
+      "date": "2026-05-27",
+      "name": "SS-5 Modified \u2014 3x10 Sweet Spot",
+      "type": "WORKOUT",
+      "sport_type": "Ride",
+      "planned_tss": 67,
+      "duration_hours": 1.25,
+      "duration_formatted": "1h15m",
+      "workout_summary": "5m @85W | 5m @130W | 1m @160W | 1m @110W | 1m @160W | 30s @174W | 6m30s @100W | 3\u00d710m @174W / 5m rec | 10m @90W",
+      "has_terrain": false,
+      "indoor": true,
+      "description": "Base Phase reactivation sweet spot session. 3 blocks of 10 min at 87% FTP with 5 min Z1 recovery between each. Full WU (20 min) and CD (15 min). Total: 75 min. Template SS-5 modified \u2014 3 of 4 blocks. If all 3 feel controlled, progress to 4x10 next session.\n\nWarmup\n- Warm-up: very easy for the first 5 min. Legs and lungs only just waking up. 240^ Start to pick up cadence a little. Target 85-90 rpm.<!> 5m ramp 30-55%\n\n- Smooth build into Z2. No surging \u2014 let it rise steadily. 240^ Almost at Z2. HR rising comfortably. Good.<!> 5m ramp 55-75%\n- First Z3 activation \u2014 1 min. Wakes the system up.<!> 1m 80%\n- Easy. Let HR settle before the next primer.<!> 1m 55%\n- Second Z3 activation. Should feel easier than the first.<!> 1m 80%\n- 30 sec at sweet spot (87% FTP). Preview of the main set.<!> 30s 87%\n- Easy spin. Let HR drop fully. Main set in ~6 min. 300^ 1 min to main set. Target: 87% FTP (174W at FTP 200). HR should stabilise at 135-148 bpm during intervals \u2014 not above LTHR.<!> 6m30s 50%\n- INTERVAL 1 of 3 \u2014 GO. 10 min at 87% FTP. First 2 min may feel hard. Settle in. 120^ 2 min in. HR rising \u2014 aim to plateau around 135-148 bpm. Power steady, cadence 85-95 rpm. 300^ Halfway. How does it feel? RPE should be 6-7/10 \u2014 controlled effort, not desperate. 480^ 2 min to go. Maintain. No surging to the line. 570^ 30 sec. Finish clean and controlled.<!> 10m 87%\n- Recovery \u2014 5 min easy. Let HR come down. Note how the interval felt. 240^ 1 min to Interval 2. Same target. Match your power from interval 1.<!> 5m 50%\n- INTERVAL 2 of 3 \u2014 GO. Same power, same focus. 120^ 2 min in. HR should plateau at a similar level to interval 1. Good sign. 300^ Halfway. Cadence honest \u2014 don't let it drop below 85 rpm. 480^ 2 min to go. Stay composed. 570^ 30 sec. Almost there.<!> 10m 87%\n- Recovery \u2014 5 min easy. Last interval next. 180^ If you feel solid after 2 intervals with stable power \u2014 4x10 is on for next Wednesday. 240^ 1 min to final interval. Last one \u2014 make it count.<!> 5m 50%\n- INTERVAL 3 of 3 \u2014 FINAL. Same power. Same focus. Power drop of 5W is fine \u2014 don't chase it. 120^ 2 min in. HR may be slightly higher than intervals 1-2 \u2014 normal at end of session. 300^ Halfway through the last one. You are doing it. 480^ 2 min to go. Controlled finish. 560^ 40 sec. Hold the power. 590^ 10 sec. Hold it!<!> 10m 87%\n\nCooldown\n- Main set DONE. Well done. Cool-down \u2014 15 min easy from here. 60^ Let the power drop naturally. Cadence can ease off too.<!> 5m ramp 50-75%\n\n- Easy Z1 spin. HR coming down. Reflect: were all 3 intervals at similar power and HR? 300^ 5 min to go. If all 3 blocks felt controlled with stable power \u2014 next Wednesday is 4x10. You earned it. 540^ Almost done. Good session.<!> 10m 45%"
+    },
+    {
+      "id": 111843603,
+      "date": "2026-05-28",
+      "name": "Thursday AE-1 Steady-State Z2",
+      "type": "WORKOUT",
+      "sport_type": "Ride",
+      "planned_tss": 40,
+      "duration_hours": 1.0,
+      "duration_formatted": "1h",
+      "workout_summary": null,
+      "has_terrain": false,
+      "indoor": true,
+      "description": "60 minutes of steady-state endurance riding in Zone 2. Target power 112-140W (56%-70% FTP), keeping heart rate strictly below LTHR ceiling (128 bpm).\n- 10^ Welcome to Thursday AE-1! Let's start with a smooth 10-minute ramp-in. 300^ Gradually building up our aerobic engine. Relax your shoulders.<!> 10m ramp 50-65% 90rpm\n- 10^ Steady Zone 2: 40 mins at 65% FTP (~130W). Target cadence 85-95 rpm. 600^ Aerobic base building. Heart rate ceiling is 128 bpm today. 1200^ Halfway. Power should feel steady and sustainable. Breathe deeply. 1800^ Keep the leg speed smooth. Stay focused on good pedaling form.<!> 40m 65% 90rpm\n- 10^ Ramp out: cool down for 10 minutes. Let heart rate come down. 300^ Easy spin to finish. Rehydrate. 580^ Excellent work! Thursday endurance complete.<!> 10m ramp 65-48% 85rpm"
+    },
+    {
+      "id": 111843961,
+      "date": "2026-05-30",
+      "name": "Long Outdoor Ride",
+      "type": "WORKOUT",
+      "sport_type": "Ride",
+      "planned_tss": 90,
+      "duration_hours": 2.5,
+      "duration_formatted": "2h30m",
+      "workout_summary": null,
+      "has_terrain": false,
+      "description": ""
+    }
+  ],
   "workout_summary_stats": {
-    "attempted": 0,
-    "success": 0,
+    "attempted": 3,
+    "success": 1,
     "patternA": 0,
-    "patternB": 0,
+    "patternB": 1,
     "bail_no_workout_doc": 0,
-    "bail_no_match": 0
+    "bail_no_match": 2
   },
   "weekly_summary": {
     "total_training_hours": 7.12,
