@@ -1,46 +1,10 @@
 {
-  "generated_at": "2026-05-23T23:58:12.825204",
+  "generated_at": "2026-05-24T04:21:51.208224",
   "version": "3.102",
   "script_hash": "864452f12c91",
   "scan_hours": 72,
   "retention_days": 14,
   "activities": [
-    {
-      "activity_id": "i146718942",
-      "date": "2026-05-09",
-      "type": "Ride",
-      "name": "Afternoon Ride",
-      "interval_summary": [
-        "2x 22m34s 123bpm",
-        "1x 3m55s 119bpm"
-      ],
-      "intervals": [
-        {
-          "type": "WORK",
-          "label": "1354s@123bpm",
-          "duration_secs": 1379,
-          "avg_hr": 117,
-          "max_hr": 136,
-          "zone": 1
-        },
-        {
-          "type": "WORK",
-          "label": "1354s@123bpm",
-          "duration_secs": 1328,
-          "avg_hr": 128,
-          "max_hr": 140,
-          "zone": 2
-        },
-        {
-          "type": "WORK",
-          "label": "235s@119bpm",
-          "duration_secs": 235,
-          "avg_hr": 119,
-          "max_hr": 129,
-          "zone": 1
-        }
-      ]
-    },
     {
       "activity_id": "i146993124",
       "date": "2026-05-10",
