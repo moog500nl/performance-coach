@@ -72,7 +72,7 @@
   },
   "metadata": {
     "athlete_id": "REDACTED",
-    "last_updated": "2026-05-26T17:27:16.221238",
+    "last_updated": "2026-05-26T19:34:39.674414",
     "data_range_days": 7,
     "extended_range_days": 28,
     "version": "3.102"
@@ -268,7 +268,7 @@
       "respiration": null,
       "body_fat_pct": null,
       "abdomen_cm": null,
-      "steps": 10220,
+      "steps": 13734,
       "hydration_volume_l": null,
       "kcal_consumed": null,
       "carbohydrates_g": null,
@@ -614,9 +614,9 @@
           "current_week_hard_days_completed": 0,
           "current_week_hard_days_total": 1,
           "race_proximity": null,
-          "next_week_load": null,
+          "next_week_load": 1.32,
           "plan_coverage_current_week": 0.8,
-          "plan_coverage_next_week": 0.0
+          "plan_coverage_next_week": 1.0
         },
         "data_quality": "good",
         "stream_agreement": null
@@ -649,7 +649,7 @@
     "p_max": 518,
     "power_model_source": "wellness.sportInfo",
     "vo2max": null,
-    "calculation_timestamp": "2026-05-26T17:27:16.220452",
+    "calculation_timestamp": "2026-05-26T19:34:39.673932",
     "data_quality": {
       "hrv_data_points": 7,
       "rhr_data_points": 7,
@@ -1827,7 +1827,7 @@
       "respiration": null,
       "body_fat_pct": null,
       "abdomen_cm": null,
-      "steps": 10220,
+      "steps": 13734,
       "hydration_volume_l": null,
       "kcal_consumed": null,
       "carbohydrates_g": null,
@@ -1893,15 +1893,80 @@
       "workout_summary": null,
       "has_terrain": false,
       "description": ""
+    },
+    {
+      "id": 112528279,
+      "date": "2026-06-01",
+      "name": "Outdoor Endurance Ride",
+      "type": "WORKOUT",
+      "sport_type": "Ride",
+      "planned_tss": 60,
+      "duration_hours": 1.5,
+      "duration_formatted": "1h30m",
+      "workout_summary": null,
+      "has_terrain": false,
+      "description": ""
+    },
+    {
+      "id": 112528798,
+      "date": "2026-06-02",
+      "name": "Thursday AE-1 Steady-State Z2",
+      "type": "WORKOUT",
+      "sport_type": "Ride",
+      "planned_tss": 40,
+      "duration_hours": 1.0,
+      "duration_formatted": "1h",
+      "workout_summary": null,
+      "has_terrain": false,
+      "indoor": true,
+      "description": "60 minutes of steady-state endurance riding in Zone 2. Target power 112-140W (56%-70% FTP), keeping heart rate strictly below LTHR ceiling (128 bpm).\n- 10^ Welcome to Thursday AE-1! Let's start with a smooth 10-minute ramp-in. 300^ Gradually building up our aerobic engine. Relax your shoulders.<!> 10m ramp 50-65% 90rpm\n- 10^ Steady Zone 2: 40 mins at 65% FTP (~130W). Target cadence 85-95 rpm. 600^ Aerobic base building. Heart rate ceiling is 128 bpm today. 1200^ Halfway. Power should feel steady and sustainable. Breathe deeply. 1800^ Keep the leg speed smooth. Stay focused on good pedaling form.<!> 40m 65% 90rpm\n- 10^ Ramp out: cool down for 10 minutes. Let heart rate come down. 300^ Easy spin to finish. Rehydrate. 580^ Excellent work! Thursday endurance complete.<!> 10m ramp 65-48% 85rpm"
+    },
+    {
+      "id": 112529035,
+      "date": "2026-06-03",
+      "name": "SS-5 Full - 4x10 Sweet Spot",
+      "type": "WORKOUT",
+      "sport_type": "Ride",
+      "planned_tss": 88,
+      "duration_hours": 1.34,
+      "duration_formatted": "1h20m30s",
+      "workout_summary": "5m @90W | 5m @130W | 1m @156W | 1m @100W | 1m @156W | 30s @188W | 2m @100W | 4\u00d710m @188W / 5m rec",
+      "has_terrain": false
+    },
+    {
+      "id": 112529224,
+      "date": "2026-06-04",
+      "name": "Outdoor Ride",
+      "type": "WORKOUT",
+      "sport_type": "Ride",
+      "planned_tss": 60,
+      "duration_hours": 1.5,
+      "duration_formatted": "1h30m",
+      "workout_summary": null,
+      "has_terrain": false,
+      "description_preview": null
+    },
+    {
+      "id": 112529267,
+      "date": "2026-06-06",
+      "name": "Long Ride",
+      "type": "WORKOUT",
+      "sport_type": "Ride",
+      "planned_tss": 105,
+      "duration_hours": 2.5,
+      "duration_formatted": "2h30m",
+      "workout_summary": null,
+      "has_terrain": false,
+      "description_preview": null
     }
   ],
   "workout_summary_stats": {
-    "attempted": 3,
-    "success": 1,
+    "attempted": 5,
+    "success": 2,
     "patternA": 0,
-    "patternB": 1,
+    "patternB": 2,
     "bail_no_workout_doc": 0,
-    "bail_no_match": 2
+    "bail_no_match": 3
   },
   "weekly_summary": {
     "total_training_hours": 9.13,
