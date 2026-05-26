@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-26T13:54:25.898693",
+  "generated_at": "2026-05-26T17:27:15.861674",
   "version": "3.102",
   "script_hash": "864452f12c91",
   "scan_hours": 72,
@@ -527,6 +527,27 @@
           "avg_hr": 119,
           "max_hr": 145,
           "zone": 1
+        }
+      ]
+    },
+    {
+      "activity_id": "i151660035",
+      "date": "2026-05-26",
+      "type": "VirtualRide",
+      "name": "Tuesday Z2 Easy Recovery",
+      "interval_summary": null,
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 3611,
+          "avg_power": 119,
+          "max_power": 136,
+          "avg_hr": 114,
+          "max_hr": 123,
+          "avg_cadence": 89.263916,
+          "zone": 2,
+          "training_load": 37.282352,
+          "decoupling": 7.6556144
         }
       ]
     }
