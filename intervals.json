@@ -1,31 +1,10 @@
 {
-  "generated_at": "2026-05-26T22:48:25.721855",
+  "generated_at": "2026-05-27T00:04:54.817654",
   "version": "3.102",
   "script_hash": "864452f12c91",
   "scan_hours": 72,
   "retention_days": 14,
   "activities": [
-    {
-      "activity_id": "i147577829",
-      "date": "2026-05-12",
-      "type": "VirtualRide",
-      "name": "Zwift - Pacer Group Ride with Bernie",
-      "interval_summary": null,
-      "intervals": [
-        {
-          "type": "RECOVERY",
-          "duration_secs": 4523,
-          "avg_power": 129,
-          "max_power": 518,
-          "avg_hr": 111,
-          "max_hr": 124,
-          "avg_cadence": 82.72629,
-          "zone": 2,
-          "training_load": 58.913807,
-          "decoupling": -2.8469408
-        }
-      ]
-    },
     {
       "activity_id": "i147866451",
       "date": "2026-05-13",
