@@ -14,7 +14,10 @@ Input (place in data/cronometer/ — filename doesn't matter, globs by type):
     servings*.csv       from Cronometer → Settings → Export Data → Servings
  
 Output:
-    data/nutrition.json
+    data/nutrition.json        daily macro totals — kept compact so it always
+                               reads in full (no meal detail embedded)
+    data/nutrition_meals.json  per-food meal breakdown, keyed by date; look here
+                               when you need food-level detail for a given day
  
 Merge behaviour:
     Existing entries in nutrition.json are preserved.
@@ -30,7 +33,7 @@ import sys
 import glob
 import hashlib
 import argparse
-from datetime import datetime, date
+from datetime import datetime, date, timezone
 from pathlib import Path
 from collections import defaultdict
  
@@ -254,14 +257,140 @@ def compute_compliance(entry: dict) -> dict:
                 flags.append(f"kcal_high_for_{day_type}:{kcal:.0f} (target {t['min']}-{t['max']})")
  
     return {"flags": flags} if flags else {}
- 
- 
-def merge_into_existing(existing: list, new_by_date: dict, meals_by_date: dict) -> list:
+
+
+def load_training_data(data_dir: Path) -> dict:
+    """
+    Load training data from history.json and latest.json.
+    Returns a dict mapping date string (YYYY-MM-DD) to a dict of training features:
+    {
+        "activity_types": set of strings,
+        "total_hours": float,
+        "total_tss": float,
+        "is_hard_day": bool
+    }
+    """
+    training = {}
+    
+    # 1. Load history.json if available
+    history_path = data_dir / "history.json"
+    if history_path.exists():
+        try:
+            with open(history_path, 'r') as f:
+                history_data = json.load(f)
+            daily_90d = history_data.get("daily_90d", [])
+            for day in daily_90d:
+                date_str = day.get("date", "").split("T")[0]
+                if date_str:
+                    act_types_str = day.get("activity_types", "")
+                    act_types = set()
+                    if act_types_str:
+                        act_types = {t.strip() for t in act_types_str.split(",") if t.strip()}
+                    training[date_str] = {
+                        "activity_types": act_types,
+                        "total_hours": day.get("total_hours", 0.0) or 0.0,
+                        "total_tss": day.get("total_tss", 0.0) or 0.0,
+                        "is_hard_day": day.get("is_hard_day", False) or False
+                    }
+        except Exception as e:
+            print(f"  [warn] Failed to parse history.json for day classification: {e}")
+            
+    # 2. Load latest.json if available (overwriting/updating history)
+    latest_path = data_dir / "latest.json"
+    if latest_path.exists():
+        try:
+            with open(latest_path, 'r') as f:
+                latest_data = json.load(f)
+            
+            # Aggregate recent activities
+            recent_activities = latest_data.get("recent_activities", [])
+            for act in recent_activities:
+                date_str = act.get("date", act.get("start_date_local", "")).split("T")[0]
+                if not date_str:
+                    continue
+                act_type = act.get("type", "")
+                duration_hours = act.get("duration_hours", 0.0) or 0.0
+                tss = act.get("tss", 0.0) or 0.0
+                
+                is_hard = False
+                if tss >= 50 and act_type in ("Ride", "VirtualRide"):
+                    # Check intensity factor or RPE
+                    intensity_factor = act.get("intensity_factor", 0.0) or 0.0
+                    rpe = act.get("rpe", 0) or 0
+                    if intensity_factor >= 70.0 or rpe >= 5:
+                        is_hard = True
+                if act.get("has_intervals", False):
+                    is_hard = True
+                
+                if date_str not in training:
+                    training[date_str] = {
+                        "activity_types": set(),
+                        "total_hours": 0.0,
+                        "total_tss": 0.0,
+                        "is_hard_day": False
+                    }
+                
+                if act_type:
+                    training[date_str]["activity_types"].add(act_type)
+                training[date_str]["total_hours"] += duration_hours
+                training[date_str]["total_tss"] += tss
+                if is_hard:
+                    training[date_str]["is_hard_day"] = True
+        except Exception as e:
+            print(f"  [warn] Failed to parse latest.json for day classification: {e}")
+            
+    return training
+
+
+def classify_day_type(date_str: str, training_data: dict) -> str:
+    """
+    Classifies the day_type for a date based on training logs.
+    Taxonomy: rest | z2_easy | z4_quality | long_z2
+    """
+    day_info = training_data.get(date_str)
+    if not day_info:
+        return "rest"
+        
+    act_types = day_info.get("activity_types", set())
+    total_hours = day_info.get("total_hours", 0.0)
+    total_tss = day_info.get("total_tss", 0.0)
+    is_hard_day = day_info.get("is_hard_day", False)
+    
+    # If no activities or hours/TSS is zero
+    if not act_types or (total_hours == 0.0 and total_tss == 0.0):
+        return "rest"
+        
+    # Walk only
+    if len(act_types) == 1 and "Walk" in act_types:
+        if total_hours >= 2.0:
+            return "long_z2" # Walk >= 2h counts as long Z2 load-bearing conditioning
+        return "rest" # Easy short walk is active recovery/rest
+        
+    # Cycling / Riding is present
+    has_cycling = any(t in act_types for t in ("Ride", "VirtualRide", "MountainBikeRide", "GravelRide", "EBikeRide"))
+    if has_cycling:
+        if total_hours >= 2.0: # 120 min or more
+            return "long_z2"
+        elif is_hard_day or total_tss >= 50:
+            return "z4_quality"
+        else:
+            return "z2_easy"
+            
+    # Default fallback for other sports (e.g. Strength, Run, Swim)
+    if total_hours >= 2.0:
+        return "long_z2"
+    elif is_hard_day or total_tss >= 50:
+        return "z4_quality"
+    else:
+        return "z2_easy"
+
+
+def merge_into_existing(existing: list, new_by_date: dict, meals_by_date: dict, training_data: dict) -> list:
     """
     Merge new CSV data into existing nutrition.json entries.
     Rules:
     - Numeric nutrition fields: CSV wins (fresh data)
-    - 'day_type': preserved from existing if already set; never overwritten
+    - 'day_type': preserved from existing if already set; never overwritten. If None or missing, auto-classified.
     - 'notes': preserved from existing; never overwritten
     - 'meals': added from servings CSV if available; preserved if not
     - New dates are appended
@@ -275,7 +404,9 @@ def merge_into_existing(existing: list, new_by_date: dict, meals_by_date: dict) 
             for field in COACH_FIELDS:
                 if field in csv_entry:
                     existing_entry[field] = csv_entry[field]
-            # Preserve day_type and notes — never overwrite
+            # Preserve day_type and notes — never overwrite unless day_type is missing/None
+            if not existing_entry.get("day_type"):
+                existing_entry["day_type"] = classify_day_type(date_str, training_data)
             # day_complete: update from CSV
             if "_completed" in csv_entry:
                 existing_entry["day_complete"] = csv_entry["_completed"]
@@ -287,14 +418,15 @@ def merge_into_existing(existing: list, new_by_date: dict, meals_by_date: dict) 
                     new_entry[field] = csv_entry[field]
             if "_completed" in csv_entry:
                 new_entry["day_complete"] = csv_entry["_completed"]
-            # Placeholder for fields the coach sets
-            new_entry["day_type"] = None   # Set manually or by coach
+            # Auto-classify day_type based on training data
+            new_entry["day_type"] = classify_day_type(date_str, training_data)
             new_entry["notes"] = ""
             existing_by_date[date_str] = new_entry
  
-        # Add meal detail from servings if available
-        if date_str in meals_by_date:
-            existing_by_date[date_str]["meals"] = meals_by_date[date_str]
+        # Meal detail lives in a separate file (nutrition_meals.json) to keep
+        # nutrition.json lean and fully readable. Strip any embedded meals left
+        # over from older sync versions so the daily file stays compact.
+        existing_by_date[date_str].pop("meals", None)
  
         # Compute compliance flags (only when day_type is set)
         compliance = compute_compliance(existing_by_date[date_str])
@@ -303,6 +435,11 @@ def merge_into_existing(existing: list, new_by_date: dict, meals_by_date: dict) 
         elif "compliance_flags" in existing_by_date[date_str]:
             del existing_by_date[date_str]["compliance_flags"]  # Clear stale flags
  
+    # Strip any embedded meals from every entry (including untouched older dates
+    # carried over from previous sync versions) — meals live in nutrition_meals.json.
+    for entry in existing_by_date.values():
+        entry.pop("meals", None)
+
     # Return sorted by date
     return sorted(existing_by_date.values(), key=lambda e: e["date"])
  
@@ -328,6 +465,17 @@ def load_existing_nutrition(output_path: Path) -> dict:
             "weight_loss_rate_kg_per_week": "0.3-0.5",
         },
     }
+
+
+def load_existing_meals(meals_path: Path) -> dict:
+    """Load existing nutrition_meals.json; return its meals_by_date mapping."""
+    if meals_path.exists():
+        try:
+            with open(meals_path) as f:
+                return json.load(f).get("meals_by_date", {})
+        except (json.JSONDecodeError, OSError) as e:
+            print(f"  [warn] Could not read {meals_path.name}, starting fresh: {e}")
+    return {}
  
  
 def main():
@@ -353,6 +501,7 @@ def main():
     data_dir = Path(args.data_dir).resolve()
     input_dir = data_dir / "cronometer"
     output_path = data_dir / "nutrition.json"
+    meals_path = data_dir / "nutrition_meals.json"
  
     print(f"\nsync_cronometer.py v{SCRIPT_VERSION} (hash: {SCRIPT_HASH})")
     print(f"  Data dir   : {data_dir}")
@@ -382,6 +531,19 @@ def main():
     existing = load_existing_nutrition(output_path)
     existing_count = len(existing.get("daily", []))
     print(f"  Found {existing_count} existing entries")
+
+    # Assemble meal detail for the side file (nutrition_meals.json).
+    # Precedence: previously-written meals file < meals embedded in old
+    # nutrition.json (migrated) < fresh meals from this run's CSV.
+    meals_by_date = load_existing_meals(meals_path)
+    for entry in existing.get("daily", []):
+        if entry.get("meals") and entry.get("date"):
+            meals_by_date.setdefault(entry["date"], entry["meals"])
+    meals_by_date.update(meals_data)  # CSV wins for any date it covers
+ 
+    # Load training data for auto-classification
+    print("Loading training data for day-type classification...")
+    training_data = load_training_data(data_dir)
  
     # Merge
     print("\nMerging data...")
@@ -389,6 +551,7 @@ def main():
         existing.get("daily", []),
         daily_data,
         meals_data,
+        training_data,
     )
  
     added = len(merged_daily) - existing_count
@@ -396,7 +559,7 @@ def main():
  
     # Build output
     output = existing.copy()
-    output["generated_at"] = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+    output["generated_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     output["sync_version"] = SCRIPT_VERSION
     output["script_hash"] = SCRIPT_HASH
     output["data_range"] = {
@@ -421,14 +584,34 @@ def main():
         print(f"  Options: rest | z2_easy | z4_quality | long_z2 | back_to_back_day1 | back_to_back_day2 | deload | travel | sick")
         print(f"  Or ask Claude: 'Set day types in nutrition.json using my training calendar'")
  
+    # Build the separate meals file (sorted by date for stable diffs)
+    meals_output = {
+        "_schema": {
+            "version": "1.0",
+            "description": "Per-food meal detail for MK, split out of nutrition.json "
+                           "to keep that file compact and readable. Keyed by date.",
+            "source": "Cronometer servings CSV export",
+            "note": "nutrition.json holds daily macro totals; this file holds the "
+                    "food-level breakdown. Look up a date here when you need meal detail.",
+        },
+        "generated_at": output["generated_at"],
+        "sync_version": SCRIPT_VERSION,
+        "meals_by_date": {d: meals_by_date[d] for d in sorted(meals_by_date)},
+    }
+
     if args.dry_run:
         print("\n[dry-run] Would write:")
         print(json.dumps(output, indent=2)[:2000])
         print("  ... (truncated)")
+        print(f"\n[dry-run] Would also write {meals_path.name} "
+              f"({len(meals_output['meals_by_date'])} day(s) of meal detail)")
     else:
         with open(output_path, "w") as f:
             json.dump(output, f, indent=2)
-        print(f"\n✓ Written: {output_path}")
+        print(f"\nSuccess: Written to {output_path}")
+        with open(meals_path, "w") as f:
+            json.dump(meals_output, f, indent=2)
+        print(f"Success: Written meal detail to {meals_path}")
  
     print("\nDone.")
  
