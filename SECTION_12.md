@@ -19,6 +19,7 @@ Section 11 v11.26 covers **in-ride** fueling (KJ→carbs dosing, absorption limi
 | 1 | `latest.json` wellness array | Last 7 days of morning wellness including `weight_kg` (freshest local source) |
 | 2 | `history.json` daily wellness entries | 30-day historical `weight_kg` for trend computation |
 | 3 | `nutrition.json` | Daily macro intake log (Cronometer-aligned) |
+| 3b | `nutrition_meals.json` | Per-food meal breakdown keyed by date; read on food-level questions, not needed for macro compliance |
 | 4 | `latest.json` | Training load (CTL, ATL, TSB, ACWR, readiness, planned sessions) |
 | 5 | `history.json` | Training trends (weekly TSS, hours, fitness markers) |
 | 6 | `DOSSIER.md Section 6` | Nutrition targets and weight goals |
@@ -28,6 +29,8 @@ Weight is logged daily in Intervals.icu's wellness screen (same screen as HRV/RH
 **Data Discipline Rule (mirrors Section 11 Rule 3):** Every nutrition metric cited must come from a file read in the current response. Never cite weights, macros, or intake figures from conversation history or session memory.
 
 **Missing data handling:** If `nutrition.json` is absent, do not attempt to estimate. Before flagging missing weight, compare the most recent date in `latest.json` wellness against the most recent date in `history.json` wellness. If `latest.json` is fresher, this is a local sync lag (`history.json` not pulled recently), not a data gap — proceed using `latest.json` and note the lag in the report so the athlete can `git pull` when convenient. Only prompt the athlete to log weight in Intervals.icu and run `sync.py` when **both** files lack recent entries. Never invent or extrapolate figures.
+
+**Meal detail:** `nutrition.json` holds only daily macro totals — it is deliberately kept compact so it always reads in full. Per-food breakdown lives in `nutrition_meals.json` (keyed by date, written by the same `sync_cronometer.py` run). Read it **only** when the athlete asks a food-level question (e.g. "what did I eat Tuesday", "where are my calories coming from", "which meals are driving the sodium"). The standard macro-compliance review does **not** need it — do not load it routinely.
 
 ---
 
@@ -226,6 +229,7 @@ Add the following block to SKILL.md under **Data Sources** / **Optional files**:
 
 \#\#\# Nutrition Data (Section 12\)  
 \- \`nutrition.json\` — daily macro log (Cronometer-aligned); triggers nutrition compliance review  
+\- \`nutrition\_meals.json\` — per-food meal breakdown keyed by date; read only on food-level questions, not for routine macro review  
 \- \`SECTION\_12.md\` — nutrition coaching protocol; load when nutrition review requested  
 \- Weight data — read \`weight\_kg\` from \`latest.json\` wellness array first (freshest 7-day window), then \`history.json\` wellness entries for older dates (logged via Intervals.icu)
 
@@ -252,4 +256,5 @@ When the athlete provides a Cronometer CSV export:
 | 12.0 | 2026-04-16 | Initial release — daily nutrition, weight trend, carb periodization, Section 11 integration |
 | 12.1 | 2026-04-16 | Weight source changed from weight\_history.json to history.json wellness entries (Intervals.icu pipeline) |
 | 12.2 | 2026-05-15 | Rest day protein floor lowered to 160–175 g (175–195 g is reserved for training days; macro maths confirmed at 99 kg). Z4 quality carb target corrected to 277–340 g (2.8–3.5 g/kg) — prior 388–485 g target caused macro sum to exceed kcal ceiling by ~400 kcal. Validation rules updated accordingly. |
+| 12.3 | 2026-06-07 | Per-food meal detail split out of `nutrition.json` into a new `nutrition_meals.json` (keyed by date) so `nutrition.json` stays compact and always reads in full — embedded meals had grown it past the file-read truncation limit, hiding recent days from review. `nutrition_meals.json` is read on demand for food-level questions only; macro-compliance review is unchanged. |
 

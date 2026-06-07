@@ -26,6 +26,7 @@ Do NOT fetch from URLs — all files are local, EXCEPT if being asked to suggest
 
 **Reads:**
 - nutrition.json (always; flag any date where day_type is missing)
+- nutrition_meals.json (only on food-level questions — what was eaten, calorie/macro sources; not for routine macro review)
 - SECTION_12.md — §4 for preflight, full file for deep reviews
 - DOSSIER.md §6 for weight goal trajectory
 - latest.json wellness for weight_kg (preferred over history.json)
