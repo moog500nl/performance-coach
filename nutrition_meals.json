@@ -5,7 +5,7 @@
     "source": "Cronometer servings CSV export",
     "note": "nutrition.json holds daily macro totals; this file holds the food-level breakdown. Look up a date here when you need meal detail."
   },
-  "generated_at": "2026-06-07T11:59:26Z",
+  "generated_at": "2026-06-07T12:12:47Z",
   "sync_version": "1.0.0",
   "meals_by_date": {
     "2026-04-13": {

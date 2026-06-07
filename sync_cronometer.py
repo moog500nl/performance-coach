@@ -33,6 +33,7 @@ import sys
 import glob
 import hashlib
 import argparse
+import tempfile
 from datetime import datetime, date, timezone
 from pathlib import Path
 from collections import defaultdict
@@ -471,11 +472,38 @@ def load_existing_meals(meals_path: Path) -> dict:
     """Load existing nutrition_meals.json; return its meals_by_date mapping."""
     if meals_path.exists():
         try:
-            with open(meals_path) as f:
+            with open(meals_path, encoding="utf-8") as f:
                 return json.load(f).get("meals_by_date", {})
         except (json.JSONDecodeError, OSError) as e:
             print(f"  [warn] Could not read {meals_path.name}, starting fresh: {e}")
     return {}
+
+
+def atomic_write_json(path: Path, obj) -> None:
+    """
+    Write `obj` as indented JSON to `path` atomically.
+
+    Writes to a temp file in the same directory, flushes + fsyncs it, then
+    os.replace()s it onto the target. A concurrent reader therefore always sees
+    either the complete previous file or the complete new one — never a
+    partially written or zero-padded intermediate state. UTF-8 is pinned so the
+    byte output is identical regardless of the platform's default encoding.
+    """
+    fd, tmp_name = tempfile.mkstemp(
+        dir=str(path.parent), prefix=path.name + ".", suffix=".tmp"
+    )
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            json.dump(obj, f, indent=2)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp_name, path)
+    except BaseException:
+        try:
+            os.unlink(tmp_name)
+        except OSError:
+            pass
+        raise
  
  
 def main():
@@ -606,11 +634,9 @@ def main():
         print(f"\n[dry-run] Would also write {meals_path.name} "
               f"({len(meals_output['meals_by_date'])} day(s) of meal detail)")
     else:
-        with open(output_path, "w") as f:
-            json.dump(output, f, indent=2)
+        atomic_write_json(output_path, output)
         print(f"\nSuccess: Written to {output_path}")
-        with open(meals_path, "w") as f:
-            json.dump(meals_output, f, indent=2)
+        atomic_write_json(meals_path, meals_output)
         print(f"Success: Written meal detail to {meals_path}")
  
     print("\nDone.")

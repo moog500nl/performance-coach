@@ -1155,9 +1155,9 @@
     "Fiber (g)": "fiber_g",
     "Water (g)": "water_ml \u2014 note: Cronometer reports grams, which equals ml for water"
   },
-  "generated_at": "2026-06-07T11:59:26Z",
+  "generated_at": "2026-06-07T12:12:47Z",
   "sync_version": "1.0.0",
-  "script_hash": "f98b949c",
+  "script_hash": "1ad17366",
   "data_range": {
     "earliest": "2026-04-13",
     "latest": "2026-06-07",
