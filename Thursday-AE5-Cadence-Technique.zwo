@@ -1,0 +1,62 @@
+<workout_file>
+    <author>Antigravity</author>
+    <name>Thursday AE-5 Cadence-Technique Focus</name>
+    <description>90 minutes of cadence and technique focus in Zone 2. Alternates 5-minute segments of high-cadence spin-ups (100-105 rpm) at 65% FTP with 5-minute recovery intervals (85-95 rpm) at 62% FTP. Keep HR strictly below 131 bpm.</description>
+    <sportType>bike</sportType>
+    <tags>
+        <tag name="TECHNIQUE"/>
+    </tags>
+    <workout>
+        <Ramp Duration="600" PowerLow="0.50" PowerHigh="0.63" Cadence="90">
+            <textevent timeoffset="10" message="Welcome to Thursday AE-5! Let's start with a smooth 10-minute ramp-in."/>
+            <textevent timeoffset="300" message="Gradually building. Focus on stable hips posture. We have a fun cadence play session today."/>
+        </Ramp>
+        <SteadyState Duration="300" Power="0.65" Cadence="100">
+            <textevent timeoffset="10" message="High cadence block: spin at 100-105 rpm. Focus on light and quick feet."/>
+        </SteadyState>
+        <SteadyState Duration="300" Power="0.62" Cadence="90">
+            <textevent timeoffset="10" message="Normal cadence: settle back to 85-95 rpm. Take a drink and relax."/>
+        </SteadyState>
+        <SteadyState Duration="300" Power="0.65" Cadence="100">
+            <textevent timeoffset="10" message="Leg speed block 2. High cadence 100-105 rpm. Keep your upper body quiet."/>
+        </SteadyState>
+        <SteadyState Duration="300" Power="0.62" Cadence="90">
+            <textevent timeoffset="10" message="Settle down. Check your heart rate—keep it strictly under 131 bpm."/>
+        </SteadyState>
+        <SteadyState Duration="300" Power="0.65" Cadence="100">
+            <textevent timeoffset="10" message="Leg speed block 3. Concentrate on smooth circles without bouncing."/>
+        </SteadyState>
+        <SteadyState Duration="300" Power="0.62" Cadence="90">
+            <textevent timeoffset="10" message="Normal spin. Settle in, we are already 30 minutes into the workout."/>
+        </SteadyState>
+        <SteadyState Duration="300" Power="0.65" Cadence="100">
+            <textevent timeoffset="10" message="Leg speed block 4. Focus on pulling through the bottom of the pedal stroke."/>
+        </SteadyState>
+        <SteadyState Duration="300" Power="0.62" Cadence="90">
+            <textevent timeoffset="10" message="Settle and breathe deeply from the belly. Keep your posture tall."/>
+        </SteadyState>
+        <SteadyState Duration="300" Power="0.65" Cadence="100">
+            <textevent timeoffset="10" message="Leg speed block 5. Relax your face, hands, and shoulders. Let the legs do the work."/>
+        </SteadyState>
+        <SteadyState Duration="300" Power="0.62" Cadence="90">
+            <textevent timeoffset="10" message="Normal cadence. Check your sit bones—make sure you aren't sliding forward."/>
+        </SteadyState>
+        <SteadyState Duration="300" Power="0.65" Cadence="100">
+            <textevent timeoffset="10" message="Leg speed block 6. Almost there. Squeeze out 5 minutes of clean high-cadence spin."/>
+        </SteadyState>
+        <SteadyState Duration="300" Power="0.62" Cadence="90">
+            <textevent timeoffset="10" message="Recover and spin easy. Hydrate and prepare for the final set."/>
+        </SteadyState>
+        <SteadyState Duration="300" Power="0.65" Cadence="100">
+            <textevent timeoffset="10" message="Leg speed block 7. Last high cadence block. Make it the smoothest one yet!"/>
+        </SteadyState>
+        <SteadyState Duration="300" Power="0.62" Cadence="90">
+            <textevent timeoffset="10" message="Final steady recovery block before the ramp-out. Great job."/>
+        </SteadyState>
+        <Ramp Duration="600" PowerLow="0.62" PowerHigh="0.50" Cadence="85">
+            <textevent timeoffset="10" message="Ramp out: cooldown. Your legs did awesome managing that cadence shift!"/>
+            <textevent timeoffset="300" message="Spin easy, let the heart rate fall naturally. Rehydrate."/>
+            <textevent timeoffset="580" message="Thursday technique session complete! You're building solid neuromuscular efficiency."/>
+        </Ramp>
+    </workout>
+</workout_file>

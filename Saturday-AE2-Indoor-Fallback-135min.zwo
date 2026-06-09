@@ -1,0 +1,42 @@
+<workout_file>
+    <author>Performance Coach</author>
+    <name>Saturday AE-2 Indoor Fallback (135min)</name>
+    <description>WEATHER FALLBACK ONLY — the real plan is 2h15-2h30 outdoors on the Condor, HR under 131. If Dutch weather wins, ride this instead: 135 minutes Z2 at 131-137W with a gentle upper-Z2 finish. Fuel 40-60g carbs per hour.</description>
+    <sportType>bike</sportType>
+    <tags>
+        <tag name="ENDURANCE"/>
+    </tags>
+    <workout>
+        <Ramp Duration="900" PowerLow="0.45" PowerHigh="0.62" Cadence="90">
+            <textevent timeoffset="10" message="So the weather betrayed you. The Condor sulks in the hallway; Watopia never rains. Long ride is long ride."/>
+            <textevent timeoffset="450" message="15 minutes of easing in. Long rides are won by people who start stupidly easy."/>
+            <textevent timeoffset="780" message="Fueling plan: 40-60g of carbs per hour, starting in the first hour. Not when you feel hungry. Hungry is too late."/>
+        </Ramp>
+        <SteadyState Duration="1800" Power="0.62" Cadence="90">
+            <textevent timeoffset="10" message="Block 1 of 3: 30 min at 131W. Settle into your all-day pace. The MDS is five days long; today is practice for patience."/>
+            <textevent timeoffset="900" message="Halfway through block 1. Posture reset: soft elbows, neutral neck, change hand position."/>
+            <textevent timeoffset="1500" message="First feed should be in. If not, eat now. The bonk files no advance paperwork."/>
+        </SteadyState>
+        <SteadyState Duration="1800" Power="0.63" Cadence="90">
+            <textevent timeoffset="10" message="Block 2 of 3: nudging to 133W. You should barely notice. If you noticed, you are paying too much attention."/>
+            <textevent timeoffset="600" message="HR check: still under 131? Drift under 8% with stable power is the durability gold star."/>
+            <textevent timeoffset="1200" message="One hour-plus done. Somewhere a desert is being slowly defeated by a man in a shed."/>
+            <textevent timeoffset="1620" message="Drink. Then drink again. The fan is stealing more water than you think."/>
+        </SteadyState>
+        <SteadyState Duration="1500" Power="0.64" Cadence="90">
+            <textevent timeoffset="10" message="Block 3 of 3: 135W. Two hours in is where the real adaptation lives. Welcome to the profitable part."/>
+            <textevent timeoffset="750" message="Tired legs holding steady watts: this is exactly the cumulative-fatigue resistance the MDS will demand."/>
+            <textevent timeoffset="1320" message="Three minutes to the finishing effort. It is upper Z2, not a finale sprint. Calibrate the drama accordingly."/>
+        </SteadyState>
+        <SteadyState Duration="1500" Power="0.65" Cadence="90">
+            <textevent timeoffset="10" message="Finishing block: 25 min at 137W, upper Z2. Strong but composed — durability under fatigue, the whole point of today."/>
+            <textevent timeoffset="750" message="Halfway. HR creeping over 131? Ease back 5W. The number that matters today is the one on your chest strap."/>
+            <textevent timeoffset="1380" message="Two minutes. Finish smooth. Future October-you is watching and taking notes."/>
+        </SteadyState>
+        <Ramp Duration="600" PowerLow="0.60" PowerHigh="0.40" Cadence="86">
+            <textevent timeoffset="10" message="Step down. 135 minutes, roughly 80 TSS, zero punctures. Indoor long rides count double for character."/>
+            <textevent timeoffset="420" message="Recovery meal within the hour. Tomorrow is full rest — defend it like a Sunday should be defended."/>
+            <textevent timeoffset="560" message="Week complete: about 290 TSS. CTL up, ACWR green, FTP 230 one brick closer. Go sit down."/>
+        </Ramp>
+    </workout>
+</workout_file>

@@ -1,0 +1,43 @@
+<workout_file>
+    <author>Antigravity</author>
+    <name>Saturday AE-3 Long Durability Ride</name>
+    <description>150 minutes (2h30m) of structured indoor endurance. Ramps from low Z2 up to 70% FTP to build late-ride durability under fatigue. Keep heart rate strictly below the 131 bpm aerobic cap (128 bpm target).</description>
+    <sportType>bike</sportType>
+    <tags>
+        <tag name="ENDURANCE"/>
+    </tags>
+    <workout>
+        <Ramp Duration="900" PowerLow="0.50" PowerHigh="0.62" Cadence="90">
+            <textevent timeoffset="10" message="Welcome to your Saturday Long Ride! Yes, you are indoors for 2.5 hours. Let's settle in."/>
+            <textevent timeoffset="450" message="Easing into the aerobic zone. Make sure you have your fans on high and extra towels ready."/>
+            <textevent timeoffset="800" message="Ramp-in almost complete. Relax your shoulders, breathe, and get comfortable."/>
+        </Ramp>
+        <SteadyState Duration="2700" Power="0.62" Cadence="90">
+            <textevent timeoffset="10" message="Block 1: 45 minutes at 62% FTP (~124W). Cadence focus: keep it smooth at 85-95 rpm."/>
+            <textevent timeoffset="600" message="Time check: 25 minutes down. Check your heart rate—keep it strictly under 131 bpm."/>
+            <textevent timeoffset="1200" message="Midway through Block 1. Focus on a stable pelvis. Don't sway on the saddle."/>
+            <textevent timeoffset="1800" message="30 minutes in this block. Let's do a quick posture check: relax your neck and jaw."/>
+            <textevent timeoffset="2400" message="Almost done with Block 1. Take a sip of water. Hydration is key today!"/>
+        </SteadyState>
+        <SteadyState Duration="2700" Power="0.65" Cadence="90">
+            <textevent timeoffset="10" message="Block 2: 45 minutes at 65% FTP (~130W). A tiny step up in power. Settle in."/>
+            <textevent timeoffset="600" message="Hour mark reached! You've officially crossed the 60-minute barrier. Keep spinning."/>
+            <textevent timeoffset="1200" message="How are the feet feeling? Wiggle your toes in your shoes to keep the blood flowing."/>
+            <textevent timeoffset="1800" message="Keep the breathing steady. Long, deep belly breaths. No gasping."/>
+            <textevent timeoffset="2400" message="Almost through the second block. You're doing great. Get ready for the durability step."/>
+        </SteadyState>
+        <SteadyState Duration="1800" Power="0.70" Cadence="90">
+            <textevent timeoffset="10" message="Block 3: 30 minutes at 70% FTP (~140W). This is the durability test block. Muscle fatigue is present—stay strong."/>
+            <textevent timeoffset="450" message="Pushing through the fatigue. Keep that cadence steady at 90 rpm. Don't let it bog down."/>
+            <textevent timeoffset="900" message="15 minutes left of the hard work. Heart rate check—is it still under 131 bpm? Settle if it's drifting."/>
+            <textevent timeoffset="1350" message="Final 7 minutes. Push through. This is where the physical adaptions are earned."/>
+            <textevent timeoffset="1700" message="Last minute! Stand tall, keep pedaling, and breathe."/>
+        </SteadyState>
+        <Ramp Duration="900" PowerLow="0.65" PowerHigh="0.48" Cadence="85">
+            <textevent timeoffset="10" message="Ramp out! You survived 2.5 hours of Zwift. Let the power drop and the legs spin easy."/>
+            <textevent timeoffset="450" message="Slowly stepping down. Spin out the legs. Let the heart rate come all the way down."/>
+            <textevent timeoffset="850" message="Almost there. Start planning your post-ride meal. You've earned it."/>
+            <textevent timeoffset="890" message="Saturday long ride complete! Awesome job staying focused indoors! Time to recover."/>
+        </Ramp>
+    </workout>
+</workout_file>

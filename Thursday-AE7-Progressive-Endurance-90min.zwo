@@ -1,0 +1,35 @@
+<workout_file>
+    <author>Performance Coach</author>
+    <name>Thursday AE-7 Progressive Endurance (90min)</name>
+    <description>90 minutes stepping up through Zone 2: 125W, 135W, then 148W. HR ceiling 131 bpm even on the final step — if the last block pushes HR over, hold 140W instead. Gentle durability work: the question is whether your HR stays calm as the watts climb.</description>
+    <sportType>bike</sportType>
+    <tags>
+        <tag name="ENDURANCE"/>
+    </tags>
+    <workout>
+        <Ramp Duration="600" PowerLow="0.45" PowerHigh="0.59" Cadence="90">
+            <textevent timeoffset="10" message="Thursday: the staircase. Three steps up through Zone 2, each one politely firmer than the last."/>
+            <textevent timeoffset="300" message="This is durability training — teaching your engine to hold power when it would rather negotiate."/>
+        </Ramp>
+        <SteadyState Duration="1500" Power="0.59" Cadence="90">
+            <textevent timeoffset="10" message="Step 1: 25 min at 125W. Conversational. You could narrate a nature documentary right now."/>
+            <textevent timeoffset="600" message="Note your HR here. We will check it against step 3. A small gap = a big aerobic engine."/>
+            <textevent timeoffset="1200" message="Eat something if this is an evening ride. The MDS rule applies indoors too: fuel before you feel it."/>
+        </SteadyState>
+        <SteadyState Duration="1800" Power="0.64" Cadence="90">
+            <textevent timeoffset="10" message="Step 2: 30 min at 135W. The middle child. Slightly harder, still firmly Zone 2."/>
+            <textevent timeoffset="600" message="HR drifting or holding? Holding = your base is setting like good concrete."/>
+            <textevent timeoffset="1200" message="Drink. In October the desert will not offer bidons. Your shed does. Appreciate the shed."/>
+            <textevent timeoffset="1620" message="Three minutes to the final step. It is upper Z2, not a sprint. Adjust expectations accordingly."/>
+        </SteadyState>
+        <SteadyState Duration="1200" Power="0.70" Cadence="90">
+            <textevent timeoffset="10" message="Step 3: 20 min at 148W. Top of Zone 2. The deal: HR stays under 131 or we drop to 140W. No pride, just data."/>
+            <textevent timeoffset="600" message="Halfway. This wattage under control today was your tempo pace last winter. That is what progress looks like."/>
+            <textevent timeoffset="1020" message="Three minutes. Hold it smooth. Tomorrow is rest plus a joyful reunion with a certain bicycle."/>
+        </SteadyState>
+        <Ramp Duration="300" PowerLow="0.65" PowerHigh="0.45" Cadence="86">
+            <textevent timeoffset="10" message="Step down. Indoor week complete: roughly 200 TSS banked before the weekend."/>
+            <textevent timeoffset="240" message="Done. Tomorrow: collect the Condor, check tyres and gears, ride nothing. Saturday you get sky."/>
+        </Ramp>
+    </workout>
+</workout_file>

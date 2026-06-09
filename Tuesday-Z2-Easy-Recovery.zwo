@@ -1,0 +1,26 @@
+<workout_file>
+    <author>Antigravity</author>
+    <name>Tuesday Z2 Easy Recovery</name>
+    <description>60 minutes of easy Z2 active recovery on the bike, keeping heart rate low after Monday's 17km walk. Keep cadence comfortable (85-95 rpm) and stay strictly below HR ceiling (126 bpm).</description>
+    <sportType>bike</sportType>
+    <tags>
+        <tag name="RECOVERY"/>
+    </tags>
+    <workout>
+        <Ramp Duration="600" PowerLow="0.50" PowerHigh="0.60" Cadence="90">
+            <textevent timeoffset="10" message="Welcome to Tuesday Recovery! Smooth spin to warm up."/>
+            <textevent timeoffset="300" message="Gradually easing into target power. Focus on a relaxed upper body."/>
+        </Ramp>
+        <SteadyState Duration="2400" Power="0.58" Cadence="90">
+            <textevent timeoffset="10" message="Main block: 40 mins at 58% FTP (~116W). Conversational pace is the rule today."/>
+            <textevent timeoffset="600" message="Check your heart rate. It must stay strictly below 126 bpm."/>
+            <textevent timeoffset="1200" message="Halfway point. How are your legs and feet feeling after Monday's 17km walk?"/>
+            <textevent timeoffset="1800" message="Keep a steady 85-95 rpm. Smooth circles."/>
+        </SteadyState>
+        <Ramp Duration="600" PowerLow="0.58" PowerHigh="0.48" Cadence="85">
+            <textevent timeoffset="10" message="Ramp out: stepping down to Z1. Let the heart rate fall naturally."/>
+            <textevent timeoffset="300" message="Easy spinning. Rehydrate and focus on recovery."/>
+            <textevent timeoffset="580" message="Great job completing your recovery ride! Time to rest."/>
+        </Ramp>
+    </workout>
+</workout_file>

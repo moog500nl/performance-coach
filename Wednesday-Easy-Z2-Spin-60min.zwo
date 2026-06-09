@@ -1,0 +1,30 @@
+<workout_file>
+    <author>Performance Coach</author>
+    <name>Wednesday Easy Z2 Spin (60min)</name>
+    <description>60 minutes of genuinely easy riding at 116-135W (target ~122W), the day after sweet spot. HR ceiling 124 bpm. This is recovery in disguise — if it feels hard, that is important data, not a challenge.</description>
+    <sportType>bike</sportType>
+    <tags>
+        <tag name="RECOVERY"/>
+    </tags>
+    <workout>
+        <Ramp Duration="480" PowerLow="0.40" PowerHigh="0.55" Cadence="90">
+            <textevent timeoffset="10" message="Good morning, sweet spot survivor. Today's intensity setting: decaf."/>
+            <textevent timeoffset="240" message="Legs feel like yesterday happened? Correct. We spin gently and let the adaptation fairies work."/>
+        </Ramp>
+        <SteadyState Duration="1500" Power="0.58" Cadence="92">
+            <textevent timeoffset="10" message="122W. Lower half of Z2. If your breathing is audible over the fan, you are showing off. Stop it."/>
+            <textevent timeoffset="480" message="HR under 124 today. This hour is where Tuesday's intervals actually become fitness. Hard days tear, easy days build."/>
+            <textevent timeoffset="900" message="Cadence a touch higher today, 90-95. Light gear, fast feet, zero ego."/>
+            <textevent timeoffset="1320" message="Reminder: skipping easy days does not make you tougher. It makes you the person who plateaus in July."/>
+        </SteadyState>
+        <SteadyState Duration="1020" Power="0.57" Cadence="92">
+            <textevent timeoffset="10" message="Second half. Even a hair easier. Yes, easier. The plan said so and the plan has lawyers."/>
+            <textevent timeoffset="420" message="Friday the Condor returns from the shop. Two more sleeps. Try to act casual."/>
+            <textevent timeoffset="780" message="Feeling wrecked instead of mellow? Cut to 45 minutes. That is wisdom, not weakness."/>
+        </SteadyState>
+        <Ramp Duration="600" PowerLow="0.55" PowerHigh="0.40" Cadence="88">
+            <textevent timeoffset="10" message="Winding down. Tomorrow: 90 minutes of progressive endurance. Today you stored exactly the energy for it."/>
+            <textevent timeoffset="480" message="Done. The most underrated workout of the week, completed. Recovery: nailed."/>
+        </Ramp>
+    </workout>
+</workout_file>

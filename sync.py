@@ -100,6 +100,34 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 
 
+def atomic_write_json(path, obj, **dump_kwargs) -> None:
+    """Write `obj` as JSON to `path` atomically.
+
+    Dumps to a temp file in the same directory, fsyncs, then os.replace()s it
+    onto the target. A concurrent reader (cloud sync, file-watcher, CI) therefore
+    always sees either the complete old file or the complete new one — never a
+    half-written, truncated document. Prevents the mid-write corruption that
+    plain `open(path, 'w'); json.dump(...)` exposes.
+    """
+    path = os.fspath(path)
+    directory = os.path.dirname(os.path.abspath(path)) or "."
+    fd, tmp_name = tempfile.mkstemp(
+        dir=directory, prefix=os.path.basename(path) + ".", suffix=".tmp"
+    )
+    try:
+        with os.fdopen(fd, "w") as f:
+            json.dump(obj, f, **dump_kwargs)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp_name, path)
+    except BaseException:
+        try:
+            os.unlink(tmp_name)
+        except OSError:
+            pass
+        raise
+
+
 class IntervalsSync:
     """Sync Intervals.icu data to GitHub repository or local file"""
     
@@ -1392,8 +1420,7 @@ class IntervalsSync:
         # Save to file
         ftp_history_path = self.data_dir / self.FTP_HISTORY_FILE
         try:
-            with open(ftp_history_path, 'w') as f:
-                json.dump(history, f, indent=2, sort_keys=True)
+            atomic_write_json(ftp_history_path, history, indent=2, sort_keys=True)
             if self.debug:
                 print(f"  FTP history saved to {ftp_history_path}")
         except Exception as e:
@@ -5780,8 +5807,7 @@ class IntervalsSync:
         
         # Save locally
         history_path = self.data_dir / self.HISTORY_FILE
-        with open(history_path, 'w') as f:
-            json.dump(history, f, indent=2, default=str)
+        atomic_write_json(history_path, history, indent=2, default=str)
         print(f"  ✅ history.json saved ({len(daily_90d)} daily, {len(weekly_180d)} weekly rows)")
         
         return history
@@ -7730,9 +7756,8 @@ class IntervalsSync:
         return raw_url
     
     def save_to_file(self, data: Dict, filepath: str = "latest.json"):
-        """Save data to local JSON file"""
-        with open(filepath, 'w') as f:
-            json.dump(data, f, indent=2, default=str)
+        """Save data to local JSON file (atomic: temp file + os.replace)."""
+        atomic_write_json(filepath, data, indent=2, default=str)
         print(f"Data saved to {filepath}")
         return filepath
 
@@ -8589,16 +8614,14 @@ def main():
         intervals_data = getattr(sync, '_intervals_data', None)
         if intervals_data and intervals_data.get("activities"):
             intervals_path = sync.data_dir / sync.INTERVALS_FILE
-            with open(intervals_path, 'w') as f:
-                json.dump(intervals_data, f, indent=2, default=str)
+            atomic_write_json(intervals_path, intervals_data, indent=2, default=str)
             print(f"   📊 intervals.json saved ({len(intervals_data['activities'])} activities)")
         
         # === SAVE ROUTES.JSON (local mode) ===
         routes_data = getattr(sync, '_routes_data', None)
         if routes_data is not None:
             routes_path = sync.data_dir / sync.ROUTES_FILE
-            with open(routes_path, 'w') as f:
-                json.dump(routes_data, f, indent=2, default=str)
+            atomic_write_json(routes_path, routes_data, indent=2, default=str)
             print(f"   🗺️  routes.json saved ({len(routes_data.get('events', []))} event(s))")
         
         # === AUTO HISTORY GENERATION (local mode) ===
@@ -8607,8 +8630,7 @@ def main():
                 print("\n📊 Auto-generating history.json...")
                 history = sync.generate_history()
                 history_path = sync.data_dir / sync.HISTORY_FILE
-                with open(history_path, 'w') as f:
-                    json.dump(history, f, indent=2, default=str)
+                atomic_write_json(history_path, history, indent=2, default=str)
                 print(f"   ✅ history.json saved to {history_path}")
             except Exception as e:
                 print(f"   ⚠️ History generation failed (non-critical): {e}")
@@ -8628,8 +8650,7 @@ def main():
         if intervals_data and intervals_data.get("activities"):
             # Save locally for incremental cache on next run
             intervals_path = sync.data_dir / sync.INTERVALS_FILE
-            with open(intervals_path, 'w') as f:
-                json.dump(intervals_data, f, indent=2, default=str)
+            atomic_write_json(intervals_path, intervals_data, indent=2, default=str)
             try:
                 sync.publish_to_github(intervals_data, filepath="intervals.json",
                                        commit_message=f"Update intervals.json - {datetime.now().strftime('%Y-%m-%d')}")
@@ -8642,8 +8663,7 @@ def main():
         if routes_data is not None:
             # Save locally for cache on next run
             routes_path = sync.data_dir / sync.ROUTES_FILE
-            with open(routes_path, 'w') as f:
-                json.dump(routes_data, f, indent=2, default=str)
+            atomic_write_json(routes_path, routes_data, indent=2, default=str)
             try:
                 sync.publish_to_github(routes_data, filepath="routes.json",
                                        commit_message=f"Update routes.json - {datetime.now().strftime('%Y-%m-%d')}")

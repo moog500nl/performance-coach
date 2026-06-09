@@ -1,0 +1,26 @@
+<workout_file>
+    <author>Antigravity</author>
+    <name>Thursday AE-1 Steady-State Z2</name>
+    <description>60 minutes of steady-state endurance riding in Zone 2. Target power 112-140W (56%-70% FTP), keeping heart rate strictly below LTHR ceiling (128 bpm).</description>
+    <sportType>bike</sportType>
+    <tags>
+        <tag name="ENDURANCE"/>
+    </tags>
+    <workout>
+        <Ramp Duration="600" PowerLow="0.50" PowerHigh="0.65" Cadence="90">
+            <textevent timeoffset="10" message="Welcome to Thursday AE-1! Let's start with a smooth 10-minute ramp-in."/>
+            <textevent timeoffset="300" message="Gradually building up our aerobic engine. Relax your shoulders."/>
+        </Ramp>
+        <SteadyState Duration="2400" Power="0.65" Cadence="90">
+            <textevent timeoffset="10" message="Steady Zone 2: 40 mins at 65% FTP (~130W). Target cadence 85-95 rpm."/>
+            <textevent timeoffset="600" message="Aerobic base building. Heart rate ceiling is 128 bpm today."/>
+            <textevent timeoffset="1200" message="Halfway. Power should feel steady and sustainable. Breathe deeply."/>
+            <textevent timeoffset="1800" message="Keep the leg speed smooth. Stay focused on good pedaling form."/>
+        </SteadyState>
+        <Ramp Duration="600" PowerLow="0.65" PowerHigh="0.48" Cadence="85">
+            <textevent timeoffset="10" message="Ramp out: cool down for 10 minutes. Let heart rate come down."/>
+            <textevent timeoffset="300" message="Easy spin to finish. Rehydrate."/>
+            <textevent timeoffset="580" message="Excellent work! Thursday endurance complete."/>
+        </Ramp>
+    </workout>
+</workout_file>

@@ -1,0 +1,54 @@
+<workout_file>
+    <author>Performance Coach</author>
+    <name>Tuesday SS-5 4x10 Sweet Spot (FTP 211)</name>
+    <description>The week's key session. 4x10 min at 179W (85% of your freshly-minted 211W FTP) with 5 min easy between. HR band 135-148; if you exceed 150 mid-interval, drop 5W. Pass criterion: all four intervals within ~3% of each other. Morning gate: if HRV is still 10%+ below baseline, do only 3 intervals — bail out at the cooldown early.</description>
+    <sportType>bike</sportType>
+    <tags>
+        <tag name="SWEETSPOT"/>
+    </tags>
+    <workout>
+        <Warmup Duration="900" PowerLow="0.40" PowerHigh="0.68" Cadence="90">
+            <textevent timeoffset="10" message="Big day. First quality session at FTP 211. The ramp test wrote a check — today we see if the legs cash it."/>
+            <textevent timeoffset="300" message="Warming up properly. Sweet spot without a warm-up is like swimming right after lunch. Technically possible, universally regretted."/>
+            <textevent timeoffset="660" message="Coming up: 4x10 at 179W. That is 6W more than your May intervals. Progress wearing a very small hat."/>
+        </Warmup>
+        <SteadyState Duration="120" Power="0.50" Cadence="90">
+            <textevent timeoffset="10" message="Two minutes to settle. Breathe. Pick your cadence. Make peace with your saddle."/>
+        </SteadyState>
+        <SteadyState Duration="600" Power="0.85" Cadence="90">
+            <textevent timeoffset="10" message="Interval 1 of 4. 179W. Settle in like it is a long story you already know the ending of."/>
+            <textevent timeoffset="300" message="Halfway. HR should be cruising 135-148. RPE 7: uncomfortable, but you could still complain in full sentences."/>
+            <textevent timeoffset="540" message="One minute. Hold the watts steady. No victory surges — interval 4 is taking notes."/>
+        </SteadyState>
+        <SteadyState Duration="300" Power="0.50" Cadence="88">
+            <textevent timeoffset="10" message="Recovery 1. Spin easy at 105W. Shake the legs out. Sip something."/>
+            <textevent timeoffset="240" message="Interval 2 approaches. Same watts, same calm. Boring consistency is the whole assignment."/>
+        </SteadyState>
+        <SteadyState Duration="600" Power="0.85" Cadence="90">
+            <textevent timeoffset="10" message="Interval 2 of 4. This one usually feels the best of the day. Enjoy it responsibly."/>
+            <textevent timeoffset="300" message="Halfway. Power flat, cadence smooth. You are literally raising your FTP ceiling one steady minute at a time."/>
+            <textevent timeoffset="540" message="Final minute. If HR is over 150, shave 5W. Discipline now buys you interval 4 later."/>
+        </SteadyState>
+        <SteadyState Duration="300" Power="0.50" Cadence="88">
+            <textevent timeoffset="10" message="Recovery 2. Halfway through the work. The Condor would be proud. It will hear about this on Friday."/>
+        </SteadyState>
+        <SteadyState Duration="600" Power="0.85" Cadence="90">
+            <textevent timeoffset="10" message="Interval 3 of 4. The honest one. Whatever your legs say here is the truth about FTP 211."/>
+            <textevent timeoffset="300" message="Halfway. Stay on top of the gear. Grinding below 80 rpm turns this into a leg-press class."/>
+            <textevent timeoffset="540" message="One minute. HRV-gate riders: if today was a 3-interval day, you finish at the end of this one with full honors."/>
+        </SteadyState>
+        <SteadyState Duration="300" Power="0.50" Cadence="88">
+            <textevent timeoffset="10" message="Recovery 3. Deep breaths. One more. The difference between 3x10 and 4x10 is the entire plot of this week."/>
+        </SteadyState>
+        <SteadyState Duration="600" Power="0.85" Cadence="90">
+            <textevent timeoffset="10" message="Interval 4 of 4. The progression interval. This rep did not exist in May. Make it look routine."/>
+            <textevent timeoffset="300" message="Halfway. Compare: does this feel like interval 1? Within 3% on power = green light to 4x12 next week."/>
+            <textevent timeoffset="520" message="Eighty seconds. Hold form. Smooth to the line — fading now is the only way to fail a passed exam."/>
+        </SteadyState>
+        <Cooldown Duration="600" PowerLow="0.60" PowerHigh="0.40" Cadence="85">
+            <textevent timeoffset="10" message="Done. 40 minutes of sweet spot at the new FTP. That was the single biggest deposit of the week."/>
+            <textevent timeoffset="300" message="Spin it all the way down. Recovery starts now: food within the hour, protein included."/>
+            <textevent timeoffset="560" message="Tomorrow is deliberately easy. You earned an evening of being smug about it."/>
+        </Cooldown>
+    </workout>
+</workout_file>

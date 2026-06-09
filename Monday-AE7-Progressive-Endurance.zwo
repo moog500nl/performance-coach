@@ -1,0 +1,35 @@
+<workout_file>
+    <author>Antigravity</author>
+    <name>Monday AE-7 Progressive Endurance</name>
+    <description>90 minutes of progressive endurance riding. Target power steps up from 60% to 65% and finally 70% FTP, keeping heart rate strictly below the 131 bpm aerobic cap (128 bpm target).</description>
+    <sportType>bike</sportType>
+    <tags>
+        <tag name="ENDURANCE"/>
+    </tags>
+    <workout>
+        <Ramp Duration="600" PowerLow="0.50" PowerHigh="0.60" Cadence="90">
+            <textevent timeoffset="10" message="Welcome to Monday AE-7. Since your bike had a flat, Zwift gets to be your babysitter today. Let's warm up!"/>
+            <textevent timeoffset="300" message="Gradually building. Relax your shoulders. If your shoulders are up at your ears, you're trying to fly. Don't do that."/>
+        </Ramp>
+        <SteadyState Duration="1500" Power="0.60" Cadence="90">
+            <textevent timeoffset="10" message="Step 1: 25 mins at 120W. Nice and easy. If this feels hard, we need to talk about your life choices."/>
+            <textevent timeoffset="600" message="HR check. Stay under 131 bpm. If you go over, the Zwift police will pull you over. They have very tiny sirens."/>
+            <textevent timeoffset="1200" message="Ankles relaxed, pedaling smooth. Pretend you're scraping dog poop off the bottom of your shoe. Smooth sweep!"/>
+        </SteadyState>
+        <SteadyState Duration="1500" Power="0.65" Cadence="90">
+            <textevent timeoffset="10" message="Step 2: 25 mins at 130W. Stepping it up. Feel that? That's the smell of sweat and virtual victory."/>
+            <textevent timeoffset="600" message="Hydrate! If you're not drinking, you're drying. And nobody likes a human raisin."/>
+            <textevent timeoffset="1200" message="Breathe deeply from the belly. If your chest is expanding like a pufferfish, you're doing it wrong. Settle down."/>
+        </SteadyState>
+        <SteadyState Duration="1200" Power="0.70" Cadence="90">
+            <textevent timeoffset="10" message="Step 3: 20 mins at 140W. This is the upper limit of Zone 2. It's not supposed to be easy, but it shouldn't feel like a death march."/>
+            <textevent timeoffset="600" message="Check that heart rate. Still under 131? Good. If not, back off. We're building an engine, not exploding it."/>
+            <textevent timeoffset="1000" message="Final stretch of work. Keep your head up. Looking at your front wheel won't make the virtual scenery pass any faster."/>
+        </SteadyState>
+        <Ramp Duration="600" PowerLow="0.70" PowerHigh="0.50" Cadence="85">
+            <textevent timeoffset="10" message="Ramp out: Step down. Your legs survived! Let's spin it out and let your heart rate drop naturally."/>
+            <textevent timeoffset="300" message="Easy spinning to finish. Drink some water. You did the work. Your future self is currently high-fiving you."/>
+            <textevent timeoffset="580" message="Awesome job! Monday is done. Go find some actual food, but maybe fix that flat tire first."/>
+        </Ramp>
+    </workout>
+</workout_file>

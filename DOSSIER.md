@@ -290,7 +290,7 @@ Complete MDS Trek 75km (5 stages: 14/12/19/19/13km) in October 2026 at a comfort
 - Loaded walking (6–8kg pack) must begin by July — foot, ankle, hip and lower back conditioning cannot be faked with cycling
 - Foot care is critical: blisters are the primary DNF cause in multi-day treks; test socks, shoes and anti-chafe protocol before the event
 
-**Current status (May 2026):** CTL 17.3, FTP 200W (outdoor), eFTP 158W, weight 99kg. Returned from Japan May 5 after 2-week break. TSB +14.4 (very fresh). HRV amber from jet lag. Reactivation week begins May 6. Training plan targets CTL 38–42 by July 15 holiday (weight checkpoint ~94kg). Ultimate weight target: 90kg by October (MDS 120). See training-plan-2026-05-05.md for full 10-week block.
+**Current status (Jun 2026):** FTP 211W (Zwift ramp test, Jun 3 2026 — updated from 200W). CTL 17.3 (as of May 2026). Training plan targets CTL 38–42 by July 15 holiday (weight checkpoint ~94kg). Ultimate weight target: 90kg by October (MDS 120). See training-plan-2026-05-25.md for active block. Note: latest.json ftp fields still show 200W — update FTP in Garmin Connect/Zwift and re-run sync.py to propagate.
 
 ---
 

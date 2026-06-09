@@ -1,0 +1,33 @@
+<workout_file>
+    <author>Performance Coach</author>
+    <name>Monday AE-1 Steady Z2 (75min)</name>
+    <description>75 minutes of steady Zone 2 endurance at 120-145W (target ~131W). HR ceiling 128 bpm. Aerobic volume to open the week — Tuesday is the key session, so resist all heroics today.</description>
+    <sportType>bike</sportType>
+    <tags>
+        <tag name="ENDURANCE"/>
+    </tags>
+    <workout>
+        <Ramp Duration="600" PowerLow="0.45" PowerHigh="0.60" Cadence="90">
+            <textevent timeoffset="10" message="Welcome to Monday. The Condor is still at the spa getting its nails done. You get Watopia."/>
+            <textevent timeoffset="180" message="Easing in. 10 minutes of ramp. Your only job: do not impress anyone. Especially yourself."/>
+            <textevent timeoffset="420" message="Shoulders down, grip loose. The handlebars have done nothing wrong. Stop strangling them."/>
+        </Ramp>
+        <SteadyState Duration="1500" Power="0.62" Cadence="90">
+            <textevent timeoffset="10" message="Main course: 55 minutes around 131W. This should feel suspiciously easy. That is the point."/>
+            <textevent timeoffset="420" message="HR check: under 128. If it creeps up, ease off. Zone 2 is a library, not a nightclub."/>
+            <textevent timeoffset="900" message="Every one of these watts is a brick in the FTP 230 cathedral. Boring bricks. Load-bearing bricks."/>
+            <textevent timeoffset="1320" message="Cadence 85-95. Smooth circles. Imagine pedaling through stroopwafel syrup without splashing any."/>
+        </SteadyState>
+        <SteadyState Duration="1800" Power="0.62" Cadence="90">
+            <textevent timeoffset="10" message="Halfway-ish. Take a drink. Hydrated cyclists make better decisions, like not sprinting on Mondays."/>
+            <textevent timeoffset="600" message="Fun fact: in October you will walk 75km across a desert. Today you sit in a shed making electricity. Both count."/>
+            <textevent timeoffset="1100" message="If a RoboPacer group blows past you, wave. They are software. You are building a 52-year-old diesel engine."/>
+            <textevent timeoffset="1620" message="Last few minutes of steady work. Form check: head up, elbows soft, watts flat as the Netherlands."/>
+        </SteadyState>
+        <Ramp Duration="600" PowerLow="0.60" PowerHigh="0.45" Cadence="88">
+            <textevent timeoffset="10" message="Stepping down. Let the HR drift back to sea level. You banked roughly 45 TSS of pure base."/>
+            <textevent timeoffset="300" message="Tomorrow: 4x10 sweet spot at the new FTP. Tonight: carbs are not a sin, they are a strategy."/>
+            <textevent timeoffset="560" message="Done. Monday handled. Quietly competent, like a good goalkeeper."/>
+        </Ramp>
+    </workout>
+</workout_file>
