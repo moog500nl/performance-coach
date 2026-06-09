@@ -1,15 +1,16 @@
 {
-  "notification_id": "2026-04-10",
+  "notification_id": "2026-04-26",
   "changes": [
-    "— sync.py v3.97–v4.00 + SECTION_11.md v11.26–v11.31 (2026-04-10) —",
-    "v11.26: Nutrition & Pacing Protocol — Route & Terrain expanded with carbs/h guidance, glycogen budget logic, hydration timing, glycogen-linked W′ penalties, and stronger pacing rules.",
-    "v11.27 / v3.97: Readiness Signal Hygiene — low-side ACWR removed from readiness ambers, RI amber now requires 2-day persistence, and ACWR high-side thresholds unified.",
-    "v11.28 / v3.98: Schema Hygiene — renamed derived_metrics.polarisation_index to easy_time_ratio. Rename only, no formula change.",
-    "v11.29: Post-Workout Report Completeness Rules — never omit completed activities, never merge activity IDs, never invent explanations for anomalous sessions.",
-    "v11.30 / v3.99: DFA a1 Protocol — added per-session DFA blocks, quality gating, drift interpretation, LT1/LT2 crossing estimates, dfa_a1_profile, and report/template support.",
-    "Activity name anonymization removed — route/terrain context preserved, athlete_id redaction remains.",
-    "v11.31 / v4.00: DFA Power Calibration Indoor/Outdoor Split — cycling watts now split into indoor and outdoor estimates, HR remains pooled.",
-    "Claude Google Drive connector now reads .json files.",
-    "Upgrade: replace sync.py + pull fresh docs/templates."
+    "— sync.py v3.104–v3.108 + SECTION_11.md v11.35–v11.39 + push.py v0.4–v0.5 + pull.py v0.1 (2026-04-26) —",
+    "v11.39: Outdoor Context Synthesis Line — post-workout reports now include a concise optional Outdoor context line per outdoor activity, synthesizing terrain + weather and adding causal attribution only when earned.",
+    "v11.38 / v3.107: Completed-Activity Terrain & Weather — terrain_summary and weather_summary now attach to outdoor recent_activities[], with course character, elevation density, grade distribution, weather, wind exposure, and explicit units.",
+    "v3.107: New pull.py read-only helper for agentic/local setups — fetch raw activity streams (trace) on demand for deeper inspection.",
+    "v3.108: Conservative fetch error classification — intervals, streams, and terrain fetchers now distinguish terminal no-data cases from transient API/network errors, so transient failures retry instead of being cached as truth.",
+    "v11.37 / v3.106: has_intervals semantics fixed — has_intervals now requires at least one WORK segment; recovery-only placeholder intervals no longer trigger unnecessary intervals.json loads.",
+    "v11.36 / v3.105: Effort Response Signal — recent_activities[] now includes effort_response from session IF vs logged RPE, and post-workout reports render IF + Effort response when available.",
+    "v11.35 / v3.104: Aggregate Durability reliability gate — durability alerts now require sufficient qualifying-session counts before firing; reliability_limited metadata explains low-N cases.",
+    "push.py v0.4–v0.5: fixed device sync by omitting empty workout_doc, improved credential validation, clearer 403 errors, and centralized requests handling.",
+    "Reports/docs: post-workout formatting consistency pass, distance precision to 2 decimals, full zone distributions after rounding, decoupling display labels removed, examples updated.",
+    "Upgrade: replace sync.py, push.py, pull.py, and pull fresh SECTION_11.md, SKILL.md, docs, and report templates/examples."
   ]
 }
