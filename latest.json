@@ -166,12 +166,6 @@
     "total_duration_decimal_hours": 6.9,
     "total_activities": 5,
     "by_activity_type": {
-      "Ride": {
-        "duration_decimal_hours": 2.4,
-        "count": 1,
-        "tss": 94,
-        "distance_km": 51.7
-      },
       "VirtualRide": {
         "duration_decimal_hours": 6.9,
         "count": 5,
@@ -347,8 +341,8 @@
       "z2_pct": 10.0,
       "z3_pct": 1.4,
       "polarization_index": null,
-      "classification": "Base",
-      "zone_basis": "mixed"
+      "classification": "Pyramidal",
+      "zone_basis": "power"
     },
     "seiler_tid_7d_primary": {
       "z1_seconds": 22025,
@@ -358,8 +352,8 @@
       "z2_pct": 10.0,
       "z3_pct": 1.4,
       "polarization_index": null,
-      "classification": "Base",
-      "zone_basis": "mixed",
+      "classification": "Pyramidal",
+      "zone_basis": "power",
       "sport": "cycling"
     },
     "seiler_tid_28d": {
@@ -415,12 +409,12 @@
         "note": "HRRc = heart rate recovery (largest 60s HR drop in bpm after exceeding threshold HR for >1 min). Higher = better parasympathetic recovery. Null when threshold not reached, recording stopped before cooldown, or no HR data. Trend: 7d mean vs 28d mean, >10% = meaningful (min 1 session/7d, 3 sessions/28d). Display only \u2014 not wired into readiness_decision signals."
       },
       "tid_comparison": {
-        "classification_7d": "Base",
+        "classification_7d": "Pyramidal",
         "classification_28d": "Pyramidal",
         "pi_7d": null,
         "pi_28d": null,
         "pi_delta": null,
-        "drift": "shifting",
+        "drift": "consistent",
         "note": "Compares 7d vs 28d Seiler TID to detect distribution shifts. pi_delta positive = more polarized acutely."
       },
       "power_curve_delta": {
@@ -2618,7 +2612,7 @@
       "sleep_hours": 7.98,
       "sleep_formatted": "7h59m",
       "sleep_quality": 2,
-      "sleep_score": 82.0,
+      "sleep_score": 85.0,
       "mental_energy": null,
       "avg_sleeping_hr": null,
       "vo2max": null,
@@ -2673,7 +2667,7 @@
       "mood": 1,
       "motivation": 1,
       "injury": 1,
-      "hydration": null,
+      "hydration": 2,
       "spO2": null,
       "blood_glucose": null,
       "systolic": null,
