@@ -4073,11 +4073,16 @@ class IntervalsSync:
         Filters to steady-state power sessions only:
         - decoupling is not None
         - variability_index is not None and > 0 and <= 1.05
-        - moving_time >= 5400 (90 minutes)
+        - moving_time >= 3600 (60 minutes)
 
         Per Maunder et al. (2021), Rothschild et al. (2025): meaningful
-        cardiac drift requires prolonged exercise. 90 min is the practical
-        field floor where drift becomes detectable.
+        cardiac drift requires prolonged exercise; ~90 min is where drift
+        becomes most reliably detectable. LOCAL CUSTOMIZATION: floor lowered
+        to 60 min so structured indoor/Zwift and racing sessions (which rarely
+        reach 90 min but still produce a valid drift signal) qualify. Tradeoff:
+        60-90 min reads are slightly noisier, and indoor sessions carry
+        heat-inflated drift — keep cooling consistent and lean on the trend /
+        N>=5 reliability gate rather than any single absolute value.
 
         Negative decoupling is included — it indicates HR drifted down
         relative to power (strong durability or cooling conditions).
@@ -4100,7 +4105,7 @@ class IntervalsSync:
                         and vi is not None
                         and vi > 0
                         and vi <= 1.05
-                        and mt >= 5400):
+                        and mt >= 3600):
                     qualifying.append(dec)
             return qualifying
 
@@ -4155,11 +4160,13 @@ class IntervalsSync:
             "reliability_limited": reliability_limited,
             "reliability_note": reliability_note,
             "note": ("Steady-state power sessions only (VI <= 1.05, VI > 0, "
-                     ">= 90min, power data). Negative decoupling = strong "
+                     ">= 60min, power data). Negative decoupling = strong "
                      "durability. Trend compares 7d vs 28d mean "
                      "(+/-1% = stable). Alerts require N28>=5 (alarm) "
                      "or N7>=3 AND N28>=5 (declining warning) for "
-                     "statistical reliability.")
+                     "statistical reliability. Floor is 60min (local: "
+                     "captures indoor/Zwift sessions); indoor drift runs "
+                     "high from heat, so weight trend over absolute value.")
         }
 
     def _calculate_efficiency_factor(self, activities_7d: List[Dict],
@@ -7172,7 +7179,8 @@ class IntervalsSync:
             ]
             _CYCLING_EF_TYPES = {"Ride", "VirtualRide", "MountainBikeRide", "GravelRide"}
 
-            # Durability (VI<=1.05, VI>0, mt>=5400, decoupling not None)
+            # Durability (VI<=1.05, VI>0, mt>=3600, decoupling not None)
+            # Floor 60min (local: matches _calculate_durability, captures indoor/Zwift)
             _dur_vals = []
             for _a in _week_acts:
                 _dec = _a.get("icu_hr_decoupling")
@@ -7181,7 +7189,7 @@ class IntervalsSync:
                 _vi = _a.get("icu_variability_index")
                 _mt = _a.get("moving_time", 0) or 0
                 if (_dec is not None and _vi is not None
-                        and _vi > 0 and _vi <= 1.05 and _mt >= 5400):
+                        and _vi > 0 and _vi <= 1.05 and _mt >= 3600):
                     _dur_vals.append(_dec)
             week_durability_mean = round(statistics.mean(_dur_vals), 2) if _dur_vals else None
             week_durability_qualifying = len(_dur_vals)
