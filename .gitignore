@@ -1,1 +1,8 @@
 .DS_Store
+
+# Python bytecode cache (auto-generated)
+__pycache__/
+*.pyc
+
+# Atomic-write temp files (sync.py writes <name>.<rand>.tmp then renames)
+*.tmp
