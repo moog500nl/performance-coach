@@ -2,10 +2,14 @@
 
 # Python bytecode cache (auto-generated)
 __pycache__/
-*.pyc
+*.py[cod]
 
 # Atomic-write temp files (sync.py writes <name>.<rand>.tmp then renames)
 *.tmp
 
 # Local Intervals.icu credentials (GitHub Actions use repository secrets instead)
 .sync_config.json
+
+# macOS archive cruft
+__MACOSX/
+._*
