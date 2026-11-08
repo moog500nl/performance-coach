@@ -1,6 +1,6 @@
 # **Section 12 — Daily Nutrition & Weight Coaching Protocol (v12.0)**
 
-**Protocol Version:** 12.1 **Last Updated:** 2026-04-16 **Companion to:** SECTION\_11.md (AI Coach Protocol v11.33+) **License:** MIT
+**Protocol Version:** 12.4 **Last Updated:** 2026-10-11 **Companion to:** SECTION\_11.md (AI Coach Protocol v11.33+) **License:** MIT
 
 ---
 
@@ -9,6 +9,25 @@
 Section 12 governs daily nutrition coaching: weight trajectory monitoring, macro compliance, carb periodization alignment, and fueling recommendations relative to training load.
 
 Section 11 v11.26 covers **in-ride** fueling (KJ→carbs dosing, absorption limits, W′ depletion). Section 12 covers **off-bike daily nutrition** — strategic diet management in tandem with the training programme.
+
+---
+
+## **1a\. Current Programme Context (from 2026-10-12)**
+
+The athlete is on a body recomposition programme (`recomposition-plan-2026-10-19.md`), not a weight-loss cut. Energy depends on the phase:
+
+| Phase | Dates | Energy | Weight target (7d avg) |
+| ----- | ----- | ----- | ----- |
+| Recovery | 2026-10-12 to 2026-10-18 | Maintenance | n/a |
+| 1\. Rebuild | 2026-10-19 to 2027-01-03 | Maintenance | Hold 80.5 to 82.5 kg |
+| 2\. Lean cut | 2027-01-04 to 2027-04-04 | ~400 kcal/day under maintenance | Lose 0.3 to 0.4 kg/week |
+| 3\. Consolidate | 2027-04-05 to 2027-05-02 | Maintenance | Hold |
+
+* Day-type kcal, carb and fat targets for each phase: DOSSIER §6 "Daily Targets by Day Type". Weight band and floor: DOSSIER §4.  
+* Protein floor: **180 g every day**, rest days included. Below 160 g is a priority flag.  
+* Day types: `gym`, `z4_quality`, `long_z2`, `z2_easy`, `rest` (plus `deload`, `travel`, `sick`).  
+* The deficit gates in §3 Step 4 and §7 only have something to suspend in Phase 2. In the other phases, report energy as "maintenance (phase)".  
+* The 80 kg floor in DOSSIER §4 stays in force until the athlete decides otherwise (decision due at the 2027-01-03 checkpoint).
 
 ---
 
@@ -22,7 +41,7 @@ Section 11 v11.26 covers **in-ride** fueling (KJ→carbs dosing, absorption limi
 | 3b | `nutrition_meals.json` | Per-food meal breakdown keyed by date; read on food-level questions, not needed for macro compliance |
 | 4 | `latest.json` | Training load (CTL, ATL, TSB, ACWR, readiness, planned sessions) |
 | 5 | `history.json` | Training trends (weekly TSS, hours, fitness markers) |
-| 6 | `DOSSIER.md Section 6` | Nutrition targets and weight goals |
+| 6 | `DOSSIER.md` §4 and §6 | Weight targets by phase (§4); daily targets by day type and protein floor (§6) |
 
 Weight is logged daily in Intervals.icu's wellness screen (same screen as HRV/RHR) and flows into both `latest.json` (last 7 days) and `history.json` (full history) via `sync.py`. The field name in both files is `weight_kg`. **In local setups where the two files are pulled from GitHub independently, `latest.json` is often fresher than `history.json` — always read both, prefer `latest.json` for any overlapping dates, and use `history.json` only for entries older than the `latest.json` window.** No separate weight file is maintained.
 
@@ -45,7 +64,7 @@ When the athlete requests a nutrition review or diet check-in:
 3. Merge into a unified weight series; if any date appears in both files, the `latest.json` value wins  
 4. Read `nutrition.json` → extract all daily entries, note most recent date  
 5. Read `latest.json` → extract: readiness\_decision, ACWR, TSB, CTL, planned sessions for today and next 7 days  
-6. Read `DOSSIER.md` Section 6 → confirm targets
+6. Read `DOSSIER.md` §4 and §6 → confirm the current phase, weight band and day-type targets
 
 **Staleness check:** If the merged weight series has no entries in the last 5 days, flag this before proceeding and prompt the athlete to log weight in Intervals.icu and run `sync.py`. If only `history.json` is stale but `latest.json` has recent wellness entries, this is a local sync lag (run `git pull` in the data repo), not missing data — note it in the report but proceed. Same applies for nutrition: if `nutrition.json` is \> 5 days old, prompt for `sync_cronometer.py`.
 
@@ -55,36 +74,41 @@ From the merged `weight_kg` series built in Step 1 (`latest.json` wellness for r
 
 1. Calculate 7-day rolling average weight for each available day  
 2. Calculate weekly rate of change (kg/week) from the 7-day average  
-3. Compare against milestones from DOSSIER Section 6.11  
-4. Compare rate against target range (0.3–0.5 kg/week)
+3. Compare against the current phase weight band (DOSSIER §4) and the checkpoints in the recomposition plan §9  
+4. Compare rate against the phase target: hold within the band in Recovery, Phase 1 and Phase 3; lose 0.3 to 0.4 kg/week in Phase 2
 
-**Alert conditions:**
+**Alert conditions (Phase 2, lean cut):**
 
 * Rate \> 0.7 kg/week → Flag: "Loss rate exceeds safe threshold. Risk of lean mass loss. Recommend increasing kcal by 200–300/day."  
 * Rate \< 0.1 kg/week for 3+ consecutive weeks → Flag: "Weight stalled. Review calorie and carb targets for rest/easy days."  
 * Rate negative (gaining weight) during non-deload, non-event-week period → Investigate nutrition data for pattern.
 
+**Alert conditions (Recovery, Phase 1, Phase 3: maintenance):**
+
+* 7d average outside the phase band (Phase 1: 80.5 to 82.5 kg) for 7+ days → Flag and review kcal against the day-type table.  
+* A gain of 1 to 1.5 kg in the first two weeks of Phase 1 is expected (glycogen refill and creatine water). Do not flag it.
+
 ### **Step 3 — Compute nutrition compliance**
 
 From the last 7 days of `nutrition.json`:
 
-1. Cross-reference each day's `day_type` against the macro targets in DOSSIER Section 6  
-2. Compute daily protein average — compare against 175–195 g target  
+1. Cross-reference each day's `day_type` against the macro targets in DOSSIER §6 (current phase column)  
+2. Compute daily protein average and the number of days at or above 180 g (the floor applies every day)  
 3. Compute daily kcal average — compare against blended target for that week's day type mix  
 4. Flag specific days where carbs were mismatched to day type (e.g., low carbs on a Z4/Z5 day is a fuelling error)
 
 **Key compliance checks:**
 
-* Protein \< 160 g on any training day → Flag (insufficient for muscle preservation)  
-* Protein \< 150 g on a rest day → Flag (rest day floor is 160–175 g; below 150 g is insufficient)  
-* CHO \< 250 g on a Z4/Z5 day → Flag as fuelling error (training quality at risk; target is 277–340 g)  
-* CHO \> 360 g on a Z4/Z5 day → Flag as overfuelled for session type (pushes above kcal ceiling)  
-* CHO \> 350 g on a rest day → Flag (undermining weight loss target)  
-* kcal \> 3,500 on a rest day → Flag
+* Protein \< 180 g on any day → below floor; count the days  
+* Protein \< 160 g on any day → Flag as priority correction  
+* CHO more than 10% below the day-type target on a `z4_quality`, `long_z2` or `gym` day → Flag as fuelling error  
+* CHO more than 10% above the day-type target on a `rest` day → Note  
+* kcal more than 300 away from the day-type target for the current phase → Note (in Phase 1 this is calibration data for the maintenance estimate, not a failure)  
+* kcal \< 1,800 on any day → Flag immediately
 
 ### **Step 4 — Cross-reference training load signals**
 
-From `latest.json`:
+From `latest.json` (the gates only bite in Phase 2; in maintenance phases report them for context and keep energy at maintenance):
 
 1. Check ACWR → if ≥ 1.3, recommend suspending caloric deficit and eating to maintenance  
 2. Check TSB → if \< −25, recommend maintenance calories  
@@ -97,10 +121,10 @@ From `latest.json`:
 
 For each of the next 7 days (using planned sessions from `latest.json` calendar):
 
-* Assign a `day_type` from DOSSIER Section 6 taxonomy  
+* Assign a `day_type` from the DOSSIER §6 taxonomy (`gym`, `z4_quality`, `long_z2`, `z2_easy`, `rest`)  
 * State kcal target, protein target, and CHO target for that day  
 * Flag any upcoming quality sessions with pre/post-workout nutrition reminders  
-* Flag back-to-back days and confirm Day 1 dinner CHO loading priority
+* Flag gym days: 35 to 45 g protein within 2 h after the session, and a high-carb dinner
 
 ---
 
@@ -114,25 +138,25 @@ Data: weight last entry \[DATE\] (history.json) | nutrition.json last entry \[DA
 WEIGHT TREND  
   Current 7d avg: \[X.X\] kg  
   Rate (7d): \[+/-X.X\] kg/week  
-  Target rate: −0.3 to −0.5 kg/week  
+  Phase: \[Recovery | 1 Rebuild | 2 Lean cut | 3 Consolidate\] | Target: \[hold 80.5 to 82.5 kg | lose 0.3 to 0.4 kg/week | hold\]  
   Milestone status: \[on track / ahead / behind\] — \[milestone date\]: target \[X.X\] kg, current trajectory \[X.X\] kg  
   Alert: \[if any\]
 
 NUTRITION COMPLIANCE (last 7 days)  
-  Avg protein: \[X\] g/day — \[on target / below target / above target\]  
+  Avg protein: \[X\] g/day | days at or above 180 g: \[N\]/7  
   Avg kcal: \[X\] kcal/day  
   Carb periodization: \[compliant / N days mismatched\]  
   Flagged days: \[specific dates and issue if any\]
 
 TRAINING LOAD OVERLAY  
-  ACWR: \[X.XX\] — \[deficit OK / suspend deficit\]  
+  ACWR: \[X.XX\] | \[Phase 2: deficit OK / suspend deficit; other phases: maintenance (phase)\]  
   TSB: \[X\] — \[note if \< −25\]  
   Readiness today: \[go/modify/skip\]
 
 NEXT 7 DAYS — FUELING PLAN  
   \[Date\] \[Day type\] — \[kcal\] kcal | \[protein\] g protein | \[CHO\] g carbs  
   \[Date\] \[Day type\] — ...  
-  \[notes for quality sessions, back-to-back days, pre/post nutrition reminders\]
+  \[notes for quality sessions, gym days, pre/post nutrition reminders\]
 
 COACH NOTE  
   \[2–3 sentences: primary observation, one adjustment if needed, one positive reinforcement\]
@@ -150,18 +174,15 @@ COACH NOTE
 
 ## **5\. Carb Periodization Validation Rules**
 
-When evaluating `nutrition.json` against DOSSIER targets:
+When evaluating `nutrition.json` against the DOSSIER §6 targets for the current phase:
 
 | Condition | Classification | Coach Response |
 | ----- | ----- | ----- |
-| CHO ≥ 350 g on rest day | Overfuelled | Note and suggest 150–200 g reduction |
-| CHO ≥ 350 g on Z2 easy day | Acceptable upper range | No flag |
-| CHO \< 250 g on Z4/Z5 day | Under-fuelled | Flag as fuelling error (target 277–340 g) |
-| CHO \> 360 g on Z4/Z5 day | Overfuelled for session | Note — exceeds kcal ceiling; reduce to 277–340 g |
-| CHO \< 300 g on long Z2 (2h+) | Under-fuelled | Flag — likely to compromise session quality |
-| Protein \< 160 g on training day | Insufficient | Flag as priority correction |
-| Protein \< 150 g on rest day | Insufficient | Flag — rest day floor is 160–175 g |
-| kcal \< 1,800 any day | Dangerously low | Flag immediately — not compatible with training |
+| CHO more than 10% above the day-type target on a rest day | Overfuelled | Note and suggest trimming starch |
+| CHO more than 10% below the day-type target on `z4_quality`, `long_z2` or `gym` | Under-fuelled | Flag as fuelling error |
+| Protein \< 180 g any day | Below floor | Count toward weekly protein compliance |
+| Protein \< 160 g any day | Insufficient | Flag as priority correction |
+| kcal \< 1,800 any day | Dangerously low | Flag immediately; not compatible with training |
 
 ---
 
@@ -179,19 +200,21 @@ weekly\_rate \= 7d\_avg\[most recent day\] \- 7d\_avg\[7 days prior\]
 
 Expressed as kg/week. Negative \= weight loss. Positive \= weight gain.
 
-### **Trajectory to Goal**
+### **Trajectory to Goal (Phase 2 only)**
 
-weeks\_remaining \= (goal\_date \- today).days / 7  
-current\_deficit\_from\_goal \= current\_7d\_avg \- goal\_weight\_kg  
+Applies during the lean cut (2027-01-04 to 2027-04-04). In maintenance phases, report the 7d average against the phase band instead.
+
+weeks\_remaining \= (2027-04-04 \- today).days / 7  
+current\_deficit\_from\_goal \= current\_7d\_avg \- cut\_end\_target\_kg (77.5 kg)  
 required\_rate \= current\_deficit\_from\_goal / weeks\_remaining
 
-Compare `required_rate` against `target_rate_kg_per_week` (0.4 kg/week):
+Compare `required_rate` against `target_rate_kg_per_week` (0.35 kg/week):
 
-* required\_rate ≤ 0.6 kg/week → on track  
-* required\_rate 0.6–0.8 kg/week → slightly behind — moderate adjustment  
-* required\_rate \> 0.8 kg/week → significantly behind — review protocol
+* required\_rate ≤ 0.45 kg/week → on track  
+* required\_rate 0.45 to 0.6 kg/week → behind: accept a slightly higher end weight rather than speeding up  
+* required\_rate \> 0.6 kg/week → do not chase it; extend the cut or accept the landing point, because losing faster than 0.6 kg/week costs lean mass
 
-**Do not recommend aggressive deficit if ACWR ≥ 1.3 or TSB \< −25, even if behind trajectory.**
+**Do not recommend aggressive deficit if ACWR ≥ 1.3 or TSB \< −25, even if behind trajectory.** If the weight floor decision (DOSSIER §4) is still open when the 7d average approaches 80 kg, hold at 80 kg and ask the athlete.
 
 ---
 
@@ -205,19 +228,19 @@ Nutrition data provides **contextual enrichment** to Section 11 readiness decisi
 * If readiness\_decision \= "modify" → reduce CHO slightly on easy substitute session; maintain protein.  
 * If HRV drop \>20% sustained → suspend deficit; investigate whether under-fuelling is a contributing factor (cross-reference kcal average over prior 5 days).  
 * If RHR ↑≥5 bpm sustained → same as above.  
-* Fasted Z2 sessions (DOSSIER 6.9) require RI ≥ 0.85 — this gate is sourced from `latest.json`; confirm before recommending.
+* Fasted sessions are not part of the recomposition programme; do not recommend them.
 
 ---
 
 ## **8\. Milestone Check-In Protocol**
 
-At each monthly milestone (see DOSSIER Section 6.11):
+At each checkpoint in the recomposition plan (§9: 15 Nov, 13 Dec, 3 Jan, 31 Jan, 28 Feb, 4 Apr, 2 May):
 
 1. Compute current 7d average vs milestone target  
 2. Compute delta (kg ahead/behind)  
 3. Assess whether gap requires protocol adjustment or is within normal variance  
 4. Review protein compliance over prior 4 weeks — consistent under-target protein is the most common reason for lean mass loss alongside fat  
-5. Review training phase — if CTL building strongly, a slightly slower weight loss rate is acceptable
+5. Review the lifting log and the bioimpedance lean-mass trend (2 to 4 week average). Lifts rising while the scale is flat is recomposition working, not a stall.
 
 **Output:** One paragraph milestone summary, 3 sentences maximum.
 
@@ -257,4 +280,5 @@ When the athlete provides a Cronometer CSV export:
 | 12.1 | 2026-04-16 | Weight source changed from weight\_history.json to history.json wellness entries (Intervals.icu pipeline) |
 | 12.2 | 2026-05-15 | Rest day protein floor lowered to 160–175 g (175–195 g is reserved for training days; macro maths confirmed at 99 kg). Z4 quality carb target corrected to 277–340 g (2.8–3.5 g/kg) — prior 388–485 g target caused macro sum to exceed kcal ceiling by ~400 kcal. Validation rules updated accordingly. |
 | 12.3 | 2026-06-07 | Per-food meal detail split out of `nutrition.json` into a new `nutrition_meals.json` (keyed by date) so `nutrition.json` stays compact and always reads in full — embedded meals had grown it past the file-read truncation limit, hiding recent days from review. `nutrition_meals.json` is read on demand for food-level questions only; macro-compliance review is unchanged. |
+| 12.4 | 2026-10-11 | Recomposition programme: new §1a phase context (maintenance in Recovery, Phase 1 and Phase 3; deficit only in Phase 2); protein floor 180 g every day; `gym` day type; compliance checks and carb validation read the current phase column in DOSSIER §6; trajectory maths limited to Phase 2 with a 0.6 kg/week ceiling; dead DOSSIER references (6.9, 6.11) removed. |
 

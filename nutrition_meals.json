@@ -5,8 +5,8 @@
     "source": "Cronometer servings CSV export",
     "note": "nutrition.json holds daily macro totals; this file holds the food-level breakdown. Look up a date here when you need meal detail."
   },
-  "generated_at": "2026-06-09T17:24:37Z",
-  "sync_version": "1.0.0",
+  "generated_at": "2026-11-05T12:01:41Z",
+  "sync_version": "1.1.0",
   "meals_by_date": {
     "2026-04-13": {
       "Uncategorized": [
@@ -5001,6 +5001,17 @@
       ]
     },
     "2026-06-07": {
+      "Uncategorized": [
+        {
+          "food": "Chio, Oven Chips, Sea Salt",
+          "amount": "1.25 Serving",
+          "kcal": 543.75,
+          "protein_g": 7.38,
+          "carbs_g": 105.62,
+          "fat_g": 11.5,
+          "time": "18:23"
+        }
+      ],
       "Breakfast": [
         {
           "food": "Skyr Breakfast",
@@ -5050,6 +5061,1160 @@
           "carbs_g": 92.17,
           "fat_g": 18.36,
           "time": "13:51"
+        }
+      ],
+      "Snacks": [
+        {
+          "food": "Olly, The Perfect Men's Multi",
+          "amount": "0.50 x 2.0 gummies",
+          "kcal": 10.0,
+          "carbs_g": 2.0,
+          "time": "14:34"
+        },
+        {
+          "food": "Water",
+          "amount": "236.59 mL",
+          "kcal": 0.0,
+          "protein_g": 0.0,
+          "carbs_g": 0.0,
+          "fat_g": 0.0,
+          "time": "14:35"
+        },
+        {
+          "food": "Water",
+          "amount": "236.59 mL",
+          "kcal": 0.0,
+          "protein_g": 0.0,
+          "carbs_g": 0.0,
+          "fat_g": 0.0,
+          "time": "14:35"
+        },
+        {
+          "food": "Water",
+          "amount": "236.59 mL",
+          "kcal": 0.0,
+          "protein_g": 0.0,
+          "carbs_g": 0.0,
+          "fat_g": 0.0,
+          "time": "14:35"
+        },
+        {
+          "food": "Water",
+          "amount": "236.59 mL",
+          "kcal": 0.0,
+          "protein_g": 0.0,
+          "carbs_g": 0.0,
+          "fat_g": 0.0,
+          "time": "14:35"
+        }
+      ]
+    },
+    "2026-06-08": {
+      "Uncategorized": [
+        {
+          "food": "Water",
+          "amount": "236.59 mL",
+          "kcal": 0.0,
+          "protein_g": 0.0,
+          "carbs_g": 0.0,
+          "fat_g": 0.0,
+          "time": "18:00"
+        },
+        {
+          "food": "Water",
+          "amount": "236.59 mL",
+          "kcal": 0.0,
+          "protein_g": 0.0,
+          "carbs_g": 0.0,
+          "fat_g": 0.0,
+          "time": "18:00"
+        },
+        {
+          "food": "Water",
+          "amount": "236.59 mL",
+          "kcal": 0.0,
+          "protein_g": 0.0,
+          "carbs_g": 0.0,
+          "fat_g": 0.0,
+          "time": "18:00"
+        },
+        {
+          "food": "Water",
+          "amount": "236.59 mL",
+          "kcal": 0.0,
+          "protein_g": 0.0,
+          "carbs_g": 0.0,
+          "fat_g": 0.0,
+          "time": "18:00"
+        },
+        {
+          "food": "Water",
+          "amount": "236.59 mL",
+          "kcal": 0.0,
+          "protein_g": 0.0,
+          "carbs_g": 0.0,
+          "fat_g": 0.0,
+          "time": "18:00"
+        }
+      ],
+      "Lunch": [
+        {
+          "food": "Boiled Eggs",
+          "amount": "0.50 medium",
+          "kcal": 34.1,
+          "protein_g": 2.77,
+          "carbs_g": 0.25,
+          "fat_g": 2.33,
+          "time": "10:38"
+        },
+        {
+          "food": "Bread Roll, Soft, White",
+          "amount": "1.00 large - 3 1/2\" diameter",
+          "kcal": 143.64,
+          "protein_g": 4.77,
+          "carbs_g": 24.25,
+          "fat_g": 3.38,
+          "time": "10:38"
+        },
+        {
+          "food": "Albert Heijn Filet Americain Naturel",
+          "amount": "50.00 g",
+          "kcal": 125.0,
+          "protein_g": 6.5,
+          "carbs_g": 1.1,
+          "fat_g": 10.5,
+          "time": "10:37"
+        },
+        {
+          "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+          "amount": "1.00 Can",
+          "kcal": 62.7,
+          "protein_g": 0.0,
+          "carbs_g": 14.85,
+          "fat_g": 0.0,
+          "time": "10:37"
+        },
+        {
+          "food": "Breakfast Sausage, Pork",
+          "amount": "80.00 g",
+          "kcal": 350.4,
+          "protein_g": 12.1,
+          "carbs_g": 0.5,
+          "fat_g": 33.33,
+          "time": "18:08"
+        }
+      ],
+      "Dinner": [
+        {
+          "food": "Iglo, Fish Cuisine, Breton Style with Parsley & Lemon",
+          "amount": "2.00 serving",
+          "kcal": 698.86,
+          "protein_g": 41.8,
+          "carbs_g": 41.04,
+          "fat_g": 41.8,
+          "time": "18:00"
+        },
+        {
+          "food": "Iglo, Biologische Spinazie a La Cr\u00e8me",
+          "amount": "200.00 g",
+          "kcal": 110.67,
+          "protein_g": 7.47,
+          "carbs_g": 10.27,
+          "fat_g": 5.2,
+          "time": "18:07"
+        },
+        {
+          "food": "Dr. Oetker, Ristorante Pizza Margherita",
+          "amount": "0.25 pizza",
+          "kcal": 186.78,
+          "protein_g": 7.5,
+          "carbs_g": 21.48,
+          "fat_g": 8.0,
+          "time": "18:06"
+        }
+      ]
+    },
+    "2026-06-09": {
+      "Breakfast": [
+        {
+          "food": "Skyr Breakfast",
+          "amount": "1.00 full recipe",
+          "kcal": 402.25,
+          "protein_g": 60.54,
+          "carbs_g": 42.5,
+          "fat_g": 0.58,
+          "time": "19:31"
+        },
+        {
+          "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+          "amount": "1.00 Can",
+          "kcal": 62.7,
+          "protein_g": 0.0,
+          "carbs_g": 14.85,
+          "fat_g": 0.0,
+          "time": "19:40"
+        }
+      ],
+      "Lunch": [
+        {
+          "food": "Edamame Beans",
+          "amount": "200.00 g",
+          "kcal": 242.0,
+          "protein_g": 23.82,
+          "carbs_g": 17.82,
+          "fat_g": 10.4,
+          "time": "19:41"
+        },
+        {
+          "food": "Olav's, Norwegian Smoked Salmon",
+          "amount": "200.00 g",
+          "kcal": 365.43,
+          "protein_g": 42.0,
+          "carbs_g": 0.0,
+          "fat_g": 22.0,
+          "time": "19:41"
+        }
+      ],
+      "Dinner": [
+        {
+          "food": "Iglo, Spinach ala Creme",
+          "amount": "250.00 g",
+          "kcal": 136.14,
+          "protein_g": 8.83,
+          "carbs_g": 13.0,
+          "fat_g": 6.5,
+          "time": "18:23"
+        },
+        {
+          "food": "Iglo, Fish Cuisine, Breton Style with Parsley & Lemon",
+          "amount": "2.00 serving",
+          "kcal": 698.86,
+          "protein_g": 41.8,
+          "carbs_g": 41.04,
+          "fat_g": 41.8,
+          "time": "18:23"
+        }
+      ],
+      "Snacks": [
+        {
+          "food": "Jack Daniel's, Tennessee Whiskey, Sour Mash",
+          "amount": "10.00 x 25.0 ml",
+          "kcal": 546.96,
+          "time": "15:01"
+        },
+        {
+          "food": "Chio, Oven Chips, Onion & Sour Cream, 60% Less Fat",
+          "amount": "125.00 g",
+          "kcal": 512.5,
+          "protein_g": 7.63,
+          "carbs_g": 96.88,
+          "fat_g": 11.75,
+          "time": "19:40"
+        },
+        {
+          "food": "Olly, The Perfect Men's Multi",
+          "amount": "0.50 x 2.0 gummies",
+          "kcal": 10.0,
+          "carbs_g": 2.0,
+          "time": "19:42"
+        }
+      ]
+    },
+    "2026-06-10": {
+      "Breakfast": [
+        {
+          "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+          "amount": "1.00 Can",
+          "kcal": 62.7,
+          "protein_g": 0.0,
+          "carbs_g": 14.85,
+          "fat_g": 0.0,
+          "time": "15:01"
+        },
+        {
+          "food": "Skyr Breakfast",
+          "amount": "1.00 full recipe",
+          "kcal": 402.25,
+          "protein_g": 60.54,
+          "carbs_g": 42.5,
+          "fat_g": 0.58,
+          "time": "15:01"
+        }
+      ],
+      "Lunch": [
+        {
+          "food": "Breakfast Sausage, Pork",
+          "amount": "100.00 g",
+          "kcal": 438.0,
+          "protein_g": 15.12,
+          "carbs_g": 0.62,
+          "fat_g": 41.66,
+          "time": "15:02"
+        },
+        {
+          "food": "Mayonnaise",
+          "amount": "1.00 tbsp",
+          "kcal": 93.5,
+          "protein_g": 0.13,
+          "carbs_g": 0.08,
+          "fat_g": 10.29,
+          "time": "15:02"
+        },
+        {
+          "food": "Bread Roll, Soft, White",
+          "amount": "1.00 medium - 2 1/2\" diameter",
+          "kcal": 118.78,
+          "protein_g": 3.94,
+          "carbs_g": 20.05,
+          "fat_g": 2.8,
+          "time": "15:02"
+        },
+        {
+          "food": "Boiled Eggs",
+          "amount": "0.50 medium",
+          "kcal": 34.1,
+          "protein_g": 2.77,
+          "carbs_g": 0.25,
+          "fat_g": 2.33,
+          "time": "15:02"
+        },
+        {
+          "food": "Albert Heijn Filet Americain Naturel",
+          "amount": "30.00 g",
+          "kcal": 75.0,
+          "protein_g": 3.9,
+          "carbs_g": 0.66,
+          "fat_g": 6.3,
+          "time": "15:01"
+        }
+      ],
+      "Dinner": [
+        {
+          "food": "Iglo, Schlemmer Filet, Italiano, mit Tomate-Mozzarella",
+          "amount": "1.00 packung",
+          "kcal": 298.0,
+          "protein_g": 42.0,
+          "carbs_g": 12.8,
+          "fat_g": 9.0,
+          "time": "15:03"
+        },
+        {
+          "food": "Iglo, Spinach ala Creme",
+          "amount": "250.00 g",
+          "kcal": 136.14,
+          "protein_g": 8.83,
+          "carbs_g": 13.0,
+          "fat_g": 6.5,
+          "time": "15:03"
+        }
+      ],
+      "Snacks": [
+        {
+          "food": "AH Paprika Chips",
+          "amount": "1.00 package",
+          "kcal": 209.0,
+          "protein_g": 0.55,
+          "carbs_g": 24.4,
+          "fat_g": 12.0,
+          "time": "17:43"
+        }
+      ]
+    },
+    "2026-06-11": {
+      "Uncategorized": [
+        {
+          "food": "Water",
+          "amount": "236.59 mL",
+          "kcal": 0.0,
+          "protein_g": 0.0,
+          "carbs_g": 0.0,
+          "fat_g": 0.0,
+          "time": "18:10"
+        },
+        {
+          "food": "Water",
+          "amount": "236.59 mL",
+          "kcal": 0.0,
+          "protein_g": 0.0,
+          "carbs_g": 0.0,
+          "fat_g": 0.0,
+          "time": "18:10"
+        },
+        {
+          "food": "Water",
+          "amount": "236.59 mL",
+          "kcal": 0.0,
+          "protein_g": 0.0,
+          "carbs_g": 0.0,
+          "fat_g": 0.0,
+          "time": "18:10"
+        },
+        {
+          "food": "Water",
+          "amount": "236.59 mL",
+          "kcal": 0.0,
+          "protein_g": 0.0,
+          "carbs_g": 0.0,
+          "fat_g": 0.0,
+          "time": "18:10"
+        },
+        {
+          "food": "Water",
+          "amount": "236.59 mL",
+          "kcal": 0.0,
+          "protein_g": 0.0,
+          "carbs_g": 0.0,
+          "fat_g": 0.0,
+          "time": "18:10"
+        }
+      ],
+      "Breakfast": [
+        {
+          "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+          "amount": "1.00 Can",
+          "kcal": 62.7,
+          "protein_g": 0.0,
+          "carbs_g": 14.85,
+          "fat_g": 0.0,
+          "time": "14:37"
+        },
+        {
+          "food": "Skyr Breakfast",
+          "amount": "1.00 full recipe",
+          "kcal": 402.25,
+          "protein_g": 60.54,
+          "carbs_g": 42.5,
+          "fat_g": 0.58,
+          "time": "14:37"
+        }
+      ],
+      "Lunch": [
+        {
+          "food": "Edamame Beans",
+          "amount": "100.00 g",
+          "kcal": 121.0,
+          "protein_g": 11.91,
+          "carbs_g": 8.91,
+          "fat_g": 5.2,
+          "time": "14:38"
+        },
+        {
+          "food": "Olav's, Norwegian Smoked Salmon",
+          "amount": "200.00 g",
+          "kcal": 365.43,
+          "protein_g": 42.0,
+          "carbs_g": 0.0,
+          "fat_g": 22.0,
+          "time": "14:38"
+        },
+        {
+          "food": "Albert Heijn, Witte Bollen",
+          "amount": "1.00 serving",
+          "kcal": 122.0,
+          "protein_g": 4.15,
+          "carbs_g": 24.7,
+          "fat_g": 1.0,
+          "time": "14:38"
+        },
+        {
+          "food": "Avocados, Raw, California",
+          "amount": "150.00 g",
+          "kcal": 250.5,
+          "protein_g": 2.94,
+          "carbs_g": 12.96,
+          "fat_g": 23.12,
+          "time": "14:37"
+        }
+      ],
+      "Dinner": [
+        {
+          "food": "Iglo, Spinach ala Creme",
+          "amount": "200.00 g",
+          "kcal": 108.91,
+          "protein_g": 7.07,
+          "carbs_g": 10.4,
+          "fat_g": 5.2,
+          "time": "18:09"
+        },
+        {
+          "food": "Iglo, Fish Cuisine, Breton Style with Parsley & Lemon",
+          "amount": "2.00 serving",
+          "kcal": 698.86,
+          "protein_g": 41.8,
+          "carbs_g": 41.04,
+          "fat_g": 41.8,
+          "time": "18:09"
+        }
+      ],
+      "Snacks": [
+        {
+          "food": "AH Paprika Chips",
+          "amount": "1.00 package",
+          "kcal": 209.0,
+          "protein_g": 0.55,
+          "carbs_g": 24.4,
+          "fat_g": 12.0,
+          "time": "18:09"
+        }
+      ]
+    },
+    "2026-06-12": {
+      "Breakfast": [
+        {
+          "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+          "amount": "1.00 Can",
+          "kcal": 62.7,
+          "protein_g": 0.0,
+          "carbs_g": 14.85,
+          "fat_g": 0.0,
+          "time": "15:11"
+        },
+        {
+          "food": "Skyr Breakfast",
+          "amount": "1.00 full recipe",
+          "kcal": 402.25,
+          "protein_g": 60.54,
+          "carbs_g": 42.5,
+          "fat_g": 0.58,
+          "time": "15:10"
+        }
+      ],
+      "Lunch": [
+        {
+          "food": "Burger King, Impossible Whopper",
+          "amount": "1.00 burger",
+          "kcal": 651.65,
+          "protein_g": 27.82,
+          "carbs_g": 62.1,
+          "fat_g": 35.59,
+          "time": "13:34"
+        }
+      ],
+      "Dinner": [
+        {
+          "food": "Vegetable curry with basmati rice",
+          "amount": "1.00 full recipe",
+          "kcal": 806.05,
+          "protein_g": 25.82,
+          "carbs_g": 115.91,
+          "fat_g": 27.47,
+          "time": "09:17"
+        }
+      ]
+    },
+    "2026-06-13": {
+      "Breakfast": [
+        {
+          "food": "Skyr Breakfast",
+          "amount": "1.00 full recipe",
+          "kcal": 402.25,
+          "protein_g": 60.54,
+          "carbs_g": 42.5,
+          "fat_g": 0.58,
+          "time": "09:17"
+        }
+      ],
+      "Lunch": [
+        {
+          "food": "Herring, Pickled",
+          "amount": "100.00 g",
+          "kcal": 262.0,
+          "protein_g": 14.19,
+          "carbs_g": 9.64,
+          "fat_g": 18.0,
+          "time": "12:34"
+        },
+        {
+          "food": "Albert Heijn, Witte Bollen",
+          "amount": "2.00 serving",
+          "kcal": 244.0,
+          "protein_g": 8.3,
+          "carbs_g": 49.4,
+          "fat_g": 2.0,
+          "time": "12:34"
+        },
+        {
+          "food": "KitKat, Chunky",
+          "amount": "0.40 serving",
+          "kcal": 205.98,
+          "protein_g": 3.16,
+          "carbs_g": 24.4,
+          "fat_g": 10.88,
+          "time": "12:33"
+        }
+      ],
+      "Dinner": [
+        {
+          "food": "Couscous, Cooked",
+          "amount": "10.00 oz",
+          "kcal": 319.78,
+          "protein_g": 10.85,
+          "carbs_g": 65.85,
+          "fat_g": 0.54,
+          "time": "12:35"
+        },
+        {
+          "food": "Tasty Basics, Crackers, Kaas - Peper",
+          "amount": "5.00 cracker",
+          "kcal": 500.0,
+          "protein_g": 41.5,
+          "carbs_g": 33.0,
+          "fat_g": 24.5,
+          "time": "12:36"
+        },
+        {
+          "food": "Sauvignon Blanc",
+          "amount": "25.00 fl oz",
+          "kcal": 600.63,
+          "protein_g": 0.51,
+          "carbs_g": 19.04,
+          "fat_g": 0.0,
+          "time": "12:35"
+        }
+      ]
+    },
+    "2026-06-14": {
+      "Breakfast": [
+        {
+          "food": "Skyr Breakfast",
+          "amount": "1.00 full recipe",
+          "kcal": 402.25,
+          "protein_g": 60.54,
+          "carbs_g": 42.5,
+          "fat_g": 0.58,
+          "time": "12:37"
+        }
+      ],
+      "Lunch": [
+        {
+          "food": "Albert Heijn, Shrimp, Garlic flavor",
+          "amount": "2.00 serving",
+          "kcal": 264.64,
+          "protein_g": 36.0,
+          "carbs_g": 0.0,
+          "fat_g": 13.4,
+          "time": "12:37"
+        }
+      ]
+    },
+    "2026-07-03": {
+      "Breakfast": [
+        {
+          "food": "Skyr Breakfast",
+          "amount": "1.00 full recipe",
+          "kcal": 402.25,
+          "protein_g": 60.54,
+          "carbs_g": 42.5,
+          "fat_g": 0.58,
+          "time": "13:48"
+        },
+        {
+          "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+          "amount": "1.00 Can",
+          "kcal": 62.7,
+          "protein_g": 0.0,
+          "carbs_g": 14.85,
+          "fat_g": 0.0,
+          "time": "13:48"
+        }
+      ],
+      "Lunch": [
+        {
+          "food": "John West, Herring, Fillets in Tomato Sauce",
+          "amount": "170.00 g",
+          "kcal": 354.88,
+          "protein_g": 25.16,
+          "carbs_g": 0.85,
+          "fat_g": 27.88,
+          "time": "13:48"
+        }
+      ],
+      "Dinner": [
+        {
+          "food": "Linguine With Shrimp and Lemon-Pistachio Bread Crumbs",
+          "amount": "1.00 servings",
+          "kcal": 531.31,
+          "protein_g": 14.45,
+          "carbs_g": 65.5,
+          "fat_g": 24.06,
+          "time": "19:45"
+        }
+      ]
+    },
+    "2026-07-04": {
+      "Breakfast": [
+        {
+          "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+          "amount": "1.00 Can",
+          "kcal": 62.7,
+          "protein_g": 0.0,
+          "carbs_g": 14.85,
+          "fat_g": 0.0,
+          "time": "11:08"
+        },
+        {
+          "food": "Skyr Breakfast",
+          "amount": "1.00 full recipe",
+          "kcal": 402.25,
+          "protein_g": 60.54,
+          "carbs_g": 42.5,
+          "fat_g": 0.58,
+          "time": "11:08"
+        }
+      ],
+      "Lunch": [
+        {
+          "food": "Linguine With Shrimp and Lemon-Pistachio Bread Crumbs",
+          "amount": "1.00 servings",
+          "kcal": 531.31,
+          "protein_g": 14.45,
+          "carbs_g": 65.5,
+          "fat_g": 24.06,
+          "time": "12:04"
+        }
+      ],
+      "Dinner": [
+        {
+          "food": "Fish, Battered and Fried",
+          "amount": "2.00 fillet (16cm x 9cm x 1cm)",
+          "kcal": 527.96,
+          "protein_g": 45.32,
+          "carbs_g": 16.7,
+          "fat_g": 29.99,
+          "time": "15:45"
+        },
+        {
+          "food": "Cocktails, Long Island Iced Tea",
+          "amount": "2.00 cup",
+          "kcal": 476.11,
+          "protein_g": 0.41,
+          "carbs_g": 40.35,
+          "fat_g": 0.21,
+          "time": "15:46"
+        }
+      ],
+      "Snacks": [
+        {
+          "food": "XXL Energy Fruit",
+          "amount": "1.00 Serving",
+          "kcal": 103.0,
+          "carbs_g": 25.6,
+          "time": "11:30"
+        }
+      ]
+    },
+    "2026-07-05": {
+      "Breakfast": [
+        {
+          "food": "Skyr Breakfast",
+          "amount": "1.00 full recipe",
+          "kcal": 402.25,
+          "protein_g": 60.54,
+          "carbs_g": 42.5,
+          "fat_g": 0.58,
+          "time": "15:46"
+        }
+      ],
+      "Lunch": [
+        {
+          "food": "Olav's, Norwegian Smoked Salmon",
+          "amount": "100.00 g",
+          "kcal": 182.72,
+          "protein_g": 21.0,
+          "carbs_g": 0.0,
+          "fat_g": 11.0,
+          "time": "15:47"
+        },
+        {
+          "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+          "amount": "1.00 Can",
+          "kcal": 62.7,
+          "protein_g": 0.0,
+          "carbs_g": 14.85,
+          "fat_g": 0.0,
+          "time": "15:46"
+        }
+      ],
+      "Dinner": [
+        {
+          "food": "Spicy Braised Harissa Chickpeas with Feta",
+          "amount": "1.00 serving",
+          "kcal": 379.41,
+          "protein_g": 16.01,
+          "carbs_g": 35.91,
+          "fat_g": 20.9,
+          "time": "17:47"
+        }
+      ]
+    },
+    "2026-07-06": {
+      "Uncategorized": [
+        {
+          "food": "Albert Heijn, VBB Caprese",
+          "amount": "100.00 g",
+          "kcal": 226.0,
+          "protein_g": 8.2,
+          "carbs_g": 33.2,
+          "fat_g": 7.2,
+          "time": "12:20"
+        }
+      ]
+    },
+    "2026-07-07": {
+      "Uncategorized": [
+        {
+          "food": "Yard House, Baja Shrimp Taco",
+          "amount": "1.00 Serving",
+          "kcal": 320.0,
+          "protein_g": 10.0,
+          "carbs_g": 25.0,
+          "fat_g": 20.0,
+          "time": "21:22"
+        }
+      ],
+      "Breakfast": [
+        {
+          "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+          "amount": "1.00 Can",
+          "kcal": 62.7,
+          "protein_g": 0.0,
+          "carbs_g": 14.85,
+          "fat_g": 0.0,
+          "time": "13:50"
+        },
+        {
+          "food": "Skyr Breakfast",
+          "amount": "1.00 full recipe",
+          "kcal": 402.25,
+          "protein_g": 60.54,
+          "carbs_g": 42.5,
+          "fat_g": 0.58,
+          "time": "13:50"
+        }
+      ],
+      "Lunch": [
+        {
+          "food": "Edamame Beans",
+          "amount": "200.00 g",
+          "kcal": 242.0,
+          "protein_g": 23.82,
+          "carbs_g": 17.82,
+          "fat_g": 10.4,
+          "time": "13:50"
+        }
+      ]
+    },
+    "2026-07-08": {
+      "Breakfast": [
+        {
+          "food": "Skyr Breakfast",
+          "amount": "1.00 full recipe",
+          "kcal": 402.25,
+          "protein_g": 60.54,
+          "carbs_g": 42.5,
+          "fat_g": 0.58,
+          "time": "09:28"
+        },
+        {
+          "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+          "amount": "1.00 Can",
+          "kcal": 62.7,
+          "protein_g": 0.0,
+          "carbs_g": 14.85,
+          "fat_g": 0.0,
+          "time": "09:28"
+        }
+      ],
+      "Lunch": [
+        {
+          "food": "Tesco, Cheese & Tomato Sandwich",
+          "amount": "1.00 Pack",
+          "kcal": 322.2,
+          "protein_g": 10.5,
+          "carbs_g": 39.4,
+          "fat_g": 16.4,
+          "time": "21:11"
+        }
+      ],
+      "Dinner": [
+        {
+          "food": "Pasta al Forno with Tuna, Ricotta and Tomato",
+          "amount": "0.50 serving",
+          "kcal": 422.66,
+          "protein_g": 17.9,
+          "carbs_g": 54.09,
+          "fat_g": 15.18,
+          "time": "21:12"
+        }
+      ]
+    },
+    "2026-07-09": {
+      "Breakfast": [
+        {
+          "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+          "amount": "1.00 Can",
+          "kcal": 62.7,
+          "protein_g": 0.0,
+          "carbs_g": 14.85,
+          "fat_g": 0.0,
+          "time": "12:58"
+        },
+        {
+          "food": "Skyr Breakfast",
+          "amount": "1.00 full recipe",
+          "kcal": 402.25,
+          "protein_g": 60.54,
+          "carbs_g": 42.5,
+          "fat_g": 0.58,
+          "time": "12:58"
+        }
+      ],
+      "Lunch": [
+        {
+          "food": "Pasta al Forno with Tuna, Ricotta and Tomato",
+          "amount": "0.50 serving",
+          "kcal": 422.66,
+          "protein_g": 17.9,
+          "carbs_g": 54.09,
+          "fat_g": 15.18,
+          "time": "12:58"
+        }
+      ],
+      "Dinner": [
+        {
+          "food": "Miso-Glazed Salmon with Stir-Fried Greens",
+          "amount": "1.00 serving",
+          "kcal": 280.5,
+          "protein_g": 28.56,
+          "carbs_g": 18.28,
+          "fat_g": 10.45,
+          "time": "12:59"
+        }
+      ]
+    },
+    "2026-07-29": {
+      "Uncategorized": [
+        {
+          "food": "Skyr Breakfast",
+          "amount": "1.00 full recipe",
+          "kcal": 402.25,
+          "protein_g": 60.54,
+          "carbs_g": 42.5,
+          "fat_g": 0.58,
+          "time": "08:06"
+        },
+        {
+          "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+          "amount": "1.00 Can",
+          "kcal": 62.7,
+          "protein_g": 0.0,
+          "carbs_g": 14.85,
+          "fat_g": 0.0,
+          "time": "08:06"
+        },
+        {
+          "food": "Sushi, with Fish",
+          "amount": "6.00 piece",
+          "kcal": 234.35,
+          "protein_g": 19.51,
+          "carbs_g": 28.11,
+          "fat_g": 3.8,
+          "time": "15:38"
+        },
+        {
+          "food": "AH Paprika Chips",
+          "amount": "1.00 package",
+          "kcal": 209.0,
+          "protein_g": 0.55,
+          "carbs_g": 24.4,
+          "fat_g": 12.0,
+          "time": "15:38"
+        },
+        {
+          "food": "Cold Lemon-Dill Tuna & White Bean Salad",
+          "amount": "1.00 serving",
+          "kcal": 390.13,
+          "protein_g": 47.79,
+          "carbs_g": 30.68,
+          "fat_g": 9.33,
+          "time": "21:12"
+        }
+      ]
+    },
+    "2026-07-30": {
+      "Breakfast": [
+        {
+          "food": "Skyr Breakfast",
+          "amount": "1.00 full recipe",
+          "kcal": 402.25,
+          "protein_g": 60.54,
+          "carbs_g": 42.5,
+          "fat_g": 0.58,
+          "time": "09:57"
+        },
+        {
+          "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+          "amount": "1.00 Can",
+          "kcal": 62.7,
+          "protein_g": 0.0,
+          "carbs_g": 14.85,
+          "fat_g": 0.0,
+          "time": "09:57"
+        }
+      ],
+      "Lunch": [
+        {
+          "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+          "amount": "1.00 Can",
+          "kcal": 62.7,
+          "protein_g": 0.0,
+          "carbs_g": 14.85,
+          "fat_g": 0.0,
+          "time": "12:30"
+        },
+        {
+          "food": "Cold Lemon-Dill Tuna & White Bean Salad",
+          "amount": "1.00 serving",
+          "kcal": 390.13,
+          "protein_g": 47.79,
+          "carbs_g": 30.68,
+          "fat_g": 9.33,
+          "time": "12:29"
+        }
+      ],
+      "Dinner": [
+        {
+          "food": "Iglo, Fish Cuisine, Florentine with Spinach & Cheese",
+          "amount": "2.00 Serving",
+          "kcal": 379.76,
+          "protein_g": 34.0,
+          "carbs_g": 16.5,
+          "fat_g": 20.0,
+          "time": "16:09"
+        }
+      ],
+      "Snacks": [
+        {
+          "food": "Olly, The Perfect Men's Multi",
+          "amount": "0.50 x 2.0 gummies",
+          "kcal": 10.0,
+          "carbs_g": 2.0,
+          "time": "12:30"
+        }
+      ]
+    },
+    "2026-07-31": {
+      "Breakfast": [
+        {
+          "food": "Skyr Breakfast",
+          "amount": "1.00 full recipe",
+          "kcal": 402.25,
+          "protein_g": 60.54,
+          "carbs_g": 42.5,
+          "fat_g": 0.58,
+          "time": "18:26"
+        },
+        {
+          "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+          "amount": "1.00 Can",
+          "kcal": 62.7,
+          "protein_g": 0.0,
+          "carbs_g": 14.85,
+          "fat_g": 0.0,
+          "time": "18:26"
+        }
+      ],
+      "Lunch": [
+        {
+          "food": "Iglo, Fish Cuisine, Breton Style with Parsley & Lemon",
+          "amount": "2.00 serving",
+          "kcal": 698.86,
+          "protein_g": 41.8,
+          "carbs_g": 41.04,
+          "fat_g": 41.8,
+          "time": "18:26"
+        }
+      ]
+    },
+    "2026-08-01": {
+      "Breakfast": [
+        {
+          "food": "Skyr Breakfast",
+          "amount": "1.00 full recipe",
+          "kcal": 402.25,
+          "protein_g": 60.54,
+          "carbs_g": 42.5,
+          "fat_g": 0.58,
+          "time": "11:58"
+        },
+        {
+          "food": "Tenzing, Natural Energy Drink, Raspberry & Yuzu",
+          "amount": "1.00 Can",
+          "kcal": 62.7,
+          "protein_g": 0.0,
+          "carbs_g": 14.85,
+          "fat_g": 0.0,
+          "time": "11:58"
+        }
+      ],
+      "Lunch": [
+        {
+          "food": "Puuur Visch, Kibbeling",
+          "amount": "200.00 g",
+          "kcal": 224.0,
+          "protein_g": 30.4,
+          "carbs_g": 4.0,
+          "fat_g": 9.4,
+          "time": "14:20"
+        },
+        {
+          "food": "Edamame Beans",
+          "amount": "100.00 g",
+          "kcal": 121.0,
+          "protein_g": 11.91,
+          "carbs_g": 8.91,
+          "fat_g": 5.2,
+          "time": "14:20"
+        }
+      ],
+      "Dinner": [
+        {
+          "food": "Popcorn, Home Popped, Hot Air Popped",
+          "amount": "200.00 g",
+          "kcal": 774.0,
+          "protein_g": 25.88,
+          "carbs_g": 155.56,
+          "fat_g": 9.08,
+          "time": "11:48"
+        },
+        {
+          "food": "Lioni, Burrata Cheese",
+          "amount": "100.00 g",
+          "kcal": 214.29,
+          "protein_g": 14.29,
+          "carbs_g": 7.14,
+          "fat_g": 17.86,
+          "time": "11:48"
+        },
+        {
+          "food": "Sauvignon Blanc",
+          "amount": "1.00 cup",
+          "kcal": 192.2,
+          "protein_g": 0.16,
+          "carbs_g": 6.09,
+          "fat_g": 0.0,
+          "time": "11:49"
+        }
+      ],
+      "Snacks": [
+        {
+          "food": "Fanta, Orange",
+          "amount": "250.00 ml",
+          "kcal": 80.0,
+          "protein_g": 0.0,
+          "carbs_g": 19.0,
+          "fat_g": 0.0,
+          "time": "11:49"
         }
       ]
     }

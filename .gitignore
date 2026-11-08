@@ -6,3 +6,6 @@ __pycache__/
 
 # Atomic-write temp files (sync.py writes <name>.<rand>.tmp then renames)
 *.tmp
+
+# Local Intervals.icu credentials (GitHub Actions use repository secrets instead)
+.sync_config.json

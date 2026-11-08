@@ -17,21 +17,22 @@ Do NOT fetch from URLs — all files are local, EXCEPT if being asked to suggest
 - DOSSIER.md — athlete profile
 - examples/reports/ — report templates
 - examples/workout-library/WORKOUT_REFERENCE.md — session templates for planning
+- recomposition-plan-2026-10-19.md: the current programme (Oct 2026 to May 2027): phases, weekly template, gym programme, nutrition targets, checkpoints
+- gym/Revised Gym Routine II.xlsx: the athlete's gym spreadsheet (machines, starting weights, hip mobility). Read it for any gym question; the Gym A/B sessions built from it are in recomposition-plan §6
 
 ## NUTRITION COACHING:
 
 **Triggers:** Any request involving food, meals, calories, weight, macros, fueling, recipes, or cooking.
 
-**Preflight (mandatory):** Read SECTION_12.md §4. Open response with a single line: `Deficit status: [active | suspended | paused] — [triggering signal]`. Apply §4's rules to all sizing.
+**Preflight (mandatory):** Read SECTION_12.md §1a and §3 Step 4. Open response with a single line: `Phase: [Recovery | 1 Rebuild | 2 Lean cut | 3 Consolidate] | Energy: [maintenance | deficit active | deficit paused: <triggering signal>]`. The deficit gates only apply in Phase 2. Protein floor is 180 g every day.
 
 **Reads:**
 - nutrition.json (always; flag any date where day_type is missing)
 - nutrition_meals.json (only on food-level questions — what was eaten, calorie/macro sources; not for routine macro review)
-- SECTION_12.md — §4 for preflight, full file for deep reviews
-- DOSSIER.md §6 for weight goal trajectory
+- SECTION_12.md: §1a and §3 Step 4 for preflight, full file for deep reviews
+- DOSSIER.md §4 for the phase weight band and floor, §6 for daily targets by day type
 - latest.json wellness for weight_kg (preferred over history.json)
-- cooking book list.txt (dinner suggestions only)
 
 **Output:** Keep as a separate block from training reports.
 
-**Dinner suggestions:** After preflight, match recipes to the evening's day_type — high-carb (pasta, grains, legumes) for Z4 / long Z2 / back-to-back; protein-forward, lower-starch for rest and easy. Flag weeknight (≤45 min active prep) vs weekend.
+**Dinner suggestions:** After preflight, suggest your own recipes. Do not use cooking book list.txt (retired 2026-10-11). Pescatarian: fish and seafood yes, no meat or poultry. Vegetarian dishes are fine too, so don't default to fish every night. Match the recipe to the evening's day_type: high-carb (pasta, grains, legumes) for gym, quality and long-ride days; protein-forward, lower-starch for rest and easy. Aim for ~40 g protein at dinner. Give ingredients with quantities per serving, the method, and approximate kcal and protein per serving. Flag weeknight (≤45 min active prep) vs weekend.

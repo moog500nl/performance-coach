@@ -38,7 +38,7 @@ from datetime import datetime, date, timezone
 from pathlib import Path
 from collections import defaultdict
  
-SCRIPT_VERSION = "1.0.0"
+SCRIPT_VERSION = "1.1.0"  # 1.1.0: phase-aware recomposition targets + gym day type (2026-10-11)
 SCRIPT_HASH = hashlib.md5(open(__file__, "rb").read()).hexdigest()[:8]
  
 # ---------------------------------------------------------------------------
@@ -99,6 +99,53 @@ KCAL_TARGETS_BY_DAY_TYPE = {
     "travel":              {"min": 2200, "max": 2800},
     "sick":                {"min": 1800, "max": 2400},
 }
+
+# ---------------------------------------------------------------------------
+# Recomposition programme (from 2026-10-12): phase-aware targets.
+# Source: DOSSIER.md §6 "Daily Targets by Day Type" and
+# recomposition-plan-2026-10-19.md §8.1 (revised -200 kcal/row 2026-10-11). Dates before RECOMP_START keep the
+# legacy (MDS-era cut) tables above, so historical flags do not change.
+# ---------------------------------------------------------------------------
+RECOMP_START = "2026-10-12"
+PROTEIN_FLOOR_G = 180
+
+# (start_date_inclusive, phase_name, {day_type: (kcal, carbs_g)})
+RECOMP_PHASES = [
+    ("2026-10-12", "phase1_rebuild", {   # recovery week uses the Phase 1 numbers
+        "gym": (2765, 320), "z4_quality": (2660, 305), "long_z2": (2820, 345),
+        "z2_easy": (2505, 255), "rest": (2370, 210),
+    }),
+    ("2027-01-04", "phase2_cut", {
+        "gym": (2310, 240), "z4_quality": (2265, 240), "long_z2": (2405, 275),
+        "z2_easy": (2110, 190), "rest": (2015, 155),
+    }),
+    ("2027-04-05", "phase3_consolidate", {
+        "gym": (2620, 295), "z4_quality": (2555, 290), "long_z2": (2715, 330),
+        "z2_easy": (2420, 245), "rest": (2265, 195),
+    }),
+]
+
+# Intervals.icu activity types that count as a gym session
+STRENGTH_TYPES = ("WeightTraining",)
+
+
+def targets_for(date_str, day_type):
+    """Return (kcal_range, carb_range) for a date and day type.
+
+    From RECOMP_START the phase table applies (kcal target +/-100, carbs
+    target +/-10%); day types not in the phase table, and earlier dates,
+    fall back to the legacy tables. Either range may be None.
+    """
+    if date_str and date_str >= RECOMP_START:
+        table = None
+        for start, _name, phase_targets in RECOMP_PHASES:
+            if date_str >= start:
+                table = phase_targets
+        if table and day_type in table:
+            kcal, carbs = table[day_type]
+            return ({"min": kcal - 100, "max": kcal + 100},
+                    {"min": round(carbs * 0.9), "max": round(carbs * 1.1)})
+    return (KCAL_TARGETS_BY_DAY_TYPE.get(day_type), CARB_TARGETS_BY_DAY_TYPE.get(day_type))
  
  
 def parse_float(val):
@@ -231,8 +278,14 @@ def compute_compliance(entry: dict) -> dict:
     day_type = entry.get("day_type")
  
     protein = entry.get("protein_g")
+    recomp = (entry.get("date") or "") >= RECOMP_START
     if protein is not None:
-        if protein < 160:
+        if recomp:
+            if protein < 160:
+                flags.append(f"protein_low:{protein:.0f}g (floor {PROTEIN_FLOOR_G}g)")
+            elif protein < PROTEIN_FLOOR_G:
+                flags.append(f"protein_below_floor:{protein:.0f}g (floor {PROTEIN_FLOOR_G}g)")
+        elif protein < 160:
             flags.append(f"protein_low:{protein:.0f}g (target 175-195g)")
         elif protein < 175:
             flags.append(f"protein_below_target:{protein:.0f}g (target 175-195g)")
@@ -242,16 +295,17 @@ def compute_compliance(entry: dict) -> dict:
         flags.append(f"kcal_critically_low:{kcal:.0f} (min 1800 on any day)")
  
     if day_type:
+        kcal_t, carb_t = targets_for(entry.get("date"), day_type)
         carbs = entry.get("carbs_g") or entry.get("net_carbs_g")
-        if carbs is not None and day_type in CARB_TARGETS_BY_DAY_TYPE:
-            t = CARB_TARGETS_BY_DAY_TYPE[day_type]
+        if carbs is not None and carb_t:
+            t = carb_t
             if carbs < t["min"]:
                 flags.append(f"carbs_low_for_{day_type}:{carbs:.0f}g (target {t['min']}-{t['max']}g)")
             elif carbs > t["max"] * 1.1:  # 10% tolerance above upper
                 flags.append(f"carbs_high_for_{day_type}:{carbs:.0f}g (target {t['min']}-{t['max']}g)")
  
-        if kcal is not None and day_type in KCAL_TARGETS_BY_DAY_TYPE:
-            t = KCAL_TARGETS_BY_DAY_TYPE[day_type]
+        if kcal is not None and kcal_t:
+            t = kcal_t
             if kcal < t["min"] - 200:
                 flags.append(f"kcal_low_for_{day_type}:{kcal:.0f} (target {t['min']}-{t['max']})")
             elif kcal > t["max"] + 200:
@@ -346,7 +400,7 @@ def load_training_data(data_dir: Path) -> dict:
 def classify_day_type(date_str: str, training_data: dict) -> str:
     """
     Classifies the day_type for a date based on training logs.
-    Taxonomy: rest | z2_easy | z4_quality | long_z2
+    Taxonomy: rest | z2_easy | z4_quality | long_z2 | gym (gym from RECOMP_START)
     """
     day_info = training_data.get(date_str)
     if not day_info:
@@ -367,6 +421,11 @@ def classify_day_type(date_str: str, training_data: dict) -> str:
             return "long_z2" # Walk >= 2h counts as long Z2 load-bearing conditioning
         return "rest" # Easy short walk is active recovery/rest
         
+    # Gym day (recomposition programme): a strength session, with or without
+    # an easy ride. A long day (3 h+ in total) still counts as long_z2.
+    if date_str >= RECOMP_START and any(t in act_types for t in STRENGTH_TYPES):
+        return "long_z2" if total_hours >= 3.0 else "gym"
+
     # Cycling / Riding is present
     has_cycling = any(t in act_types for t in ("Ride", "VirtualRide", "MountainBikeRide", "GravelRide", "EBikeRide"))
     if has_cycling:
@@ -587,6 +646,32 @@ def main():
  
     # Build output
     output = existing.copy()
+
+    # Keep the reference targets in step with the current programme (older
+    # files carried the MDS-era cut targets here, which contradicted DOSSIER.md).
+    schema = dict(output.get("_schema") or {})
+    schema["day_type_options"] = ["rest", "z2_easy", "z4_quality", "long_z2", "gym",
+                                  "back_to_back_day1", "back_to_back_day2",
+                                  "deload", "travel", "sick"]
+    schema["targets_reference"] = {
+        "source": "DOSSIER.md section 6 'Daily Targets by Day Type' (authoritative)",
+        "programme": "Body recomposition from " + RECOMP_START,
+        "protein_g_daily": f"{PROTEIN_FLOOR_G} g every day (floor); below 160 g is a flag",
+        "phase_start_dates": {name: start for start, name, _t in RECOMP_PHASES},
+        "kcal_and_carbs_by_phase": {
+            name: {dt: {"kcal": k, "carbs_g": c} for dt, (k, c) in t.items()}
+            for _start, name, t in RECOMP_PHASES
+        },
+    }
+    output["_schema"] = schema
+    output["weekly_targets"] = {
+        "_note": "Reference only; DOSSIER.md sections 4 and 6 are authoritative. "
+                 "Claude computes 7-day rolling averages from daily entries.",
+        "avg_protein_g": PROTEIN_FLOOR_G,
+        "weight_target": "Phase 1 (to 2027-01-03): hold 80.5-82.5 kg 7d avg; "
+                         "Phase 2 (2027-01-04 to 2027-04-04): -0.3 to -0.4 kg/week; "
+                         "Phase 3: hold",
+    }
     output["generated_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     output["sync_version"] = SCRIPT_VERSION
     output["script_hash"] = SCRIPT_HASH
@@ -609,7 +694,7 @@ def main():
             print(f"  {d}")
         if len(needs_day_type) > 10:
             print(f"  ... and {len(needs_day_type) - 10} more")
-        print(f"  Options: rest | z2_easy | z4_quality | long_z2 | back_to_back_day1 | back_to_back_day2 | deload | travel | sick")
+        print(f"  Options: rest | z2_easy | z4_quality | long_z2 | gym | back_to_back_day1 | back_to_back_day2 | deload | travel | sick")
         print(f"  Or ask Claude: 'Set day types in nutrition.json using my training calendar'")
  
     # Build the separate meals file (sorted by date for stable diffs)
