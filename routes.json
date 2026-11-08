@@ -1,6 +1,12 @@
 {
-  "generated_at": "2026-11-05T13:01:40.401268",
-  "sync_version": "3.112",
-  "script_hash": "b80b83c1612f",
-  "events": []
+  "generated_at": "2026-11-08T11:22:20.981590+00:00",
+  "sync_version": "3.168",
+  "script_hash": "ea7a33c092d2",
+  "events": [],
+  "route_weather_cache": {
+    "points": {},
+    "version": 2
+  },
+  "brief_snapshots": [],
+  "route_weather_requests_this_sync": 0
 }

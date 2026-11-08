@@ -1,34 +1,232 @@
 {
-  "generated_at": "2026-11-05T13:01:41.840365",
-  "version": "3.112",
-  "script_hash": "b80b83c1612f",
+  "generated_at": "2026-11-08T12:22:21.038653",
+  "interval_data_note": "recent_activities[].interval_data: plan_match is timeline matching only; compliance summarizes intervals.json session_structure power/time evidence (only that plan-aware source judges completion, per-bout counts and >=95% progression, subject to its context/availability gates); icu_detected is descriptive Intervals.icu interval_summary, not plan-aware. If sources disagree, report both; session_structure judges. Never use device/app lap averages, whole-session average/NP or a set mean as rep power or compliance counts. See SECTION_11.md#which-interval-data-to-use.",
+  "schema_version": 2,
+  "version": "3.168",
+  "script_hash": "ea7a33c092d2",
   "scan_hours": 72,
   "retention_days": 14,
   "activities": [
     {
-      "activity_id": "i201157986",
-      "date": "2026-10-24",
+      "activity_id": "i206986086",
+      "date": "2026-11-07",
+      "start_datetime": "2026-11-07T13:13:18",
       "type": "VirtualRide",
-      "name": "Sat AE-2 Long Z2 (120min, FTP 211)",
+      "name": "Sat AE-1 Return Z2 (90min, FTP 211)",
       "interval_summary": null,
       "intervals": [
         {
           "type": "RECOVERY",
-          "duration_secs": 7223,
-          "avg_power": 126,
-          "max_power": 141,
-          "avg_hr": 121,
-          "max_hr": 128,
-          "avg_cadence": 92.3457,
+          "duration_secs": 5410,
+          "moving_secs": 5410,
+          "start_secs": 0,
+          "end_secs": 5410,
+          "avg_power": 118,
+          "max_power": 130,
+          "avg_hr": 108,
+          "max_hr": 114,
+          "min_hr": 93,
+          "avg_cadence": 90.77375,
           "zone": 2,
-          "training_load": 73.82611,
-          "decoupling": -2.1352406
+          "w_bal_start": 16880,
+          "w_bal_end": 16880,
+          "training_load": 48.57034
         }
-      ]
+      ],
+      "zone_basis": "power",
+      "session_structure": {
+        "version": 6,
+        "method": "fixed_elapsed_thirds",
+        "status": "unknown",
+        "plan": {
+          "event_id": "152222795",
+          "updated": "2026-11-05T12:11:43.868+00:00",
+          "name": "Sat AE-1 Return Z2 (90min, FTP 211)",
+          "duration_s": 5400,
+          "duration_source": "moving_time"
+        },
+        "power_target_basis": {
+          "source": "activity.icu_ftp",
+          "ftp": 211
+        },
+        "steps": [
+          {
+            "supported": false,
+            "duration_s": 600
+          },
+          {
+            "supported": false,
+            "duration_s": 4200,
+            "target_w": 124.912
+          },
+          {
+            "supported": false,
+            "duration_s": 600
+          }
+        ],
+        "thirds": [
+          [
+            0,
+            1803,
+            117.8,
+            212.3,
+            105.8,
+            90.6,
+            100.0,
+            95.78,
+            100.0,
+            0.5
+          ],
+          [
+            1803,
+            3606,
+            123.6,
+            222.8,
+            109.7,
+            91.8,
+            100.0,
+            100.0,
+            100.0,
+            0.17
+          ],
+          [
+            3606,
+            5409,
+            114.3,
+            206.1,
+            110.4,
+            90.0,
+            100.0,
+            100.0,
+            100.0,
+            2.22
+          ]
+        ],
+        "issues": [
+          "unsupported_steps"
+        ],
+        "cache": {
+          "activity_key": "792a485b2a816d1a83ff4fb0470f0cbb0ec8adc429d2a14b7dc1823537ea725b",
+          "event_key": "d6390f79ad575cf6c3ffd78ed5a1ee2edaf68c18e05b1204316a038f9d0f93d3",
+          "plan_key": "8ae9ab57cfe600aa7c5a006ed37a3aa187b17ea502c23cadd00b5ccb775861da",
+          "plan_key_version": 2,
+          "sampled_at": "2026-11-08T11:16:24.178429+00:00",
+          "next_refresh_at": "2026-11-09T11:16:24.178429+00:00"
+        }
+      }
+    },
+    {
+      "activity_id": "i206653517",
+      "date": "2026-11-06",
+      "start_datetime": "2026-11-06T17:14:24",
+      "type": "VirtualRide",
+      "name": "Fri AE-4 Return Check (45min, FTP 211)",
+      "interval_summary": null,
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 2725,
+          "moving_secs": 2725,
+          "start_secs": 0,
+          "end_secs": 2725,
+          "avg_power": 109,
+          "max_power": 116,
+          "avg_hr": 105,
+          "max_hr": 111,
+          "min_hr": 67,
+          "avg_cadence": 90.265686,
+          "zone": 1,
+          "w_bal_start": 16880,
+          "w_bal_end": 16880,
+          "training_load": 20.909683
+        }
+      ],
+      "zone_basis": "power",
+      "session_structure": {
+        "version": 6,
+        "method": "fixed_elapsed_thirds",
+        "status": "unknown",
+        "plan": {
+          "event_id": "152222760",
+          "updated": "2026-11-05T12:11:11.584+00:00",
+          "name": "Fri AE-4 Return Check (45min, FTP 211)",
+          "duration_s": 2700,
+          "duration_source": "moving_time"
+        },
+        "power_target_basis": {
+          "source": "activity.icu_ftp",
+          "ftp": 211
+        },
+        "steps": [
+          {
+            "supported": false,
+            "duration_s": 600
+          },
+          {
+            "supported": false,
+            "duration_s": 1800,
+            "target_w": 114.995
+          },
+          {
+            "supported": false,
+            "duration_s": 300
+          }
+        ],
+        "thirds": [
+          [
+            0,
+            908,
+            105.8,
+            96.0,
+            101.6,
+            89.8,
+            100.0,
+            100.0,
+            100.0,
+            0.11
+          ],
+          [
+            908,
+            1816,
+            114.7,
+            104.1,
+            107.9,
+            90.9,
+            100.0,
+            100.0,
+            100.0,
+            0.0
+          ],
+          [
+            1816,
+            2724,
+            108.1,
+            98.1,
+            107.6,
+            90.2,
+            100.0,
+            100.0,
+            100.0,
+            2.2
+          ]
+        ],
+        "issues": [
+          "unsupported_steps"
+        ],
+        "cache": {
+          "activity_key": "7def5c080aaa299007239c367bee6c68b1bd235ca0ea80caaa3fccfd3ce52700",
+          "event_key": "74c5e22cff15f0461b2b137c3848a367da8a3e5d3ca8436987510115b647b999",
+          "plan_key": "495b7533455012497c39092793db31ba1105a1b06cd50dd7c92fef39e9495d3b",
+          "plan_key_version": 2,
+          "sampled_at": "2026-11-08T11:16:24.178429+00:00",
+          "next_refresh_at": "2026-11-09T11:16:24.178429+00:00"
+        }
+      }
     },
     {
       "activity_id": "i202862039",
       "date": "2026-10-28",
+      "start_datetime": "2026-10-28T17:07:24",
       "type": "VirtualRide",
       "name": "Tue AE-1 Steady Z2 (75min, FTP 211)",
       "interval_summary": null,
@@ -36,16 +234,163 @@
         {
           "type": "RECOVERY",
           "duration_secs": 4562,
+          "moving_secs": 4562,
+          "start_secs": 0,
+          "end_secs": 4562,
           "avg_power": 121,
           "max_power": 134,
           "avg_hr": 109,
           "max_hr": 118,
+          "min_hr": 95,
           "avg_cadence": 91.24616,
           "zone": 2,
-          "training_load": 43.72706,
-          "decoupling": 1.6546128
+          "w_bal_start": 16880,
+          "w_bal_end": 16880,
+          "training_load": 43.72706
         }
-      ]
+      ],
+      "zone_basis": "power",
+      "session_structure": {
+        "version": 6,
+        "method": "fixed_elapsed_thirds",
+        "status": "unknown",
+        "plan": {
+          "event_id": "147805829",
+          "updated": "2026-10-25T11:05:03.197+00:00",
+          "name": "Tue AE-1 Steady Z2 (75min, FTP 211)",
+          "duration_s": 4500,
+          "duration_source": "moving_time"
+        },
+        "power_target_basis": {
+          "source": "activity.icu_ftp",
+          "ftp": 211
+        },
+        "steps": [
+          {
+            "supported": false,
+            "duration_s": 600
+          },
+          {
+            "supported": false,
+            "duration_s": 3300,
+            "target_w": 129.976
+          },
+          {
+            "supported": false,
+            "duration_s": 600
+          }
+        ],
+        "thirds": [
+          [
+            0,
+            1520,
+            120.4,
+            183.1,
+            109.0,
+            90.5,
+            100.0,
+            32.11,
+            100.0,
+            0.53
+          ],
+          [
+            1520,
+            3040,
+            129.1,
+            196.2,
+            109.8,
+            93.3,
+            100.0,
+            100.0,
+            100.0,
+            0.2
+          ],
+          [
+            3040,
+            4561,
+            115.8,
+            176.1,
+            109.1,
+            90.0,
+            100.0,
+            100.0,
+            100.0,
+            1.84
+          ]
+        ],
+        "issues": [
+          "unsupported_steps"
+        ],
+        "cache": {
+          "activity_key": "e812c4ddb50ddde4ad49132038fb603df302cb74bb1ed4d8d62d4436d4ca54da",
+          "event_key": "0f4de7731d97a67c9ea3981a0db58e77b4b43f2ae1e0c8f9658e51e7fc3bc5a0",
+          "plan_key": "ec0699e894c6051827eee86c047a21eab1db3fb139e320298cdad9da24d9e40e",
+          "plan_key_version": 2,
+          "sampled_at": "2026-11-08T11:16:24.178429+00:00",
+          "next_refresh_at": "2026-11-09T11:16:24.178429+00:00"
+        }
+      }
     }
-  ]
+  ],
+  "fetch_state": {
+    "i206986086": {
+      "date": "2026-11-07",
+      "paired_planned": true,
+      "intervals": {
+        "attempts": 1,
+        "first_seen": "2026-11-08T12:16:21.045839",
+        "last_attempt": "2026-11-08T12:16:21.045839",
+        "status": "ok",
+        "reason": "ok",
+        "source_icu_sync_date": "2026-11-07T13:43:42.460+00:00"
+      },
+      "streams": {
+        "attempts": 2,
+        "first_seen": "2026-11-08T12:16:21.045839",
+        "last_attempt": "2026-11-08T12:22:21.038653",
+        "status": "pending",
+        "reason": "no_data",
+        "next_retry_at": "2026-11-08T12:27:21.038653"
+      }
+    },
+    "i206653517": {
+      "date": "2026-11-06",
+      "paired_planned": true,
+      "intervals": {
+        "attempts": 1,
+        "first_seen": "2026-11-08T12:16:21.045839",
+        "last_attempt": "2026-11-08T12:16:21.045839",
+        "status": "ok",
+        "reason": "ok",
+        "source_icu_sync_date": "2026-11-06T17:00:10.674+00:00"
+      },
+      "streams": {
+        "attempts": 2,
+        "first_seen": "2026-11-08T12:16:21.045839",
+        "last_attempt": "2026-11-08T12:22:21.038653",
+        "status": "pending",
+        "reason": "no_data",
+        "next_retry_at": "2026-11-08T12:27:21.038653"
+      }
+    },
+    "i202862039": {
+      "date": "2026-10-28",
+      "paired_planned": true,
+      "intervals": {
+        "attempts": 1,
+        "first_seen": "2026-11-08T12:16:21.045839",
+        "last_attempt": "2026-11-08T12:16:21.045839",
+        "status": "ok",
+        "reason": "ok",
+        "source_icu_sync_date": "2026-10-28T17:23:33.048+00:00"
+      },
+      "streams": {
+        "attempts": 1,
+        "first_seen": "2026-11-08T12:16:21.045839",
+        "last_attempt": "2026-11-08T12:16:21.045839",
+        "status": "tombstone",
+        "reason": "retry_expired"
+      }
+    }
+  }
 }

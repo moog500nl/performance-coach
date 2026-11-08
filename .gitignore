@@ -13,3 +13,6 @@ __pycache__/
 # macOS archive cruft
 __MACOSX/
 ._*
+
+# Internal sync state (request budget, source cache) — not training data
+state/
