@@ -1,7 +1,7 @@
 # Section 11 - AI Coach Protocol
 
-**Protocol Version:** 11.105  
-**Last Updated:** 2026-11-07
+**Protocol Version:** 11.107  
+**Last Updated:** 2026-11-08
 **License:** [MIT](https://opensource.org/licenses/MIT)
 
 Section 11 documents live in `section11/`, custom files in `custom/`, and user data
@@ -12,6 +12,14 @@ paths for those installed files. If a required file is unavailable, say what is
 missing and ask for it.
 
 ### Changelog
+
+**v11.107 - Local config filename (2026-11-08, sync.py v3.170):**
+
+Local and Manual credentials now use `.sync_config` in the same data folder. Normal sync renames an old-only `.sync_config.json` automatically; if renaming fails, it uses the old file and retries next run. Both readers and update protection accept either name, with the new name first. Rollback restores the old name for earlier releases. Never read or upload either config as coaching data. Fetching, fields and credential precedence are unchanged.
+
+**v11.106 - Carry-forward survives a damaged export (2026-11-08, sync.py v3.169):**
+
+Compact 28-day carry-forward records persist in `archive/carry-forward.state`, independently of interval detail and its script hash. Missing, unreadable, invalid or incomplete previous exports use that backup, with a visible sync warning and `latest.json.carry_forward` diagnostics. The backup covers plan-match summaries and pairing, terrain, weather, power curves, DFA rollups, chat notes and decoupling detail. Stable content revisions bind the backup to the export; unchanged content keeps its bytes and timestamp. Local writes replace complete files atomically, with the backup before latest. GitHub and On-demand commit the exact internal path with the export through managed code, without a workflow replacement. The backup stays outside AI companions, Manual JSON uploads and training downloads; intervals.json keeps its existing detail schema. Current pairing checks, assessment rules and request use are unchanged; no lost older detail is fetched. See [Carry-forward status and backup](examples/json-examples/README.md#carry-forward-status-and-backup).
 
 **v11.105 - Sync timer runs (2026-11-07, sync.py v3.168):**
 
@@ -753,6 +761,8 @@ The ±5% screen is deliberate: neighbouring steps in typical stepped endurance p
 
 After detail expires, `has_structure` becomes false and only the last step assessment is retained. Every run refreshes pairing identity, plan name/duration and duration result across all 28 days from the existing activities request and resolved events batch (whose oldest date covers that window). No extra request or older stream backfill is added. Exact forward or unique reverse pairing is accepted after identity checks; conflicts/ambiguity remain explicit. A newly paired empty-step plan replaces stale no_plan with no_steps. An unchanged pair/definition keeps its captured step verdict with `assessment_retained: true`; changed identity/definition revokes that current verdict and may preserve it under `retained_step_assessment`. Missing event data does not invent a plan name or fresh step assessment. Walk/Hike still have no step assessment, but their separate pairing fields below remain available.
 
+The compact backup at `archive/carry-forward.state` protects these last-captured fields when the previous `latest.json` cannot supply them. AI tools must not read this internal file, even through a folder or repository connector. Read only `latest.json.carry_forward` for recovery and missing-evidence notices; qualify affected older activity context when evidence is unavailable. A recovered summary still passes the same current pairing and definition checks above. It supplies no restored 14-day detail or new adherence evidence. No backup can recreate a result already absent from both files, and a producer predating this protection cannot maintain it. See the [field reference](examples/json-examples/README.md#carry-forward-status-and-backup).
+
 #### Current Pairing and Report Fields (sync 3.150)
 
 Legacy retained step verdicts lacking captured plan identity remain `not_assessed` after detail expiry, with the old verdict under `retained_step_assessment`. An old current-event `updated` timestamp alone does not prove which plan was assessed; the compact summary does not retain its capture timestamp. Do not promote that historical verdict to current adherence.
@@ -1193,7 +1203,7 @@ Select an observed eligible sport when it is the period primary, has at least 10
 
 The weekly route requires at least two nonempty full weeks with known eligible moving-time totals. A week's defensible load/time primary qualifies only when its own moving time is at least 50% of the median of those full-week endurance totals. Include known low-volume weeks; exclude empty and unknown weeks. The 28-day block uses exactly four disjoint seven-date chunks, including today's observations so far. Season/month use fully contained completed configured weeks; clipped edge weeks contribute observations but cannot win. Seven-day blocks select independently without weekly rescue. Season bounds match `weekly_180d[:-1]`, preserving the approximately 180-day completed-week scope and excluding the current row. It supplies a distribution only: its tid arrays contain three percentages, without classification/PI; current 28-day TID remains separately labelled.
 
-Optional `report_main_sports` in `.sync_config.json` accepts comma-separated report IDs, for example `"cycling,swimming"`; `REPORT_MAIN_SPORTS` in the sync process environment is the fallback. It is absent by default, rejects unknown IDs, normalizes the skiing input alias to nordic_skiing and only retains eligible sports actually observed in that period. This is an explicit configuration input, never inferred from a dossier, title or conversational preference. Each latest/history file records `report_intensity_schema` once: `schema_version: 2`, `rule_version: endurance_10_50_week_guard_v2`, `selection_config`, configured `week_start_day`, `eligible_sports`, `sport_labels`, mappings, reason codes and column definitions. Old skiing/v1 blocks are incompatible; never relabel them. Historical settings stay as recorded; do not apply current overrides to old summaries. Normal refresh age, script-change trigger, budget and backoff are unchanged. Until ordinary refresh supplies compatible history, that view is unavailable. This report schema is separate from release versions and the intervals schema.
+Optional `report_main_sports` in `.sync_config` accepts comma-separated report IDs, for example `"cycling,swimming"`; `REPORT_MAIN_SPORTS` in the sync process environment is the fallback. It is absent by default, rejects unknown IDs, normalizes the skiing input alias to nordic_skiing and only retains eligible sports actually observed in that period. This is an explicit configuration input, never inferred from a dossier, title or conversational preference. Each latest/history file records `report_intensity_schema` once: `schema_version: 2`, `rule_version: endurance_10_50_week_guard_v2`, `selection_config`, configured `week_start_day`, `eligible_sports`, `sport_labels`, mappings, reason codes and column definitions. Old skiing/v1 blocks are incompatible; never relabel them. Historical settings stay as recorded; do not apply current overrides to old summaries. Normal refresh age, script-change trigger, budget and backoff are unchanged. Until ordinary refresh supplies compatible history, that view is unavailable. This report schema is separate from release versions and the intervals schema.
 
 Each block keeps raw known TSS/moving seconds, missing counts and compact basis buckets for **all observed eligible sports**, including local nonqualifiers. Selection denominators include activities without zones. Longer periods use all in-range observations, never only locally selected weeks or rounded row totals. Identical IDs count once; conflicting relevant payloads make the affected observations unknown and supply no zone seconds. Nonzero duplicate/conflict/missing-ID/invalid-date counts remain in `identity`; absent counts mean zero, not complete upstream retrieval.
 

@@ -4,6 +4,14 @@ Intervals.icu → GitHub/Local JSON Export
 Exports training data for LLM access.
 Supports both automated GitHub sync and manual local export.
 
+Version 3.170 - Rename local credentials to .sync_config, with automatic migration,
+  legacy read fallback and rollback compatibility. Protocol v11.107.
+
+Version 3.169 - Retain compact carry-forward records in archive/carry-forward.state;
+  stable content revisions bind atomic backups to latest.json. Managed hosted
+  publication keeps the backup outside AI files; no extra Intervals.icu requests.
+  Missing/incomplete previous exports produce visible notices. Protocol v11.106.
+
 Version 3.168 - Sync timer runs use hosted 30-minute delivery expectations and
   the scheduled history run budget. Manual Sync Now stays on demand.
 
@@ -6070,6 +6078,129 @@ class HostedSlowCache:
             return False
 
 
+class CarryForwardBackup:
+    """One internal recovery file, shared by the producer and hosted publisher."""
+    PATH = "archive/carry-forward.state"
+    MAX_BYTES = 16 * 1024 * 1024
+    GROUPS = (
+        ("structure_summary", "plan_pairing"),
+        ("terrain_summary", "terrain_status", "terrain_error"),
+        ("weather_summary",),
+        ("power_curve", "power_curve_status", "power_curve_error"),
+        ("dfa_rollup",), ("chat_notes",),
+        ("decoupling_detail", "decoupling_cache"),
+    )
+
+    @staticmethod
+    def encode(document):
+        return json.dumps(document, sort_keys=True, separators=(",", ":"),
+                          allow_nan=False).encode("utf-8")
+
+    @classmethod
+    def revision(cls, rows):
+        return hashlib.sha256(cls.encode({"version": 1, "activities": rows})).hexdigest()
+
+    @staticmethod
+    def timestamp(value):
+        if not isinstance(value, str):
+            raise ValueError("invalid carry-forward timestamp")
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        if parsed.tzinfo is None:
+            raise ValueError("invalid carry-forward timestamp")
+        return parsed
+
+    @classmethod
+    def decode(cls, raw):
+        if not 0 < len(raw) <= cls.MAX_BYTES:
+            raise ValueError("carry-forward backup exceeds size bound")
+        def pairs(items):
+            result = {}
+            for key, value in items:
+                if key in result:
+                    raise ValueError("duplicate carry-forward key")
+                result[key] = value
+            return result
+        def invalid(value):
+            raise ValueError("non-finite carry-forward number")
+        document = json.loads(raw, object_pairs_hook=pairs, parse_constant=invalid)
+        if (not isinstance(document, dict)
+                or set(document) != {"version", "generated_at", "revision", "activities"}
+                or type(document["version"]) is not int or document["version"] != 1
+                or not isinstance(document["activities"], list)):
+            raise ValueError("invalid carry-forward envelope")
+        cls.timestamp(document["generated_at"])
+        fields = {key for group in cls.GROUPS for key in group}
+        ids = []
+        for row in document["activities"]:
+            if (not isinstance(row, dict) or not {"id", "date"} <= row.keys()
+                    or set(row) - fields - {"id", "date"}
+                    or not isinstance(row["id"], str) or not row["id"]
+                    or not isinstance(row["date"], str)
+                    or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", row["date"])):
+                raise ValueError("invalid carry-forward activity")
+            datetime.strptime(row["date"], "%Y-%m-%d")
+            for key in fields & row.keys():
+                kind = list if key == "chat_notes" else str if key.endswith(("_status", "_error")) else dict
+                if row[key] is not None and not isinstance(row[key], kind):
+                    raise ValueError("invalid carry-forward field")
+            ids.append(row["id"])
+        if ids != sorted(set(ids)) or document["revision"] != cls.revision(document["activities"]):
+            raise ValueError("carry-forward content revision mismatch")
+        return document
+
+    @classmethod
+    def path(cls, root):
+        """The caller cannot supply an alternative filename or archive path."""
+        import stat
+        root = Path(root).absolute()
+        target = root / cls.PATH
+        for parent in (*root.parents, root, target.parent):
+            if parent.is_symlink() or (parent.exists() and not parent.is_dir()):
+                raise ValueError("non-ordinary carry-forward parent")
+        if target.is_symlink() or (target.exists() and not stat.S_ISREG(target.stat().st_mode)):
+            raise ValueError("non-ordinary carry-forward file")
+        return target
+
+    @classmethod
+    def read_bytes(cls, root):
+        path = cls.path(root)
+        with open(path, "rb") as handle:
+            raw = handle.read(cls.MAX_BYTES + 1)
+        if len(raw) > cls.MAX_BYTES:
+            raise ValueError("carry-forward backup exceeds size bound")
+        return raw
+
+    @classmethod
+    def write(cls, root, document):
+        raw = cls.encode(document)
+        cls.decode(raw)
+        path = cls.path(root)
+        try:
+            if cls.read_bytes(root) == raw:
+                return False
+        except FileNotFoundError:
+            pass
+        path.parent.mkdir(exist_ok=True)
+        handle, temporary = tempfile.mkstemp(prefix=".carry-", suffix=".tmp", dir=path.parent)
+        try:
+            with os.fdopen(handle, "wb") as stream:
+                stream.write(raw)
+                stream.flush()
+                os.fsync(stream.fileno())
+            os.replace(temporary, path)
+        finally:
+            if os.path.exists(temporary):
+                os.unlink(temporary)
+        return True
+
+    @staticmethod
+    def require_controller(environ):
+        if (environ.get("GITHUB_ACTIONS", "").lower() == "true"
+                and environ.get("SECTION11_SYNC_WRAPPER_API") == "2"
+                and environ.get("SECTION11_CARRY_FORWARD_VERSION") != "1"):
+            raise ValueError("carry-forward requires the matching managed controller; run Update")
+
+
 class IntervalsSync:
     """Sync Intervals.icu data to GitHub repository or local file"""
 
@@ -6098,7 +6229,7 @@ class IntervalsSync:
     GITHUB_API_URL = "https://api.github.com"
     FTP_HISTORY_FILE = "ftp_history.json"
     HISTORY_FILE = "history.json"
-    VERSION = "3.168"
+    VERSION = "3.170"
     ROUTE_TERRAIN_VERSION = "3.142"
     ROUTE_RETRY_BACKOFF_SECONDS = 15 * 60
     INTERVALS_FILE = "intervals.json"
@@ -6360,7 +6491,7 @@ class IntervalsSync:
         return activity_type in cls.INDOOR_CYCLING_TYPES
 
     # Training week start day (Python weekday: Mon=0, Tue=1, Wed=2, Thu=3, Fri=4, Sat=5, Sun=6)
-    # Default Monday (ISO). Override via .sync_config.json, WEEK_START env var, or --week-start CLI arg.
+    # Default Monday (ISO). Override via .sync_config, WEEK_START env var, or --week-start CLI arg.
     WEEK_START_DAY = 0
     
     # --- Sustainability Profile (v3.91) ---
@@ -8384,62 +8515,224 @@ class IntervalsSync:
             out[key] = refreshed
         return out
 
-    def _load_previous_latest(self) -> Dict[str, Dict]:
+    # Compact fields only: never raw streams, interval detail, compliance or
+    # credentials. Keep each cache value with its status/fingerprint and each
+    # assessment with its captured pairing. A newer complete group wins whole.
+    _CARRY_GROUPS = CarryForwardBackup.GROUPS
+
+    def _carry_entry(self, act):
+        entry = {key: act[key] for group in self._CARRY_GROUPS for key in group
+                 if key in act}
+        summary = self._activity_plan_match(act)
+        if (isinstance(summary, dict) and summary.get("status") in (
+                "followed", "partly_followed", "not_followed", "unknown",
+                "no_plan", "no_steps", "not_assessed")
+                and ("plan" not in summary or isinstance(summary["plan"], dict))
+                and ("steps" not in summary or isinstance(summary["steps"], list))
+                and ("issues" not in summary or isinstance(summary["issues"], list))):
+            entry["structure_summary"] = summary
+        else:
+            entry.pop("structure_summary", None)
+        pairing = entry.get("plan_pairing")
+        if (not isinstance(pairing, dict) or type(pairing.get("paired")) is not bool
+                or pairing.get("paired") and not isinstance(pairing.get("plan"), dict)
+                or pairing.get("plan") is not None and not isinstance(pairing["plan"], dict)):
+            entry.pop("plan_pairing", None)
+        return entry
+
+    def _load_previous_latest(self, activities=None) -> Dict[str, Dict]:
+        """Read the normal export plus its independent compact companion backup.
+
+        The backup is read before interval cache invalidation, so script updates
+        do not discard it. Missing activities stay there until date expiry, but
+        only the current API activity list can put them in recent_activities.
         """
-        Read previous latest.json and build an activity-id-keyed lookup dict.
-        
-        Used as the persistent state for terrain/weather summaries — fields
-        already populated on a previous sync are copied forward instead of
-        being re-fetched. The presence of `terrain_summary` (or terminal
-        `terrain_status`) on a record IS the "already pulled" signal.
-        
-        Returns a dict mapping str(activity_id) -> {
-            "terrain_summary": <dict or absent>,
-            "terrain_status":  <str or absent>,
-            "terrain_error":   <str or absent>,
-            "weather_summary": <dict or absent>
-            # weather_status not copied forward — re-evaluated each sync from
-            # current activity-list `has_weather` field.
-        }
-        Empty dict when latest.json is absent (first sync, fresh data dir).
-        Activity IDs are normalized to strings to defend against type mismatch
-        between dict construction and lookup.
-        """
-        latest_path = self.data_dir / "latest.json"
-        if not latest_path.exists():
-            return {}
+        issues, restored, incomplete = [], set(), set()
+        def read(path):
+            try:
+                with open(path, "r", encoding="utf-8") as handle:
+                    document = json.load(handle)
+                if not isinstance(document, dict):
+                    raise ValueError("expected object")
+                return document, "ok"
+            except FileNotFoundError:
+                return {}, "missing"
+            except (OSError, UnicodeError):
+                return {}, "unreadable"
+            except (ValueError, TypeError):
+                return {}, "invalid"
+
+        primary, primary_status = read(self.data_dir / "latest.json")
+        backup, backup_status = {}, "ok"
         try:
-            with open(latest_path, 'r') as f:
-                data = json.load(f)
-        except Exception as e:
-            if self.debug:
-                print(f"    ⚠️  Could not read previous latest.json: {e}")
-            return {}
-        
-        lookup = {}
-        for act in data.get("recent_activities", []):
-            act_id = act.get("id")
-            if act_id is None:
+            backup = CarryForwardBackup.decode(CarryForwardBackup.read_bytes(self.data_dir))
+        except FileNotFoundError:
+            backup_status = "missing"
+        except OSError:
+            backup_status = "unreadable"
+        except (ValueError, TypeError, UnicodeError):
+            backup_status = "invalid"
+        self._carry_forward_backup = backup
+        cutoff = (datetime.now() - timedelta(days=self.ACTIVITY_WINDOW_DAYS - 1)).strftime("%Y-%m-%d")
+        today = datetime.now().strftime("%Y-%m-%d")
+
+        def records(rows, durable=False):
+            if not isinstance(rows, list):
+                raise ValueError("expected activity list")
+            result = {}
+            for row in rows:
+                if (not isinstance(row, dict) or type(row.get("id")) not in (str, int)
+                        or not str(row["id"]) or str(row["id"]) in result):
+                    raise ValueError("invalid activity identity")
+                date = row.get("date", "")
+                if durable and (not isinstance(date, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date)):
+                    raise ValueError("invalid activity date")
+                if durable and not cutoff <= date <= today:
+                    continue
+                entry = self._carry_entry(row)
+                if not durable and "interval_data" in row and not all(k in entry for k in self._CARRY_GROUPS[0]):
+                    incomplete.add(str(row["id"]))
+                result[str(row["id"])] = {"id": str(row["id"]), "date": date[:10] if isinstance(date, str) else "",
+                                          **entry}
+            return result
+
+        try:
+            previous = records(primary.get("recent_activities")) if primary_status == "ok" else {}
+        except (ValueError, TypeError):
+            previous, primary_status = {}, "invalid"
+        try:
+            saved = records(backup.get("activities"), durable=True) if backup_status == "ok" else {}
+        except (ValueError, TypeError):
+            saved, backup_status = {}, "invalid"
+        if primary_status != "ok":
+            issues.append("previous_latest_" + primary_status)
+        if backup_status in ("invalid", "unreadable"):
+            issues.append("carry_forward_backup_" + backup_status)
+        elif primary_status != "ok" and not saved:
+            issues.append("carry_forward_backup_unavailable")
+
+        current_ids = ({str(a["id"]) for a in activities if a.get("id") is not None}
+                       if activities is not None else set(previous) | set(saved))
+        if incomplete & current_ids:
+            issues.append("previous_latest_incomplete")
+        def stamp(value):
+            try:
+                parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+                return parsed if parsed.tzinfo is not None else None
+            except (AttributeError, ValueError, TypeError):
+                return None
+        metadata = primary.get("metadata")
+        primary_time = stamp(metadata.get("last_updated")) if isinstance(metadata, dict) else None
+        backup_time = stamp(backup.get("generated_at")) if backup_status == "ok" else None
+        signal = primary.get("carry_forward")
+        same_revision = (backup_status == "ok" and isinstance(signal, dict)
+                         and signal.get("backup_revision") == backup.get("revision"))
+        backup_newer = (not same_revision and primary_time is not None
+                        and backup_time is not None and backup_time > primary_time)
+        primary_newer = (not same_revision and primary_time is not None
+                         and backup_time is not None and primary_time > backup_time)
+        if backup_newer and saved:
+            issues.append("previous_latest_older_than_backup")
+        merged = dict(saved)
+        for aid, row in previous.items():
+            old = saved.get(aid, {})
+            if backup_newer and old:
+                if aid in current_ids:
+                    restored.add(aid)
                 continue
-            entry = {}
-            if "terrain_summary" in act:
-                entry["terrain_summary"] = act["terrain_summary"]
-            if "terrain_status" in act:
-                entry["terrain_status"] = act["terrain_status"]
-            if "terrain_error" in act:
-                entry["terrain_error"] = act["terrain_error"]
-            if "weather_summary" in act:
-                entry["weather_summary"] = act["weather_summary"]
-            summary = self._activity_plan_match(act)
-            if summary is not None:
-                entry["structure_summary"] = summary
-            for key in ("power_curve", "power_curve_status", "power_curve_error", "plan_pairing", "dfa_rollup", "chat_notes",
-                        "decoupling_detail", "decoupling_cache"):
-                if key in act:
-                    entry[key] = act[key]
-            if entry:
-                lookup[str(act_id)] = entry
-        return lookup
+            merged[aid] = dict(row)
+            for group in self._CARRY_GROUPS:
+                # Repair an absent group, including a half-missing assessment/
+                # pairing pair. Explicit null/empty values are authoritative.
+                missing = not any(k in row for k in group)
+                if group == self._CARRY_GROUPS[0]:
+                    missing = missing or (all(k in old for k in group)
+                                          and not all(k in row for k in group))
+                    summary = row.get("structure_summary")
+                    old_summary = old.get("structure_summary")
+                    if (isinstance(summary, dict) and isinstance(old_summary, dict)
+                            and summary.get("status") == old_summary.get("status")
+                            and summary.get("plan") == old_summary.get("plan")
+                            and "steps" in old_summary and "steps" not in summary):
+                        missing = True
+                    pairing, old_pairing = row.get("plan_pairing") or {}, old.get("plan_pairing") or {}
+                    if (isinstance(summary, dict) and isinstance(old_summary, dict)
+                            and summary.get("status") in ("followed", "partly_followed", "not_followed")
+                            and old_summary.get("plan") and not summary.get("plan")):
+                        missing = True
+                    if any(k in old_pairing and k not in pairing for k in ("definition_key", "definition_key_version")):
+                        missing = True
+                elif not primary_newer:
+                    # Same-generation partial groups must not split a cached
+                    # value from its status or fingerprint. A changed status or
+                    # key is an intentional new result, so it wins unchanged.
+                    shared = set(group) & row.keys() & old.keys()
+                    missing = missing or (any(k in old and k not in row for k in group)
+                                          and all(row[k] == old[k] for k in shared))
+                # Assessment/pairing fields are required in current exports.
+                # A newer timestamp cannot turn their absence into a verdict.
+                if (missing and (not primary_newer or group == self._CARRY_GROUPS[0])
+                        and any(k in old for k in group)):
+                    for key in group:
+                        merged[aid].pop(key, None)
+                        if key in old:
+                            merged[aid][key] = old[key]
+                    if (group == self._CARRY_GROUPS[0] and isinstance(row.get("structure_summary"), dict)
+                            and row["structure_summary"].get("status") not in ("followed", "partly_followed", "not_followed")):
+                        # Incompleteness cannot promote an explicit demotion.
+                        merged[aid]["structure_summary"] = row["structure_summary"]
+                    if aid in current_ids:
+                        restored.add(aid)
+                        if "previous_latest_incomplete" not in issues:
+                            issues.append("previous_latest_incomplete")
+        missing_ids = (set(saved) - set(previous)) & current_ids
+        restored.update(missing_ids)
+        if missing_ids and primary_status == "ok":
+            issues.append("previous_latest_incomplete")
+        unavailable = []
+        detail_cutoff = (datetime.now() - timedelta(days=self.INTERVAL_RETENTION_DAYS)).strftime("%Y-%m-%d")
+        for act in activities or []:
+            aid = str(act.get("id"))
+            date = act.get("start_date_local", "")[:10]
+            if (date < detail_cutoff and aid not in merged):
+                unavailable.append(aid)
+        if unavailable:
+            issues.append("older_activity_carry_forward_unavailable")
+        self._carry_forward_records = merged
+        self._carry_forward_status = {
+            "version": 1, "previous_latest": primary_status, "backup": backup_status,
+            "restored_activity_ids": sorted(restored), "unavailable_activity_ids": sorted(unavailable),
+            "issues": list(dict.fromkeys(issues)),
+        }
+        if issues:
+            print("    ⚠️  Carry-forward: " + ", ".join(self._carry_forward_status["issues"])
+                  + f"; restored {len(restored)} activities from {CarryForwardBackup.PATH}.")
+        return {aid: self._carry_entry(row) for aid, row in merged.items()}
+
+    def _prepare_carry_forward(self, data):
+        """Snapshot resolved current results, retaining temporarily absent IDs.
+
+        Never merge old fields into a current result here: fresh empty evidence
+        and pairing demotions must replace the old record, not revive it.
+        """
+        if not hasattr(self, "_carry_forward_records"):
+            return
+        records = dict(self._carry_forward_records)
+        for row in data["recent_activities"]:
+            aid = str(row["id"])
+            records[aid] = {"id": aid, "date": row["date"][:10], **self._carry_entry(row)}
+        cutoff = (datetime.now() - timedelta(days=self.ACTIVITY_WINDOW_DAYS - 1)).strftime("%Y-%m-%d")
+        today = datetime.now().strftime("%Y-%m-%d")
+        rows = [records[aid] for aid in sorted(records)
+                if isinstance(records[aid].get("date"), str)
+                and cutoff <= records[aid]["date"][:10] <= today]
+        revision = CarryForwardBackup.revision(rows)
+        previous = self._carry_forward_backup
+        generated = (previous["generated_at"] if previous.get("revision") == revision
+                     else data["metadata"]["last_updated"])
+        self._carry_forward_next = {"version": 1, "generated_at": generated,
+                                   "revision": revision, "activities": rows}
+        data["carry_forward"] = dict(self._carry_forward_status, backup_revision=revision)
 
     def _build_terrain_for_activity(self, act: Dict, previous_lookup: Dict[str, Dict],
                                     athlete_units: Optional[Dict[str, str]] = None) -> Dict:
@@ -11678,10 +11971,6 @@ class IntervalsSync:
         wind_unit = athlete.get("wind_speed") or "MPS"
         speed_unit = "KPH"
         
-        # Load previous latest.json — used as persistent state for terrain &
-        # weather copy-forward. Empty dict on first sync / fresh data dir.
-        previous_latest_lookup = self._load_previous_latest()
-        
         # Extract per-sport-family thesholds from user settings
         sport_settings = self._build_sport_thresholds(athlete)
         
@@ -11697,6 +11986,10 @@ class IntervalsSync:
             if a.get("start_date_local", "")[:10] >= min(oldest_extended, oldest_sustainability)]
         activities_extended = [a for a in activities_sustainability
                                if a.get("start_date_local", "")[:10] >= oldest_extended]
+
+        # Load both persisted copies before interval cache invalidation. The
+        # current activity list distinguishes older missing records from new rides.
+        previous_latest_lookup = self._load_previous_latest(activities_extended)
         
         # Filter to display range for recent_activities
         activities_display = [a for a in activities_extended 
@@ -12264,6 +12557,7 @@ class IntervalsSync:
         # Capture once, after the complete training body and source evaluation.
         generated = datetime.now(timezone.utc)
         data["metadata"]["last_updated"] = ExportFreshness.stamp(generated)
+        self._prepare_carry_forward(data)
         data["export_freshness"] = ExportFreshness.build(
             data["metadata"]["last_updated"], ExportFreshness.context(os.environ),
             data["source_freshness"], generated)
@@ -16354,7 +16648,7 @@ class IntervalsSync:
         Extract Stream 2 (prospective) features from planned workouts and race calendar.
         
         Windows are aligned to the training week (configurable via
-        .sync_config.json, WEEK_START env var, or --week-start CLI;
+        .sync_config, WEEK_START env var, or --week-start CLI;
         default Monday/ISO). This prevents mid-week contamination where
         a deload week's window leaks into the next build week.
         
@@ -22059,6 +22353,8 @@ class IntervalsSync:
                 continue
             if attribute == "_saved_workouts_data":
                 self._sw_write(value)
+            elif attribute == "_intervals_data":
+                self._write_carry_json(self.data_dir / name, value)
             else:
                 with open(self.data_dir / name, "w") as handle:
                     json.dump(value, handle, indent=2, default=str)
@@ -22079,10 +22375,29 @@ class IntervalsSync:
             cache.export(data)
         return result
 
+    @staticmethod
+    def _write_carry_json(filepath, data):
+        """Replace one complete JSON file; a failed write preserves its preimage."""
+        path = Path(filepath)
+        handle, temporary = tempfile.mkstemp(prefix=".carry-", suffix=".tmp", dir=path.parent)
+        try:
+            with os.fdopen(handle, "w", encoding="utf-8") as stream:
+                json.dump(data, stream, indent=2, default=str)
+                stream.flush()
+                os.fsync(stream.fileno())
+            os.replace(temporary, path)
+        finally:
+            if os.path.exists(temporary):
+                os.unlink(temporary)
+
     def save_to_file(self, data: Dict, filepath: str = "latest.json"):
-        """Save data to local JSON file"""
-        with open(filepath, 'w') as f:
-            json.dump(data, f, indent=2, default=str)
+        """Save data to local JSON file without exposing a truncated export."""
+        backup = getattr(self, "_carry_forward_next", None)
+        if backup is not None:
+            if data.get("carry_forward", {}).get("backup_revision") != backup["revision"]:
+                raise ValueError("export and carry-forward backup revision differ")
+            CarryForwardBackup.write(self.data_dir, backup)
+        self._write_carry_json(filepath, data)
         print(f"Data saved to {filepath}")
         return filepath
 
@@ -22251,7 +22566,7 @@ class Distribution:
     KEEP_ROOT = frozenset(('README.md', 'DOSSIER.md', '.gitignore', '.git', '.github',
         'custom', 'latest.json', 'history.json', 'intervals.json', 'routes.json',
         'saved_workouts.json', 'ftp_history.json', 'route_eta_history.json',
-        'maps', 'archive', 'state', '.section11-state', '.sync_config.json', 'sync.log'))
+        'maps', 'archive', 'state', '.section11-state', '.sync_config', '.sync_config.json', 'sync.log'))
     KEEP_COMPONENTS = frozenset(p.casefold() for p in KEEP_ROOT if p != 'README.md')
 
     @staticmethod
@@ -23583,14 +23898,55 @@ def _entry_digests(root, release_paths=(), cleanup=None):
     return result
 
 
-def _local_config(data_dir):
-    path = Distribution.ordinary(data_dir, '.sync_config.json')
+def _normal_sync_config(data_dir, migrate=False, _locked=False):
+    """Keep plain json.load compatibility; strict checks only gate migration."""
+    path = Path(data_dir) / '.sync_config'
+    if path.exists():
+        if migrate and (Path(data_dir) / '.sync_config.json').exists():
+            print('Section 11: using .sync_config; .sync_config.json was kept. Never upload either file.')
+    else:
+        path = Path(data_dir) / '.sync_config.json'
+    if not path.exists():
+        return {}
+    with open(path) as stream:
+        config = json.load(stream)
+    if migrate and path.name == '.sync_config.json':
+        try:
+            return _local_config(data_dir, migrate=True, _locked=_locked)[1]
+        except (OSError, ValueError):
+            # Linked, oversized or duplicate-key configs remain readable in place.
+            pass
+    return config
+
+
+def _local_config(data_dir, migrate=False, _locked=False):
+    path = Distribution.ordinary(data_dir, '.sync_config')
+    if path.exists():
+        if migrate and (Path(data_dir) / '.sync_config.json').exists():
+            print('Section 11: using .sync_config; .sync_config.json was kept. Never upload either file.')
+    else:
+        path = Distribution.ordinary(data_dir, '.sync_config.json')
     content = path.read_bytes() if path.exists() else None
     if content is not None and (len(content) > 1024 * 1024 or path.stat().st_nlink != 1):
         raise DistributionError('configuration is not an ordinary bounded file')
     value = Distribution.json(content) if content is not None else {}
     if not isinstance(value, dict):
         raise DistributionError('configuration must be a JSON object')
+    if migrate and content is not None and path.name == '.sync_config.json':
+        import contextlib
+        try:
+            # Reuse the install/run lock; a failed migration never blocks data work.
+            with contextlib.nullcontext() if _locked else _distribution_lock(data_dir, cleanup=False):
+                target = Distribution.ordinary(data_dir, '.sync_config')
+                if target.exists():
+                    return _local_config(data_dir, migrate=True, _locked=True)
+                if path.read_bytes() != content:
+                    raise DistributionError('config changed before rename')
+                os.rename(path, target)
+        except (OSError, DistributionError):
+            print('Section 11: could not rename .sync_config.json; using it for this run. Will retry next run; never upload it.')
+        else:
+            print('Section 11: renamed .sync_config.json to .sync_config.')
     return content, value
 
 
@@ -23765,6 +24121,8 @@ def _install_local(data_dir, raw, files, identity, expected, _locked=False):
             else:
                 shutil.copy2(path, destination)
         config_raw, config = _local_config(data_dir)
+        config_path = Distribution.ordinary(data_dir, '.sync_config')
+        config_new_raw = config_path.read_bytes() if config_path.exists() else None
         timers = (json.dumps(LocalTimers.recovery(expected['timer']), sort_keys=True) + '\n').encode()
         (transaction / 'timers.json').write_bytes(timers)
         if _local_plan(data_dir, raw, files, expected['timer_choice'], _staging=True) != expected:
@@ -23805,7 +24163,7 @@ def _install_local(data_dir, raw, files, identity, expected, _locked=False):
                 (data_dir / name).rmdir()
             if expected['timer_choice'] is not None:
                 config['auto_sync'] = expected['timer']['enabled']
-                _write_install_state(data_dir, '.sync_config.json', config)
+                _write_install_state(data_dir, '.sync_config', config)
             _ensure_custom(data_dir, files)
             Distribution.tree(target)
             Distribution.read_receipt(target, raw)
@@ -23835,10 +24193,10 @@ def _install_local(data_dir, raw, files, identity, expected, _locked=False):
                     else:
                         shutil.copy2(entries / name, path)
             if expected['timer_choice'] is not None:
-                if config_raw is None:
-                    (data_dir / '.sync_config.json').unlink(missing_ok=True)
+                if config_new_raw is None:
+                    config_path.unlink(missing_ok=True)
                 else:
-                    (data_dir / '.sync_config.json').write_bytes(config_raw)
+                    config_path.write_bytes(config_new_raw)
             if expected['custom']['readme'] is None:
                 (data_dir / 'custom/README.md').unlink(missing_ok=True)
             if not expected['custom']['directory'] and (data_dir / 'custom').exists():
@@ -23881,6 +24239,31 @@ def _rollback_local(data_dir, record):
         raise DistributionError('rollback extraction differs from previous installation')
     _previous_install(data_dir)
     timer_plan = Distribution.json((recovered / 'timers.json').read_bytes())
+    # Restore the legacy name before any old producer/timer can be activated.
+    # Keep conflicting unused bytes outside the JSON upload selection.
+    current = Distribution.ordinary(data_dir, '.sync_config')
+    legacy = Distribution.ordinary(data_dir, '.sync_config.json')
+    saved_name = '.sync_config.saved-' + transaction.name.removeprefix('transaction-')
+    saved_config = Distribution.ordinary(data_dir, saved_name)
+    if saved_config.exists():
+        raise DistributionError('config recovery destination already exists; preserve transaction')
+    journal['saved_config'] = saved_name
+    _write_install_state(state, 'transaction.json', dict(journal, phase='rollback-config'))
+    if record['config_changed']:
+        if record['config_had_auto_sync']:
+            config['auto_sync'] = record['config_before']
+        else:
+            config.pop('auto_sync', None)
+        _write_install_state(data_dir, '.sync_config', config)
+    if current.exists():
+        if legacy.exists() and legacy.read_bytes() != current.read_bytes():
+            os.rename(legacy, saved_config)
+            print('Section 11: kept the other config as ' + saved_name + '; never upload it.')
+        os.replace(current, legacy)
+        if legacy.read_bytes() != (config_raw if not record['config_changed'] else
+                                   (json.dumps(config, sort_keys=True) + '\n').encode()):
+            raise DistributionError('config rollback readback mismatch; preserve transaction')
+        print('Section 11: restored .sync_config.json for rollback; never upload it.')
     _write_install_state(state, 'transaction.json', dict(journal, phase='rollback-timer'))
     LocalTimers(data_dir).apply(timer_plan, transaction, reverse=True)
     os.rename(target, transaction / 'discarded')
@@ -23891,12 +24274,6 @@ def _rollback_local(data_dir, record):
         if previous.exists():
             (data_dir / name).parent.mkdir(parents=True, exist_ok=True)
             os.rename(previous, data_dir / name)
-    if record['config_changed']:
-        if record['config_had_auto_sync']:
-            config['auto_sync'] = record['config_before']
-        else:
-            config.pop('auto_sync', None)
-        _write_install_state(data_dir, '.sync_config.json', config)
     if _local_tree_digest(target) != record['previous_tree'] or _entry_digests(data_dir, cleanup=record['cleanup']) != record['previous_entries']:
         raise DistributionError('rollback readback mismatch; preserve transaction')
     saved = _auto_update_state(state)
@@ -24153,24 +24530,21 @@ def _main(installation_root=None, distribution_locked=False, started_at=None):
         github_token = input("GitHub Personal Access Token (or press Enter to skip): ")
         github_repo = input("GitHub Repository (username/repo, or press Enter to skip): ")
         
-        _, config = _local_config(Path.cwd())
-        config.update({"athlete_id": athlete_id, "intervals_key": intervals_key})
-        if github_token:
-            config["github_token"] = github_token
-        if github_repo:
-            config["github_repo"] = github_repo
-        
         week_input = input("Training week starts on (mon/tue/wed/thu/fri/sat/sun, default: mon): ").strip().lower()
-        if week_input in ("mon", "tue", "wed", "thu", "fri", "sat", "sun"):
-            config["week_start"] = week_input
-        
         zone_pref_input = input("Zone preference overrides (e.g. run:hr,cycling:power, or press Enter for default): ").strip()
-        if zone_pref_input:
-            config["zone_preference"] = zone_pref_input
-            
-        with open(".sync_config.json", "w") as f:
-            json.dump(config, f, indent=2)
-        print("\n✅ Config saved to .sync_config.json")
+        with _distribution_lock(Path.cwd()):
+            _, config = _local_config(Path.cwd())
+            config.update({"athlete_id": athlete_id, "intervals_key": intervals_key})
+            if github_token:
+                config["github_token"] = github_token
+            if github_repo:
+                config["github_repo"] = github_repo
+            if week_input in ("mon", "tue", "wed", "thu", "fri", "sat", "sun"):
+                config["week_start"] = week_input
+            if zone_pref_input:
+                config["zone_preference"] = zone_pref_input
+            _write_install_state(Path.cwd(), '.sync_config', config)
+        print("\n✅ Config saved to .sync_config")
         print("\nUsage:")
         print("  Export locally:    python3 section11/examples/sync.py --output latest.json")
         print("  Push to GitHub:    python3 section11/examples/sync.py")
@@ -24208,9 +24582,9 @@ def _main(installation_root=None, distribution_locked=False, started_at=None):
     sync = None
     publication_uncertain = False
     try:
-        if os.path.exists(".sync_config.json"):
-            with open(".sync_config.json") as f:
-                config = json.load(f)
+        config = _normal_sync_config(Path.cwd(),
+                                     migrate=os.environ.get('GITHUB_ACTIONS', '').lower() != 'true',
+                                     _locked=distribution_locked and installation_root == Path.cwd())
         
         athlete_id = args.athlete_id or config.get("athlete_id") or os.getenv("ATHLETE_ID")
         intervals_key = args.intervals_key or config.get("intervals_key") or os.getenv("INTERVALS_KEY")
@@ -24442,8 +24816,7 @@ def _run_sync(sync, args, github_token, github_repo):
         if intervals_data is not None:
             # Save locally for incremental cache on next run
             intervals_path = sync.data_dir / sync.INTERVALS_FILE
-            with open(intervals_path, 'w') as f:
-                json.dump(intervals_data, f, indent=2, default=str)
+            sync._write_carry_json(intervals_path, intervals_data)
             try:
                 sync.publish_to_github(intervals_data, filepath="intervals.json",
                                        commit_message=f"Update intervals.json - {datetime.now().strftime('%Y-%m-%d')}")
@@ -24506,6 +24879,7 @@ def _installation_root():
 
 def main():
     import sys
+    CarryForwardBackup.require_controller(os.environ)
     started_at = datetime.now(timezone.utc)
     data_root = _installation_root()
     if not any(a in sys.argv for a in ("--init", "--update", "--status", "--rollback", "--setup", "--generate-manifest")) and (

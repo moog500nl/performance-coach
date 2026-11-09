@@ -4,25 +4,69 @@ Local sync copies your Intervals.icu training data into a folder on your compute
 
 ## Get help from your AI
 
-You choose the folder and enter your credentials. An AI with access to run commands on this computer can help install and check it; otherwise, you run the commands. Copy this prompt:
+You choose the folder and enter credentials. Check whether your AI can run commands on this computer; otherwise, you run them. Copy this prompt:
 
-> Help me set up Local sync. Before acting, read the full guide at https://github.com/CrankAddict/section-11/blob/main/examples/json-local-sync/SETUP.md. If you can access my installed section11/ folder, read the same file there at section11/examples/json-local-sync/SETUP.md. Check my operating system, Python and your command access. Keep my existing data folder, dossier and preferences. Explain changes before asking me to accept. Verify the first sync and my AI's access to the files.
+```text
+Help me set up Section 11 Local sync, one step at a time.
+Read this guide first: https://github.com/CrankAddict/section-11/blob/main/examples/json-local-sync/SETUP.md (if you can open my installed section11/ folder, use its copy instead).
+Keep my existing data folder, dossier and settings; explain changes and ask before changing anything.
+```
+
+For full guided setup, including your dossier and AI connection, give your AI this link: <https://github.com/CrankAddict/section-11/blob/main/SETUP_ASSISTANT.md>.
 
 ## Set it up yourself
 
-1. Open Terminal on Mac or PowerShell on Windows, then check Python with `python3 --version` (on Windows, `py -3 --version`); you need 3.11 or newer. If it is missing or older, install it from [python.org](https://www.python.org/downloads/), reopen the terminal and check again. Then install Requests: `python3 -m pip install requests`. On Windows, use `py -3` instead of `python3` throughout. If installation fails, follow [Prerequisites](#prerequisites).
-2. In Intervals.icu **Settings**, find your Athlete ID near the bottom and your API key under **Developer Settings**.
-3. Choose your final data folder, or keep your existing one. For cloud access, choose a cloud-synced folder now. Open a terminal in it (Terminal on Mac, PowerShell on Windows). To get there: on Mac, type `cd ` (with a space) in Terminal, drag the folder into the window and press Return; on Windows, open the folder in File Explorer, click the address bar, type `powershell` and press Enter.
-4. From the [latest official release](https://github.com/CrankAddict/section-11/releases/latest), download `section11-YYYY.MM.DD.zip` and extract it into `Downloads/section11-bootstrap`, outside the data folder. Start with an empty `section11-bootstrap` folder. On Mac, create it in Downloads, double-click the ZIP (Safari may already have unzipped it for you) and move the new `section11` folder into it. On Windows, right-click the ZIP, choose **Extract All** and set the destination to `Downloads\section11-bootstrap`. Either way, you should end up with `Downloads/section11-bootstrap/section11/examples/sync.py`.
-5. Run `python3 "$HOME/Downloads/section11-bootstrap/section11/examples/sync.py" --init`. Existing users use `--update` instead. Before accepting, move your own files out of `section11/` into `custom/`: the entire `section11/` folder is replaced. Unprotected same-name files elsewhere can also be removed; see the [removal rules](../maintenance/UPDATING.md#local-updates-and-automatic-toggle).
-6. Run `python3 section11/examples/sync.py --setup` and enter your credentials, then `python3 section11/examples/sync.py --output latest.json`. Check that `latest.json` contains your current data. Keep any existing dossier; it belongs beside `latest.json`.
-7. Give your AI access to `latest.json` and the installed `section11/` folder. Use [Section 11's project instructions](../../README.md#3-configure-your-ai-platform) and ask it to confirm it can read the data, protocol and templates. If it cannot reach your computer, use a cloud connector or the [web-chat upload steps](#using-with-web-chat-platforms). Keep the folder private: it contains credentials and personal data.
+On Windows, use `py -3` instead of `python3` throughout.
+
+1. In Terminal (Mac) or PowerShell (Windows), check for Python 3.11 or newer:
+
+   ```sh
+   python3 --version
+   ```
+
+   If missing or older, install from [python.org](https://www.python.org/downloads/), reopen the terminal and check again.
+2. Install Requests; for help, see [Prerequisites](#prerequisites):
+
+   ```sh
+   python3 -m pip install requests
+   ```
+
+3. In Intervals.icu **Settings**, find your Athlete ID near the bottom and API key under **Developer Settings**.
+4. Choose your final data folder: keep your existing one, or use a cloud-synced folder for cloud AI access.
+5. Open a terminal in that folder.  
+   Mac: type `cd ` (with a space), drag the folder into Terminal and press Return.  
+   Windows: open it in File Explorer, enter `powershell` in the address bar and press Enter.
+6. Download `section11-YYYY.MM.DD.zip` from the [latest official release](https://github.com/CrankAddict/section-11/releases/latest) and extract it into an empty `Downloads/section11-bootstrap` folder, outside your data folder.  
+   Mac: create that folder, double-click the ZIP (Safari may already have unzipped it) and move `section11` inside.  
+   Windows: right-click the ZIP, choose **Extract All**, destination `Downloads\section11-bootstrap`.
+7. Move your own files from `section11/` to `custom/` first ([removal rules](../maintenance/UPDATING.md#local-updates-and-automatic-toggle)). Install from your data folder:
+
+   ```sh
+   python3 "$HOME/Downloads/section11-bootstrap/section11/examples/sync.py" --init
+   ```
+
+   Existing users: use `--update` instead of `--init`.
+8. Set up your credentials when prompted, then run your first sync:
+
+   ```sh
+   python3 section11/examples/sync.py --setup
+   python3 section11/examples/sync.py --output latest.json
+   ```
+
+   Check that `latest.json` contains your current data.
+9. Give your AI access to `latest.json` and `section11/` using [Section 11's project instructions](../../README.md#3-configure-your-ai-platform). Ask it to confirm it can read the data, protocol and templates.
 
 ## After setup
 
-A standard timer refreshes data while your computer is on. Add `--no-timer` to the installation command for manual-only use; an existing manual-only choice is kept. Remove any old timer you created yourself. See [refresh settings](#automate-the-refresh) if needed.
+Keep the data folder private: it contains your credentials and personal data. Your dossier goes next to `latest.json`.
 
-Release updates still need your confirmation by default. See [updating](../maintenance/UPDATING.md#updating-section-11) or [troubleshooting](#verification-and-troubleshooting) when you need help.
+Your data refreshes automatically while your computer is on. You can [change or turn off the refresh](#automate-the-refresh).
+
+Updates still need your confirmation by default, but you can [turn on automatic updates](../maintenance/UPDATING.md#automatic-updates-and-undo). Keep your own files in `custom/`: updates replace everything in `section11/`.
+
+Is your AI not on this computer? Use a cloud connector or the [web-chat upload steps](#using-with-web-chat-platforms).
+
+Need help? See [updating](../maintenance/UPDATING.md#updating-section-11) or [troubleshooting](#verification-and-troubleshooting).
 
 [Full technical guide on GitHub](#technical-guide)
 
@@ -164,7 +208,7 @@ If a run is already in progress, wait a minute before trying your first sync aga
 │   │   │   └── WORKOUT_REFERENCE.md
 │   │   └── ...
 │   └── ...
-├── .sync_config.json           # credentials and preferences (created by --setup)
+├── .sync_config                # credentials and preferences (created by --setup)
 ├── .section11-state/           # update lock, journal, daily attempt and rollback ZIP
 ├── sync.log                    # standard timer output, including macOS launchd
 ├── custom/                    # personal code and overrides
@@ -191,6 +235,8 @@ With sync 3.146, every data companion lives next to the file selected by `--outp
 Git metadata along with the tree. That history survives only in the single rollback
 slot, until the next successful installation. Keep an actual development checkout
 separate; external worktree/submodule metadata requires owner resolution.
+
+The rolling recovery file `<data folder>/archive/carry-forward.state` keeps previously exported activity summaries if a later export is damaged. Keep it between runs; update and rollback preserve it. Sync writes compact JSON atomically only when its content changes. AI tools must ignore this file and read recovery notices only from `latest.json.carry_forward`. Whole-folder cloud sync can still copy it. It is separate from the request state described below and is not moved by `SECTION11_STATE_DIR`.
 
 ### Private sync state
 
@@ -293,12 +339,12 @@ An agent on a provider-hosted computer is a different case. It has a runtime fil
    ~/Google Drive/My Drive/training-data/
    ```
 3. Complete [Initial Setup](#initial-setup) from that folder, including `--init` and
-   `--setup`. The installed `section11/`, `.sync_config.json` and exported data
+   `--setup`. The installed `section11/`, `.sync_config` and exported data
    then share the same data folder, which the standard timer uses.
 4. Connect the AI platform's Drive connector to the folder
 
 For an existing installation, stop the old timer, move the whole data folder
-including `section11/` and `.sync_config.json`, then run
+including `section11/` and `.sync_config`, then run
 `python3 section11/examples/sync.py --update` once from the new folder to point
 the standard timer there. Keep the folder's credentials private.
 
@@ -331,7 +377,7 @@ The installer manages only its standard timer and never inspects other commands.
 The standard timer declares `SECTION11_EXPORT_MODE=local_scheduled`, so export
 freshness can supply a delivery deadline.
 
-The optional `.sync_config.json` field `check_interval_minutes` accepts the integers **1, 2, 5 or 10**, with **1** as the default. To choose five-minute checks, add `"check_interval_minutes": 5` to your existing config, keeping its credentials and other settings. Strings such as `"5"`, booleans and other invalid values fall back to one minute with this warning:
+The optional `.sync_config` field `check_interval_minutes` accepts the integers **1, 2, 5 or 10**, with **1** as the default. To choose five-minute checks, add `"check_interval_minutes": 5` to your existing config, keeping its credentials and other settings. Strings such as `"5"`, booleans and other invalid values fall back to one minute with this warning:
 
 ```text
 Warning: invalid check_interval_minutes; using one-minute checks (choose 1, 2, 5 or 10).
@@ -467,7 +513,7 @@ for interrupted updates.
 
 ## Write Side (push.py)
 
-push.py uses the same `.sync_config.json` credentials: no extra setup needed.
+push.py uses the same `.sync_config` credentials: no extra setup needed.
 
 To share sync.py's request count, push.py uses an explicit `--data-dir` first. Otherwise it checks the folder containing its `section11/` copy for `latest.json`, then the working directory for `latest.json`. If neither is found, it warns `Warning: data folder not found; use --data-dir or run beside latest.json. Request capacity is unknown.` It does not create a count in an arbitrary folder. When needed, specify the data folder before the subcommand, for example `python3 section11/examples/agentic/push.py --data-dir ~/training-data list`. This selects the shared state location, not credentials or write approval.
 
@@ -493,7 +539,7 @@ cd ~/training-data
 python3 section11/examples/agentic/pull.py trace --activity-id i142557875 --types latlng,altitude
 ```
 
-Same `.sync_config.json` credentials. Read-only: no `--confirm` gate. Don't reach for pull.py if `latest.json` already answers the question; the streams payload is several MB per ride.
+Same `.sync_config` credentials. Read-only: no `--confirm` gate. Don't reach for pull.py if `latest.json` already answers the question; the streams payload is several MB per ride.
 
 ---
 
@@ -523,9 +569,11 @@ and pinned manifest endpoints; a development clone is not an equivalent install.
 
 **macOS launchd doesn't inherit shell PATH**: specify the full Python path in the plist (e.g., `/usr/local/bin/python3`). Find yours with `which python3`.
 
-**`.sync_config.json` must be in the working directory**: the data directory root (`~/training-data/`), not inside `section11/`. If sync.py can't find credentials, check that your timer's `WorkingDirectory` is set correctly.
+**`.sync_config` must be in the working directory**: the data directory root (`~/training-data/`), not inside `section11/`. If sync.py can't find credentials, check that your timer's `WorkingDirectory` is set correctly.
 
-**Optional config fields** (add manually to `.sync_config.json` or re-run `--setup`):
+Older setups migrate automatically on the next normal sync. If renaming fails, sync uses `.sync_config.json` and retries next run. If both exist, `.sync_config` wins and the old file stays untouched. Never upload either file.
+
+**Optional config fields** (add manually to `.sync_config` or re-run `--setup`):
 
 - `auto_update`: boolean, default `false`; opt in to verified daily automatic installation after data work, including definitive failure or defer. Unknown data publication holds maintenance. Edit this field manually; the setup wizard preserves existing optional settings.
 - `route_weather_default_start`: local HH:MM, default `"10:00"`, used only for date-only/exact-midnight workouts. `SECTION11_ROUTE_WEATHER_DEFAULT_START` in the timer environment overrides it. The AI labels ASSUMED and asks for the actual time. See [departure handling](../../README.md#route-weather-departure), including genuine midnight rides and confirmed push.py time updates.
