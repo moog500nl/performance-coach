@@ -83,35 +83,35 @@
         "path": "latest.json",
         "json_path": "$",
         "present": true,
-        "updated_at": "2026-11-08T11:22:20.981590+00:00",
+        "updated_at": "2026-11-08T11:36:58.467778+00:00",
         "holds": "Current training data and companion overview"
       },
       {
         "path": "routes.json",
         "json_path": "$.events",
         "present": true,
-        "updated_at": "2026-11-08T11:22:27.221339+00:00",
+        "updated_at": "2026-11-08T11:36:59.616655+00:00",
         "holds": "Planned route validity, terrain, weather and compact snapshots"
       },
       {
         "path": "intervals.json",
         "json_path": "$.activities",
         "present": true,
-        "updated_at": "2026-11-08T11:22:27.221841+00:00",
+        "updated_at": "2026-11-08T11:36:59.617155+00:00",
         "holds": "Completed session interval, structure and DFA detail"
       },
       {
         "path": "history.json",
         "json_path": "$",
         "present": true,
-        "updated_at": "2026-11-08T11:16:38.306386+00:00",
+        "updated_at": "2026-11-08T11:27:03.078569+00:00",
         "holds": "Longitudinal training history"
       },
       {
         "path": "ftp_history.json",
         "json_path": "$",
         "present": true,
-        "updated_at": "2026-11-08T11:22:20.981590+00:00",
+        "updated_at": "2026-11-08T11:36:58.467779+00:00",
         "holds": "FTP progression"
       },
       {
@@ -125,7 +125,7 @@
         "path": "route_eta_history.json",
         "json_path": "$.activities",
         "present": true,
-        "updated_at": "2026-11-08T11:16:36.135930+00:00",
+        "updated_at": "2026-11-08T11:27:00.919806+00:00",
         "holds": "Rolling 180-day outdoor ETA calibration record"
       }
     ],
@@ -334,7 +334,7 @@
   },
   "metadata": {
     "athlete_id": "REDACTED",
-    "last_updated": "2026-11-08T11:22:27.220341Z",
+    "last_updated": "2026-11-08T11:36:59.615655Z",
     "data_range_days": 7,
     "extended_range_days": 28,
     "version": "3.168"
@@ -428,7 +428,7 @@
       "value": "Europe/Amsterdam",
       "source": "athlete_timezone"
     },
-    "source_updated_at": "2026-11-08T11:22:19.914974+00:00",
+    "source_updated_at": "2026-11-08T11:36:57.436591+00:00",
     "source": "Intervals.icu wellness.sleepSecs",
     "status": "assessed",
     "reason": null,
@@ -1721,7 +1721,7 @@
     "p_max": 472,
     "power_model_source": "wellness.sportInfo",
     "vo2max": null,
-    "calculation_timestamp": "2026-11-08T11:22:22.039938Z",
+    "calculation_timestamp": "2026-11-08T11:36:59.556196Z",
     "data_quality": {
       "hrv_data_points": 7,
       "rhr_data_points": 7,
@@ -1873,11 +1873,6 @@
         "1200": 124,
         "3600": 123
       },
-      "decoupling_cache": {
-        "version": 1,
-        "activity_key": "0e0ac3f3d8ea4c06a7a44161a4ca3131978b6bc04b342ce9a88aea1991c8d9c6",
-        "status": "ok"
-      },
       "decoupling_detail": {
         "method": "intervals_power_vs_hr_v1",
         "window": {
@@ -1934,6 +1929,11 @@
         "bucket_decoupling": 3.93533,
         "power_trend": "steady",
         "comparability": "steady_power"
+      },
+      "decoupling_cache": {
+        "version": 1,
+        "activity_key": "0e0ac3f3d8ea4c06a7a44161a4ca3131978b6bc04b342ce9a88aea1991c8d9c6",
+        "status": "ok"
       },
       "interval_data": {
         "version": 1,
@@ -2122,11 +2122,6 @@
         "300": 114,
         "1200": 114
       },
-      "decoupling_cache": {
-        "version": 1,
-        "activity_key": "bb46cd806de7d3c9d0fffb4a6e24ad5663626dc35f2129bd64c7d6481996d210",
-        "status": "ok"
-      },
       "decoupling_detail": {
         "method": "intervals_power_vs_hr_v1",
         "window": {
@@ -2183,6 +2178,11 @@
         "bucket_decoupling": 0.223829,
         "power_trend": "steady",
         "comparability": "steady_power"
+      },
+      "decoupling_cache": {
+        "version": 1,
+        "activity_key": "bb46cd806de7d3c9d0fffb4a6e24ad5663626dc35f2129bd64c7d6481996d210",
+        "status": "ok"
       },
       "interval_data": {
         "version": 1,
@@ -2372,11 +2372,6 @@
         "1200": 129,
         "3600": 128
       },
-      "decoupling_cache": {
-        "version": 1,
-        "activity_key": "3fc0f7ddf58d27c3dbe2982a47bc572b146c52ffacc7d2bb002afdc3be68473b",
-        "status": "ok"
-      },
       "decoupling_detail": {
         "method": "intervals_power_vs_hr_v1",
         "window": {
@@ -2433,6 +2428,11 @@
         "bucket_decoupling": 2.013376,
         "power_trend": "steady",
         "comparability": "steady_power"
+      },
+      "decoupling_cache": {
+        "version": 1,
+        "activity_key": "3fc0f7ddf58d27c3dbe2982a47bc572b146c52ffacc7d2bb002afdc3be68473b",
+        "status": "ok"
       },
       "interval_data": {
         "version": 1,
@@ -2622,11 +2622,6 @@
         "1200": 134,
         "3600": 131
       },
-      "decoupling_cache": {
-        "version": 1,
-        "activity_key": "8f074bfca9c269249cb3128fda9d9fdac0b488e483792189a3a5fa003d174a6f",
-        "status": "ok"
-      },
       "decoupling_detail": {
         "method": "intervals_power_vs_hr_v1",
         "window": {
@@ -2683,6 +2678,11 @@
         "bucket_decoupling": -0.025855,
         "power_trend": "steady",
         "comparability": "steady_power"
+      },
+      "decoupling_cache": {
+        "version": 1,
+        "activity_key": "8f074bfca9c269249cb3128fda9d9fdac0b488e483792189a3a5fa003d174a6f",
+        "status": "ok"
       },
       "interval_data": {
         "version": 1,
@@ -2852,11 +2852,6 @@
         "1200": 134,
         "3600": 132
       },
-      "decoupling_cache": {
-        "version": 1,
-        "activity_key": "d1b0a5ae5941bee6d2b92137f6712ba024b8eabb33e15a03ffacdfe43f71f9ae",
-        "status": "ok"
-      },
       "decoupling_detail": {
         "method": "intervals_power_vs_hr_v1",
         "window": {
@@ -2913,6 +2908,11 @@
         "bucket_decoupling": 3.397199,
         "power_trend": "steady",
         "comparability": "steady_power"
+      },
+      "decoupling_cache": {
+        "version": 1,
+        "activity_key": "d1b0a5ae5941bee6d2b92137f6712ba024b8eabb33e15a03ffacdfe43f71f9ae",
+        "status": "ok"
       },
       "interval_data": {
         "version": 1,
@@ -4538,22 +4538,22 @@
   },
   "source_freshness": {
     "version": 1,
-    "as_of": "2026-11-08T11:22:27.202817Z",
+    "as_of": "2026-11-08T11:36:59.601592Z",
     "budget": {
       "scope": "local_data_folder_key_athlete",
       "capacity_status": "known",
       "utc_day": "2026-11-08",
-      "requests_this_run": 16,
-      "requests_today": 70,
-      "sync_requests_today": 70,
+      "requests_this_run": 6,
+      "requests_today": 83,
+      "sync_requests_today": 83,
       "provider_daily_limit": 8000,
       "sync_daily_limit": 7000,
       "reserved_external": 1000,
-      "sync_remaining": 6930,
-      "window_requests": 70,
+      "sync_remaining": 6917,
+      "window_requests": 29,
       "window_limit": 200,
       "hold_until": null,
-      "next_eligible_at": "2026-11-08T11:23:19.125745Z"
+      "next_eligible_at": "2026-11-08T11:37:56.626716Z"
     },
     "schedule": {
       "requested_interval_seconds": 60,
@@ -4568,13 +4568,13 @@
         "status": "fresh",
         "reason": null,
         "snapshot_present": true,
-        "last_attempt_at": "2026-11-08T11:22:19.438087Z",
-        "last_success_at": "2026-11-08T11:22:19.438087Z",
-        "source_acquired_at": "2026-11-08T11:22:19.438087Z",
-        "age_seconds": 7.764729738235474,
+        "last_attempt_at": "2026-11-08T11:36:56.972927Z",
+        "last_success_at": "2026-11-08T11:36:56.972927Z",
+        "source_acquired_at": "2026-11-08T11:36:56.972927Z",
+        "age_seconds": 2.6286652088165283,
         "max_age_seconds": 60,
-        "next_due_at": "2026-11-08T11:23:19.438087Z",
-        "next_eligible_at": "2026-11-08T11:23:19.438087Z",
+        "next_due_at": "2026-11-08T11:37:56.972927Z",
+        "next_eligible_at": "2026-11-08T11:37:56.972927Z",
         "coverage": "complete",
         "scope": {
           "oldest": "2026-09-14",
@@ -4586,13 +4586,13 @@
         "status": "fresh",
         "reason": null,
         "snapshot_present": true,
-        "last_attempt_at": "2026-11-08T11:22:19.914974Z",
-        "last_success_at": "2026-11-08T11:22:19.914974Z",
-        "source_acquired_at": "2026-11-08T11:22:19.914974Z",
-        "age_seconds": 7.287842750549316,
+        "last_attempt_at": "2026-11-08T11:36:57.436591Z",
+        "last_success_at": "2026-11-08T11:36:57.436591Z",
+        "source_acquired_at": "2026-11-08T11:36:57.436591Z",
+        "age_seconds": 2.165001392364502,
         "max_age_seconds": 60,
-        "next_due_at": "2026-11-08T11:23:19.914974Z",
-        "next_eligible_at": "2026-11-08T11:23:19.914974Z",
+        "next_due_at": "2026-11-08T11:37:57.436591Z",
+        "next_eligible_at": "2026-11-08T11:37:57.436591Z",
         "coverage": "complete",
         "scope": {
           "oldest": "2026-10-05",
@@ -4604,13 +4604,13 @@
         "status": "fresh",
         "reason": null,
         "snapshot_present": true,
-        "last_attempt_at": "2026-11-08T11:22:20.468987Z",
-        "last_success_at": "2026-11-08T11:22:20.468987Z",
-        "source_acquired_at": "2026-11-08T11:22:20.468987Z",
-        "age_seconds": 6.733829736709595,
+        "last_attempt_at": "2026-11-08T11:36:57.964695Z",
+        "last_success_at": "2026-11-08T11:36:57.964695Z",
+        "source_acquired_at": "2026-11-08T11:36:57.964695Z",
+        "age_seconds": 1.636897325515747,
         "max_age_seconds": 60,
-        "next_due_at": "2026-11-08T11:23:20.468987Z",
-        "next_eligible_at": "2026-11-08T11:23:20.468987Z",
+        "next_due_at": "2026-11-08T11:37:57.964695Z",
+        "next_eligible_at": "2026-11-08T11:37:57.964695Z",
         "coverage": "complete",
         "scope": {
           "oldest": "2026-10-12",
@@ -4623,13 +4623,13 @@
         "status": "fresh",
         "reason": null,
         "snapshot_present": true,
-        "last_attempt_at": "2026-11-08T11:22:20.977087Z",
-        "last_success_at": "2026-11-08T11:22:20.977087Z",
-        "source_acquired_at": "2026-11-08T11:22:20.977087Z",
-        "age_seconds": 6.225729703903198,
+        "last_attempt_at": "2026-11-08T11:36:58.463275Z",
+        "last_success_at": "2026-11-08T11:36:58.463275Z",
+        "source_acquired_at": "2026-11-08T11:36:58.463275Z",
+        "age_seconds": 1.138317346572876,
         "max_age_seconds": 60,
-        "next_due_at": "2026-11-08T11:23:20.977087Z",
-        "next_eligible_at": "2026-11-08T11:23:20.977087Z",
+        "next_due_at": "2026-11-08T11:37:58.463275Z",
+        "next_eligible_at": "2026-11-08T11:37:58.463275Z",
         "coverage": "complete",
         "scope": {
           "oldest": "2025-11-08",
@@ -4645,7 +4645,7 @@
         "last_attempt_at": "2026-11-08T11:16:14.901172Z",
         "last_success_at": "2026-11-08T11:16:14.901172Z",
         "source_acquired_at": "2026-11-08T11:16:14.901172Z",
-        "age_seconds": 372.3016448020935,
+        "age_seconds": 1244.7004203796387,
         "max_age_seconds": 3600,
         "next_due_at": "2026-11-08T12:16:14.901172Z",
         "next_eligible_at": "2026-11-08T12:16:14.901172Z",
@@ -4661,7 +4661,7 @@
         "last_attempt_at": "2026-11-08T11:16:25.143063Z",
         "last_success_at": "2026-11-08T11:16:18.476828Z",
         "source_acquired_at": "2026-11-08T11:16:18.476828Z",
-        "age_seconds": 368.7259886264801,
+        "age_seconds": 1241.1247642040253,
         "max_age_seconds": 21600,
         "next_due_at": "2026-11-08T17:16:18.476828Z",
         "next_eligible_at": "2026-11-08T17:16:18.476828Z",
@@ -4719,7 +4719,7 @@
         "last_attempt_at": "2026-11-08T11:16:26.173054Z",
         "last_success_at": "2026-11-08T11:16:25.669478Z",
         "source_acquired_at": "2026-11-08T11:16:25.669478Z",
-        "age_seconds": 361.5333387851715,
+        "age_seconds": 1233.9321143627167,
         "max_age_seconds": 21600,
         "next_due_at": "2026-11-08T17:16:25.669478Z",
         "next_eligible_at": "2026-11-08T17:16:25.669478Z",
@@ -4742,10 +4742,10 @@
         "last_attempt_at": "2026-11-08T11:16:23.606565Z",
         "last_success_at": "2026-11-08T11:16:21.549512Z",
         "source_acquired_at": "2026-11-08T11:16:21.549512Z",
-        "age_seconds": 365.65330481529236,
+        "age_seconds": 1238.0520803928375,
         "max_age_seconds": null,
         "next_due_at": null,
-        "next_eligible_at": "2026-11-08T11:22:27.202817Z",
+        "next_eligible_at": "2026-11-08T11:36:59.601592Z",
         "coverage": "complete",
         "scope": {
           "resources": [
@@ -4765,13 +4765,13 @@
         "status": "fresh",
         "reason": null,
         "snapshot_present": true,
-        "last_attempt_at": "2026-11-08T11:22:22.024419Z",
+        "last_attempt_at": "2026-11-08T11:36:59.537168Z",
         "last_success_at": "2026-11-08T11:16:24.175673Z",
         "source_acquired_at": "2026-11-08T11:16:24.175673Z",
-        "age_seconds": 363.02714371681213,
+        "age_seconds": 1235.4259192943573,
         "max_age_seconds": null,
         "next_due_at": null,
-        "next_eligible_at": "2026-11-08T11:22:27.202817Z",
+        "next_eligible_at": "2026-11-08T11:36:59.601592Z",
         "coverage": "complete",
         "scope": {
           "resources": [
@@ -4794,10 +4794,10 @@
         "last_attempt_at": "2026-11-08T11:22:24.573677Z",
         "last_success_at": "2026-11-08T11:22:22.528070Z",
         "source_acquired_at": "2026-11-08T11:22:22.528070Z",
-        "age_seconds": 4.674746751785278,
+        "age_seconds": 877.0735223293304,
         "max_age_seconds": null,
         "next_due_at": null,
-        "next_eligible_at": "2026-11-08T11:22:27.202817Z",
+        "next_eligible_at": "2026-11-08T11:36:59.601592Z",
         "coverage": "complete",
         "scope": {
           "resources": [
@@ -4826,10 +4826,10 @@
         "last_attempt_at": "2026-11-08T11:22:27.195293Z",
         "last_success_at": "2026-11-08T11:22:25.097507Z",
         "source_acquired_at": "2026-11-08T11:22:25.097507Z",
-        "age_seconds": 2.1053097248077393,
+        "age_seconds": 874.5040853023529,
         "max_age_seconds": null,
         "next_due_at": null,
-        "next_eligible_at": "2026-11-08T11:22:27.202817Z",
+        "next_eligible_at": "2026-11-08T11:36:59.601592Z",
         "coverage": "complete",
         "scope": {
           "resources": [
@@ -4890,7 +4890,7 @@
         "last_attempt_at": "2026-11-08T11:16:16.928638Z",
         "last_success_at": "2026-11-08T11:16:16.928638Z",
         "source_acquired_at": "2026-11-08T11:16:16.928638Z",
-        "age_seconds": 370.2741787433624,
+        "age_seconds": 1242.6729543209076,
         "max_age_seconds": 21600,
         "next_due_at": "2026-11-08T17:16:16.928638Z",
         "next_eligible_at": "2026-11-08T17:16:16.928638Z",
@@ -4904,12 +4904,12 @@
         "reason": null,
         "snapshot_present": true,
         "last_attempt_at": null,
-        "last_success_at": "2026-11-08T11:16:35.858036Z",
-        "source_acquired_at": "2026-11-08T11:16:35.858036Z",
-        "age_seconds": 351.34478068351746,
+        "last_success_at": "2026-11-08T11:27:00.627137Z",
+        "source_acquired_at": "2026-11-08T11:27:00.627137Z",
+        "age_seconds": 598.9744553565979,
         "max_age_seconds": 2505600,
-        "next_due_at": "2026-12-07T11:16:35.858036Z",
-        "next_eligible_at": "2026-12-07T11:16:35.858036Z",
+        "next_due_at": "2026-12-07T11:27:00.627137Z",
+        "next_eligible_at": "2026-12-07T11:27:00.627137Z",
         "coverage": "complete",
         "scope": {
           "resource": "history.json"
@@ -4919,7 +4919,7 @@
   },
   "export_freshness": {
     "version": 1,
-    "generated_at": "2026-11-08T11:22:27.220341Z",
+    "generated_at": "2026-11-08T11:36:59.615655Z",
     "mode": "unknown",
     "expected_update_by": null,
     "reason": "unknown_schedule"
