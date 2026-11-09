@@ -19,7 +19,9 @@ concurrency:
 
 jobs:
   build:
-    if: github.ref == 'refs/heads/main'
+    # Fork guard: the docs site builds from upstream's stock markdown, which
+    # this fork customises (personalised README, deleted setup docs).
+    if: github.ref == 'refs/heads/main' && github.repository == 'CrankAddict/section-11'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
